@@ -16,11 +16,6 @@ const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").def
 const build = require("./scripts/build");
 build.writeBuildMetaData("./app/build.json");
 
-const doNothing = {
-    //eslint-disable-next-line
-    apply: function () {},
-};
-
 module.exports = (_env, argv) => {
     process.env.NODE_ENV = argv.mode;
     const isProduction = process.env.NODE_ENV == "production";
@@ -94,11 +89,11 @@ module.exports = (_env, argv) => {
                 template: path.resolve(__dirname, "./app/template.ejs"),
                 alwaysWriteToDisk: true,
             }),
-            isProduction ? new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.js$/]) : doNothing,
-            isProduction ? new HtmlWebpackHarddiskPlugin() : doNothing,
-            isProduction ? new BrotliPlugin(brotliConifg) : doNothing,
-            isProduction ? new HTMLInlineCSSWebpackPlugin() : doNothing,
-        ],
+            isProduction && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.js$/]),
+            isProduction && new HtmlWebpackHarddiskPlugin(),
+            isProduction && new BrotliPlugin(brotliConifg),
+            isProduction && new HTMLInlineCSSWebpackPlugin(),
+        ].filter(Boolean),
         resolve: {
             extensions: [".tsx", ".ts", ".js"],
             alias: {
@@ -112,6 +107,7 @@ module.exports = (_env, argv) => {
                 pages: path.resolve(__dirname, "pages"),
                 styles: path.resolve(__dirname, "styles"),
                 hooks: path.resolve(__dirname, "hooks"),
+                lib: path.resolve(__dirname, "lib"),
             },
         },
         // target: "node",
