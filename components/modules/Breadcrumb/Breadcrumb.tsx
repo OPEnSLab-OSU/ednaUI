@@ -1,11 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
+import { ChevronRight, Layout } from "react-feather";
 
 import { titleCase } from "lib";
-
-import { ChevronRight, Layout } from "react-feather";
-import styled from "styled-components";
 
 const StyledLink = styled(Link)<{ disabled?: boolean }>`
     ${tw`text-sm text-primary hover:underline`}
