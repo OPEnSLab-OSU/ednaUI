@@ -1,0 +1,17 @@
+{
+    "presets": [
+        ["@babel/preset-env", { "modules": false }],
+        ["@babel/preset-typescript", { "jsxPragma": "h" }]
+    ],
+    "plugins": [
+        "babel-plugin-macros",
+        [
+            "@babel/plugin-transform-react-jsx",
+            {
+                "runtime": "automatic"
+                // "pragma": "h",
+                // "pragmaFrag": "Fragment"
+            }
+        ]
+    ]
+}
