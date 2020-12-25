@@ -3,6 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import { Monitoring } from "pages/Monitoring";
 import { Tasks } from "pages/Tasks";
+import { TaskConfig } from "pages/TaskConfig";
 
 import { Sidebar } from "components/modules/Sidebar";
 import { Breadcrumb } from "components/modules/Breadcrumb";
@@ -37,6 +38,7 @@ export const Application = () => (
                     <Route exact path="/404" render={() => <div>404 Error</div>} />
                     <Route exact path="/monitoring" render={() => <Monitoring />} />
                     <Route exact path="/tasks" render={() => <Tasks />} />
+                    <Route path="/tasks/:taskname" render={() => <TaskConfig />} />
                     <Route path="*" render={() => <Redirect to="/404" />} />
                 </Switch>
             </PageContainer>
