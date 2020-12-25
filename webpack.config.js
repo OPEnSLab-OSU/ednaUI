@@ -31,6 +31,10 @@ module.exports = (_env, argv) => {
         mode: isProduction ? "production" : "development",
         context: __dirname,
         entry: "./app/index",
+        output: {
+            filename: "bundle.js",
+            publicPath: "/",
+        },
         devServer: {
             contentBase: path.resolve(__dirname, "dist"),
             compress: true,
@@ -59,13 +63,11 @@ module.exports = (_env, argv) => {
                     ],
                 },
                 {
-                    test: /\.(woff|woff2|ttf|eot)$/,
-                    use: {
-                        loader: "url-loader",
-                    },
+                    test: /\.svg$/,
+                    use: ["@svgr/webpack"],
                 },
                 {
-                    test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                    test: /\.(png|jpg|jpeg|gif)$/i,
                     type: "asset/resource",
                 },
             ],
@@ -103,17 +105,13 @@ module.exports = (_env, argv) => {
 
                 // Must be below test-utils
                 "react-dom": "preact/compat",
+                assets: path.resolve(__dirname, "assets"),
                 components: path.resolve(__dirname, "components"),
                 pages: path.resolve(__dirname, "pages"),
                 styles: path.resolve(__dirname, "styles"),
                 hooks: path.resolve(__dirname, "hooks"),
                 lib: path.resolve(__dirname, "lib"),
             },
-        },
-        // target: "node",
-        output: {
-            filename: "bundle.js",
-            publicPath: "/",
         },
     };
 };
