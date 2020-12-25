@@ -14,11 +14,12 @@
         "noImplicitAny": true,
         "outDir": "./dist/",
         "paths": {
-            "components/*": ["./components/*"],
-            "hooks/*": ["./hooks/*"],
-            "pages/*": ["./pages/*"],
-            "styles/*": ["./styles/*"],
-            "lib/*": ["./lib/*"]
+            "assets/*": ["assets/*"],
+            "components/*": ["components/*"],
+            "hooks/*": ["hooks/*"],
+            "pages/*": ["pages/*"],
+            "styles/*": ["styles/*"],
+            "lib/*": ["lib/*"]
         },
         "resolveJsonModule": true,
         "skipLibCheck": true,
