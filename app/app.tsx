@@ -1,3 +1,4 @@
+import "./app.css";
 import tw, { theme } from "twin.macro";
 import { Route, Redirect, Switch } from "react-router-dom";
 
@@ -12,7 +13,7 @@ import { MinScreenProvider } from "hooks";
 
 import BUILD from "./build.json";
 
-const AppContainer = tw.div`flex h-full overflow-hidden bg-white debug-screens`;
+const AppContainer = tw.div`flex h-full bg-white debug-screens`;
 const PageContainer = tw.div`flex flex-col w-full h-screen overflow-y-scroll bg-background`;
 const Toolbar = tw.div`sticky top-0 z-40 grid items-center`;
 
@@ -27,7 +28,7 @@ export const Application = () => (
         <AppContainer>
             <Sidebar />
 
-            <PageContainer>
+            <PageContainer id="page">
                 <Toolbar>
                     <Version />
                 </Toolbar>

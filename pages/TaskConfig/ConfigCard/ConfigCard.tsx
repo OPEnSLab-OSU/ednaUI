@@ -1,20 +1,9 @@
-import tw, { styled } from "twin.macro";
+import tw, { css } from "twin.macro";
 import { useFormContext } from "react-hook-form";
 
-import { Card } from "components/modules/Card";
-import { InputField } from "components/units/InputField";
+import { InputField, InputFieldProps } from "components/units/InputField";
 
 import { FormValues, FieldProps } from "../data";
-
-const StyledCard = styled(Card)`
-    & > div {
-        ${tw`grid gap-8`}
-    }
-
-    & > div:first-child {
-        ${tw`pb-8`}
-    }
-`;
 
 export type ConfigCardProps = {
     title: string;
@@ -25,7 +14,11 @@ export type ConfigCardProps = {
 export const ConfigCard = ({ title, className, fields }: ConfigCardProps) => {
     const { register, errors } = useFormContext<FormValues>();
     return (
-        <StyledCard title={title} tw="bg-white shadow-lg" className={className}>
+        <div
+            id={title.toLowerCase()}
+            tw="p-8 grid gap-8 bg-white shadow-lg rounded-xl"
+            className={className}>
+            <h3 tw="text-title text-primary">{title}</h3>
             {fields.map(props => (
                 <InputField
                     key={props.name}
@@ -34,6 +27,6 @@ export const ConfigCard = ({ title, className, fields }: ConfigCardProps) => {
                     {...props}
                 />
             ))}
-        </StyledCard>
+        </div>
     );
 };

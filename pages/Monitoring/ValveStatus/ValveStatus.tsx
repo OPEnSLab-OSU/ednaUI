@@ -22,7 +22,7 @@ const Valve = styled.div<{ isActive: boolean }>`
 
 export const ValveCollection = ({ valves }: { valves: Valve[] }) => {
     return (
-        <div tw="grid h-24 grid-flow-row grid-cols-12 grid-rows-2 rounded-lg shadow">
+        <div tw="grid h-24 grid-flow-row grid-cols-12 grid-rows-2 rounded-lg overflow-hidden shadow">
             {valves.map(v => (
                 <Valve key={v.id} isActive={v.status}>
                     {v.id}

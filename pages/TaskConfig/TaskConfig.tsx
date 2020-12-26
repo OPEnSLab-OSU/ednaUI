@@ -27,7 +27,17 @@ const MenuHashLinkListItem = ({
             <NavLink
                 to={hash}
                 activeStyle={tw`text-primary`}
-                isActive={(_, location) => location.hash === hash}>
+                isActive={(_, loc) => {
+                    return (hash === "#general" && loc.hash === "") || loc.hash === hash;
+                }}
+                onClick={() => {
+                    const page = document.querySelector("#page");
+                    const target = document.querySelector(hash);
+                    if (page && target) {
+                        const top = target.getBoundingClientRect().top - 32;
+                        page.scrollBy({ top, behavior: "smooth" });
+                    }
+                }}>
                 {text}
             </NavLink>
         </li>
@@ -37,14 +47,14 @@ const MenuHashLinkListItem = ({
 export const TaskConfig = () => {
     return (
         <div
-            tw="grid grid-flow-col gap-8 p-8 w-full max-w-screen-xl mx-auto"
+            tw="grid grid-flow-col gap-8 p-8 pb-96 w-full max-w-screen-xl mx-auto"
             css={{ gridTemplateColumns: "min-content 1fr" }}>
             <FloatingList>
                 <MenuHashLinkListItem text="General" />
                 <MenuHashLinkListItem text="Flush" />
                 <MenuHashLinkListItem text="Sample" />
                 <MenuHashLinkListItem text="Dry" />
-                <MenuHashLinkListItem text="Perserve" />
+                <MenuHashLinkListItem text="Preserve" />
             </FloatingList>
 
             <TaskForm />

@@ -25,7 +25,7 @@ export type FormValues = z.infer<typeof schema>;
 export type FieldProps = {
     name: keyof FormValues;
     label: string;
-    type?: "string" | "number" | "date" | "time";
+    type?: "string" | "number" | "date" | "time" | "button";
     sublabel?: string;
     helperText?: string;
 };
@@ -34,7 +34,7 @@ export const generalFields: FieldProps[] = [
     { name: "name", label: "Task Name", sublabel: "Name unique to this task" },
     {
         name: "date",
-        type: "date",
+        type: "button",
         label: "Schedule Date",
         sublabel: "Date when to execute this task",
         helperText: "Format: yyyy/mm/dd",
