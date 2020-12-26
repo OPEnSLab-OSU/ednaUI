@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 
 import tw, { styled } from "twin.macro";
 
+import { PlusSquare } from "react-feather";
+import { Button } from "components/units/Button";
+import { useState } from "react";
+import { NewTaskInput } from "./NewTaskInput";
+
 const StyledLink = styled(Link)<{ isActive: boolean }>`
     ${tw`relative flex flex-col w-64 p-8 mr-4 transition transform bg-white shadow cursor-pointer hover:-translate-y-2 rounded-lg text-primary`}
     ${props => !props.isActive && tw`text-secondary`}
@@ -10,10 +15,11 @@ const StyledLink = styled(Link)<{ isActive: boolean }>`
 
 type TaskTileProps = {
     name?: string;
+    description?: string;
     active?: boolean;
 };
 
-const TaskTile = ({ name = "Untitled", active = false }: TaskTileProps) => {
+const TaskTile = ({ name = "Untitled", description, active = false }: TaskTileProps) => {
     return (
         <StyledLink to={`/tasks/${name}`} isActive={active}>
             {active && (
@@ -23,9 +29,7 @@ const TaskTile = ({ name = "Untitled", active = false }: TaskTileProps) => {
                 </span>
             )}
             <div tw="mr-1 text-sm font-bold leading-none">{name}</div>
-            <div tw="mt-2 text-sm text-secondary">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis.
-            </div>
+            <div tw="mt-2 text-sm text-secondary">{description}</div>
         </StyledLink>
     );
 };
@@ -37,22 +41,48 @@ type TaskSectionProps = {
 
 const TaskSection = ({ title, tasks }: TaskSectionProps) => {
     return (
-        <Card title={title}>
+        <Card tw="p-0" title={title}>
             <div tw="flex flex-wrap">
-                {tasks && tasks.map(t => <TaskTile name={t.name} key={t.name} active={t.active} />)}
+                {tasks && tasks.map(t => <TaskTile key={t.name} {...t} />)}
             </div>
         </Card>
     );
 };
 
 export const Tasks = () => {
-    const activeTasks = [
-        { name: "Task 1", active: true },
+    const [showCreateTask, setShowCreateTask] = useState(true);
+    const activeTasks: TaskTileProps[] = [
+        {
+            name: "Task 1",
+            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis",
+            active: true,
+        },
         { name: "Task 2", active: true },
     ];
-    const inactiveTasks = [{ name: "Task 3" }, { name: "Task 4" }];
+    const inactiveTasks: TaskTileProps[] = [{ name: "Task 3" }, { name: "Task 4" }];
+    const submitNewTaskHandler = () => {
+        alert("Submit task name to server with new id");
+        setShowCreateTask(false);
+    };
+
     return (
-        <div tw="w-full max-w-screen-xl mx-auto">
+        <div tw="grid gap-8 p-8 w-full max-w-screen-xl mx-auto">
+            <div tw="grid gap-8 grid-flow-col auto-cols-max items-center">
+                <h1 tw="text-display text-primary">Tasks</h1>
+                <Button
+                    tw="justify-self-end text-overline"
+                    icon={<PlusSquare />}
+                    text="New Task"
+                    onClick={() => setShowCreateTask(value => !value)}
+                />
+                {showCreateTask && (
+                    <NewTaskInput
+                        onCancel={() => setShowCreateTask(false)}
+                        onSubmit={submitNewTaskHandler}
+                    />
+                )}
+            </div>
+
             <TaskSection title="Active Task" tasks={activeTasks} />
             <TaskSection title="Inactive Task" tasks={inactiveTasks} />
         </div>

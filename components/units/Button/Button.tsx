@@ -1,13 +1,13 @@
-import { ComponentPropsWithoutRef, forwardRef, ReactElement } from "react";
+import { ComponentPropsWithoutRef, forwardRef, ReactNode } from "react";
 import tw from "twin.macro";
 
 export type ButtonProps = ComponentPropsWithoutRef<"button"> & {
-    icon?: ReactElement;
+    icon?: ReactNode;
     iconRight?: boolean;
     text?: string;
 };
 
-const Spacing = (hidden: { hidden: boolean }) => (hidden ? null : <span tw="w-2" />);
+const Spacing = ({ hidden }: { hidden?: boolean }) => (hidden ? null : <span tw="w-2"></span>);
 
 const Title = tw.span`w-full text-center whitespace-nowrap`;
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -23,9 +23,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 disabled:(transform-none transition-none)"
                 {...props}>
                 {icon && !iconRight && <span className="icon">{icon}</span>}
-                {text && <Spacing hidden={!iconRight} />}
-                {text && <Title>{text}</Title>}
                 {text && <Spacing hidden={!!iconRight} />}
+                {text && <Title>{text}</Title>}
+                {text && <Spacing hidden={!iconRight} />}
                 {icon && iconRight && <span className="icon">{icon}</span>}
             </button>
         );
