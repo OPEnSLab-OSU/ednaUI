@@ -29,5 +29,5 @@
         "noUnusedParameters": false
     },
     "exclude": ["node_modules", "node_modules.nosync", "dist", "public", "build", "out"],
-    "include": ["**/*.ts", "**/*.tsx"]
+    "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
 }

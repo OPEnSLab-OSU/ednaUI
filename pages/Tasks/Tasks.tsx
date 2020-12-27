@@ -7,6 +7,17 @@ import { PlusSquare } from "react-feather";
 import { Button } from "components/units/Button";
 import { useState } from "react";
 import { NewTaskInput } from "./NewTaskInput";
+// import { useScrollTracking } from "hooks/";
+
+const activeTasks: TaskTileProps[] = [
+    {
+        name: "Task 1",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis",
+        active: true,
+    },
+    { name: "Task 2", active: true },
+];
+const inactiveTasks: TaskTileProps[] = [{ name: "Task 3" }, { name: "Task 4" }];
 
 const StyledLink = styled(Link)<{ isActive: boolean }>`
     ${tw`relative flex flex-col w-64 p-8 mr-4 transition transform bg-white shadow cursor-pointer hover:-translate-y-2 rounded-lg text-primary`}
@@ -51,15 +62,7 @@ const TaskSection = ({ title, tasks }: TaskSectionProps) => {
 
 export const Tasks = () => {
     const [showCreateTask, setShowCreateTask] = useState(true);
-    const activeTasks: TaskTileProps[] = [
-        {
-            name: "Task 1",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis",
-            active: true,
-        },
-        { name: "Task 2", active: true },
-    ];
-    const inactiveTasks: TaskTileProps[] = [{ name: "Task 3" }, { name: "Task 4" }];
+
     const submitNewTaskHandler = () => {
         alert("Submit task name to server with new id");
         setShowCreateTask(false);

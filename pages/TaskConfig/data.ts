@@ -47,6 +47,14 @@ export const generalFields: FieldProps[] = [
         helperText: "Format: hh:mm (pm|am)",
     },
     {
+        name: "notes",
+        label: "Notes",
+        sublabel: "Optional note to remember this task",
+    },
+];
+
+export const valveFields: FieldProps[] = [
+    {
         name: "valves",
         label: "Valves",
         sublabel: "Valves asigned to this task",
@@ -56,11 +64,6 @@ export const generalFields: FieldProps[] = [
         name: "timeBetween",
         label: "Time Between",
         sublabel: "Time until next valve",
-    },
-    {
-        name: "notes",
-        label: "Notes",
-        sublabel: "Optional note to remember this task",
     },
 ];
 
@@ -80,8 +83,10 @@ export const preserveFields: FieldProps[] = [
     { name: "preserveTime", type: "number", label: "Preserve Time" },
 ];
 
-export const configFields = {
+export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "dry" | "preserve";
+export const configFields: Record<ConfigSectionName, { title: string; fields: FieldProps[] }> = {
     general: { title: "General", fields: generalFields },
+    valves: { title: "Valves", fields: valveFields },
     flush: { title: "Flush", fields: flushFields },
     sample: { title: "Sample", fields: sampleFields },
     dry: { title: "Dry", fields: dryFields },

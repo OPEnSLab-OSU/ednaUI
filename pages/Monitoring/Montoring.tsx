@@ -3,7 +3,7 @@ import { ValveStatus } from "./ValveStatus";
 import { SensorTile } from "./SensorTile";
 import { StateTable } from "./StateTable";
 
-import { useMinScreen } from "hooks";
+import { useMinScreen, useScrollTracking } from "hooks";
 
 import tw from "twin.macro";
 
@@ -22,17 +22,24 @@ export const Monitoring = () => {
     const { min, max } = useMinScreen();
 
     return (
-        <main
-            tw="grid w-full max-w-screen-xl gap-8 mx-auto p-8"
-            css={
-                min`md` ? "grid-template-columns: 1fr min-content;" : "grid-template-columns: 1fr"
-            }>
-            <main tw="grid gap-8 content-start">
-                <ValveStatus />
-                {max`md` && <Tiling columns={2} />}
-                <StateTable />
+        <div>
+            <h1 tw="text-display text-primary p-8 pb-0 mx-auto w-full max-w-screen-xl">
+                Montoring
+            </h1>
+            <main
+                tw="grid w-full max-w-screen-xl gap-8 mx-auto p-8"
+                css={
+                    min`md`
+                        ? "grid-template-columns: 1fr min-content;"
+                        : "grid-template-columns: 1fr"
+                }>
+                <div tw="grid gap-8 content-start">
+                    <ValveStatus />
+                    {max`md` && <Tiling columns={2} />}
+                    <StateTable />
+                </div>
+                {min`md` && <Tiling columns={min`xl` ? 2 : 1} />}
             </main>
-            {min`md` && <Tiling columns={min`xl` ? 2 : 1} />}
-        </main>
+        </div>
     );
 };

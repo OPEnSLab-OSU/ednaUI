@@ -5,6 +5,7 @@
     ],
     "plugins": [
         ["babel-plugin-macros"],
+        ["lodash"],
         [
             "@babel/plugin-transform-react-jsx",
             {

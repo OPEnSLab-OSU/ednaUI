@@ -2,22 +2,15 @@ import { FormEventHandler } from "react";
 import { useParams } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import tw from "twin.macro";
+import "twin.macro";
 
 import { ConfigCard } from "../ConfigCard";
-import {
-    FormValues,
-    generalFields,
-    flushFields,
-    sampleFields,
-    dryFields,
-    preserveFields,
-} from "../data";
+import { FormValues, configFields } from "../data";
 
 import { schema } from "../data";
 import { SubmitCard } from "../SubmitCard";
 
-export const TaskForm = () => {
+export const TaskForm = ({ highlightSection }: { highlightSection: number }) => {
     const { taskname } = useParams<{ taskname: string }>();
 
     const defaultValues: FormValues & Record<string, unknown> = {
@@ -40,7 +33,7 @@ export const TaskForm = () => {
         resolver: zodResolver(schema),
     });
 
-    const { handleSubmit, getValues, reset, errors, formState, setValue, watch } = methods;
+    const { handleSubmit, watch } = methods;
 
     const submitHandler: FormEventHandler<HTMLFormElement> = event => {
         handleSubmit(e => {
@@ -52,19 +45,22 @@ export const TaskForm = () => {
         <FormProvider {...methods}>
             <form
                 tw="grid gap-8 grid-flow-col w-full"
-                css={{ gridTemplateColumns: "minmax(24rem, 3fr) 2fr" }}
+                css={{ gridTemplateColumns: "minmax(24rem, 30rem) minmax(14rem, 1fr)" }}
                 onSubmit={submitHandler}>
                 <div tw="grid gap-8">
                     <h1 tw="text-display text-primary">Task Configuration</h1>
                     <div tw="text-overline text-secondary">
-                        {watch("name")}(ID: #xxxxxx), Created on: mm/dd/yyyy
+                        <span tw="font-bold">{watch("name")}</span>(ID: #xxxxxx), Created on:
+                        mm/dd/yyyy
                     </div>
-
-                    <ConfigCard title="General" fields={generalFields} />
-                    <ConfigCard title="Flush" fields={flushFields} />
-                    <ConfigCard title="Sample" fields={sampleFields} />
-                    <ConfigCard title="Dry" fields={dryFields} />
-                    <ConfigCard title="Preserve" fields={preserveFields} />
+                    {Object.values(configFields).map(({ title, fields }, index) => (
+                        <ConfigCard
+                            key={title}
+                            title={title}
+                            fields={fields}
+                            highlight={index === highlightSection}
+                        />
+                    ))}
                 </div>
 
                 <SubmitCard />
