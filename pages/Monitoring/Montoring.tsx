@@ -1,11 +1,12 @@
+import "twin.macro";
+
 import { TileCollection } from "components/modules/TileCollection";
+import { Button } from "components/units/Button";
 import { ValveStatus } from "./ValveStatus";
 import { SensorTile } from "./SensorTile";
 import { StateTable } from "./StateTable";
 
-import { useMinScreen, useScrollTracking } from "hooks";
-
-import tw from "twin.macro";
+import { useMinScreen, useStatusUpdate } from "hooks";
 
 const Tiling = ({ columns }: { columns: number }) => (
     <TileCollection columns={columns} title="Sensor Data" tw="p-0">
@@ -20,11 +21,12 @@ const Tiling = ({ columns }: { columns: number }) => (
 
 export const Monitoring = () => {
     const { min, max } = useMinScreen();
+    const { result, pause, setPause } = useStatusUpdate("https://api.kanye.rest/");
 
     return (
         <div>
             <h1 tw="text-display text-primary p-8 pb-0 mx-auto w-full max-w-screen-xl">
-                Montoring
+                Montoring <Button text="Pause" onClick={() => setPause(!pause)} />
             </h1>
             <main
                 tw="grid w-full max-w-screen-xl gap-8 mx-auto p-8"
