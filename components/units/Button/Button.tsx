@@ -23,9 +23,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 disabled:(transform-none transition-none)"
                 {...props}>
                 {icon && !iconRight && <span className="icon">{icon}</span>}
-                {text && <Spacing hidden={!!iconRight} />}
+                {text && icon && <Spacing hidden={!!iconRight} />}
                 {text && <Title>{text}</Title>}
-                {text && <Spacing hidden={!iconRight} />}
+                {text && icon && <Spacing hidden={!iconRight} />}
                 {icon && iconRight && <span className="icon">{icon}</span>}
             </button>
         );

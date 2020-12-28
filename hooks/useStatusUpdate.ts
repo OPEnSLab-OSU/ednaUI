@@ -6,13 +6,21 @@ export function useStatusUpdate(url: string) {
     const [pause, setPause] = useState(false);
 
     useEffect(() => {
-        const fetchStatus = () => {
-            // Don't send another request if we are already sending one
-            if (result.status === "loading") {
-                console.log("Still loading");
-                return;
-            }
+        // Don't send another request if we are already sending one
+        // if (result.status === "loading") {
+        //     console.log("Still loading");
+        //     return;
+        // }
 
+        if (result.status === "fail") {
+            console.log("Status Failed: retrying in 3 seconds");
+            setPause(true);
+            setTimeout(() => setPause(false), 3000);
+        }
+    }, [result.status]);
+
+    useEffect(() => {
+        const fetchStatus = () => {
             // Don't send if we are pausing
             if (pause) {
                 console.log("Pausing");
@@ -24,7 +32,7 @@ export function useStatusUpdate(url: string) {
             console.log("Cleared timer");
             clearTimeout(timerId);
         };
-    }, [reload, pause, result.status]);
+    }, [reload, pause]);
 
     return { result, pause, setPause };
 }

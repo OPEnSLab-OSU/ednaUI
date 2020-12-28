@@ -111,6 +111,7 @@ module.exports = (_env, argv) => {
                 styles: path.resolve(__dirname, "styles"),
                 hooks: path.resolve(__dirname, "hooks"),
                 lib: path.resolve(__dirname, "lib"),
+                "edna@redux": path.resolve(__dirname, "redux"),
             },
         },
     };

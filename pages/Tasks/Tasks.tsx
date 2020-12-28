@@ -7,7 +7,7 @@ import { PlusSquare } from "react-feather";
 import { Button } from "components/units/Button";
 import { useState } from "react";
 import { NewTaskInput } from "./NewTaskInput";
-// import { useScrollTracking } from "hooks/";
+import { useDispatch } from "react-redux";
 
 const activeTasks: TaskTileProps[] = [
     {
@@ -60,34 +60,37 @@ const TaskSection = ({ title, tasks }: TaskSectionProps) => {
     );
 };
 
-export const Tasks = () => {
-    const [showCreateTask, setShowCreateTask] = useState(true);
+const Header = tw.div`grid gap-8 items-center grid-flow-col auto-cols-max`;
 
-    const submitNewTaskHandler = () => {
-        alert("Submit task name to server with new id");
-        setShowCreateTask(false);
+export const Tasks = () => {
+    const [showNewTaskScreen, setShowNewTaskScreen] = useState(false);
+    const dispatch = useDispatch();
+
+    const submitHandler = () => {
+        console.log("Submit task");
     };
 
     return (
         <div tw="grid gap-8 p-8 w-full max-w-screen-xl mx-auto">
-            <div tw="grid gap-8 grid-flow-col auto-cols-max items-center">
+            <Header>
                 <h1 tw="text-display text-primary">Tasks</h1>
                 <Button
-                    tw="justify-self-end text-overline"
-                    icon={<PlusSquare />}
+                    tw="text-overline"
+                    icon={<PlusSquare size={20} />}
                     text="New Task"
-                    onClick={() => setShowCreateTask(value => !value)}
+                    onClick={() => setShowNewTaskScreen(true)}
                 />
-                {showCreateTask && (
-                    <NewTaskInput
-                        onCancel={() => setShowCreateTask(false)}
-                        onSubmit={submitNewTaskHandler}
-                    />
-                )}
-            </div>
+            </Header>
 
             <TaskSection title="Active Task" tasks={activeTasks} />
             <TaskSection title="Inactive Task" tasks={inactiveTasks} />
+
+            {showNewTaskScreen && (
+                <NewTaskInput
+                    onCancel={() => setShowNewTaskScreen(false)}
+                    onSubmit={submitHandler}
+                />
+            )}
         </div>
     );
 };

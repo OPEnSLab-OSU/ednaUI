@@ -1,2 +1,2 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "redux/store";
+import { RootState } from "edna@redux/store";

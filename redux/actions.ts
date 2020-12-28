@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { StatusServer, TaskServer } from "redux/models";
+import { StatusServer, TaskServer } from "edna@redux/models";
 
 // ────────────────────────────────────────────────────── II ──────────
 //   :::::: A C T I O N S : :  :   :    :     :        :          :

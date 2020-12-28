@@ -14,12 +14,13 @@
         "noImplicitAny": true,
         "outDir": "./dist/",
         "paths": {
-            "assets/*": ["assets/*"],
-            "components/*": ["components/*"],
-            "hooks/*": ["hooks/*"],
-            "pages/*": ["pages/*"],
-            "styles/*": ["styles/*"],
-            "lib/*": ["lib/*"]
+            "assets/*": ["./assets/*"],
+            "components/*": ["./components/*"],
+            "hooks/*": ["./hooks/*"],
+            "pages/*": ["./pages/*"],
+            "styles/*": ["./styles/*"],
+            "lib/*": ["./lib/*"],
+            "edna@redux/*": ["./redux/*"]
         },
         "resolveJsonModule": true,
         "skipLibCheck": true,

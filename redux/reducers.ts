@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { StatusServer, TaskServer } from "redux/models";
-import * as actions from "redux/actions";
+import { StatusServer, TaskServer } from "edna@redux/models";
+import * as actions from "edna@redux/actions";
 
 //
 // ────────────────────────────────────────────────────── I ──────────
