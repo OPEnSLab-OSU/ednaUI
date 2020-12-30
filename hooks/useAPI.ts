@@ -10,15 +10,12 @@ export function useAPI(url: string, type: "json", timeout?: number): ReturnType<
 
 export function useAPI<T extends JSON | string>(
     url: string,
-    type: "text" | "json",
-    timeout = 300
+    type: "text" | "json"
 ): ReturnType<T | null> {
     const [result, setResult] = useState<{ payload: T | null; status: ReturnStatus }>({
         payload: null,
         status: "ready",
     });
-
-    fetch("");
 
     // useCallback to keep referencial equality between each render. Prevents infinite loop in useEffect. The function is defferent only if url or type changes
     const reload = useCallback(async () => {

@@ -1,4 +1,4 @@
-import z, { number, string, array, object, boolean } from "zod";
+import z, { number, string, array, object, boolean, infer } from "zod";
 //
 // ──────────────────────────────────────────────── I ──────────
 //   :::::: K E Y S : :  :   :    :     :        :          :
@@ -94,6 +94,7 @@ export const TaskServerSchema = object({
 });
 
 export type TaskServer = z.infer<typeof TaskServerSchema>;
+export type TaskCollectionInStore = Record<TaskServer["id"], TaskServer>;
 
 //
 // ──────────────────────────────────────────────────── IV ──────────
@@ -122,6 +123,7 @@ export const StatusServerSchema = object({
 });
 
 export type StatusServer = z.infer<typeof StatusServerSchema>;
+export type StatusInStore = StatusServer | undefined;
 
 //
 // ────────────────────────────────────────────────── V ──────────

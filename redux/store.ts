@@ -1,7 +1,7 @@
 import { combineReducers, configureStore, Middleware } from "@reduxjs/toolkit";
 
-import {} from "edna@redux/actions";
-import * as reducers from "edna@redux/reducers";
+import {} from "root@redux/actions";
+import * as reducers from "root@redux/reducers";
 
 const logger: Middleware = _ => next => action => {
     console.log("Activated: ", action.type);

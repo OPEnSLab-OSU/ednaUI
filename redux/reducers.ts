@@ -1,6 +1,12 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { StatusServer, TaskServer } from "edna@redux/models";
-import * as actions from "edna@redux/actions";
+import { createReducer, isAnyOf } from "@reduxjs/toolkit";
+import { StatusInStore, TaskCollectionInStore } from "root@redux/models";
+import {
+    getStatusUpdate,
+    getTaskCollection,
+    createTask,
+    scheduleTask,
+    unscheduleTask,
+} from "root@redux/actions";
 
 //
 // ────────────────────────────────────────────────────── I ──────────
@@ -14,32 +20,19 @@ import * as actions from "edna@redux/actions";
 // ──────────────────────────────────────────────────────────────────
 //
 
-export const status = createReducer<StatusServer | undefined>(undefined, builder =>
-    builder.addCase(actions.updateStatus, (_, action) => action.payload)
+export const status = createReducer<StatusInStore>(undefined, builder =>
+    builder.addCase(getStatusUpdate.fulfilled, (_, action) => action.payload)
 );
 
-export const taskCollection = createReducer<Map<string, TaskServer>>(new Map(), builder =>
+export const taskCollection = createReducer<TaskCollectionInStore>({}, builder =>
     builder
-        .addCase(actions.replaceTaskCollection, (_, action) => {
-            const newCollection = new Map();
-            Object.keys(action.payload).forEach(taskId => {
-                newCollection.set(taskId, action.payload[taskId]);
-            });
-
-            return newCollection;
+        .addCase(getTaskCollection.fulfilled, (state, { payload: collection }) => {
+            state = collection;
         })
-        .addCase(actions.insertTask, (map, { payload: task }) => {
-            if (map.has(task.id)) {
-                throw new Error(`Task with id (${task.id}) already exist`);
+        .addMatcher(
+            isAnyOf(createTask.fulfilled, scheduleTask.fulfilled, unscheduleTask.fulfilled),
+            (state, { payload: task }) => {
+                state[task.id] = task;
             }
-            map.set(task.id, task);
-        })
-        .addCase(actions.updateTask, (map, { payload: task }) => {
-            const taskInMap = map.get(task.id);
-            if (!taskInMap) {
-                throw new Error(`Task with id (${task.id}) doesn't exist`);
-            }
-
-            map.set(task.id, { ...taskInMap, ...task });
-        })
+        )
 );
