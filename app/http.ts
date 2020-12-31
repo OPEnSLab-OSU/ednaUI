@@ -25,7 +25,7 @@ export const TimeoutError: TimeoutError = "TimeoutError";
 export interface APIResponseWtihData<T> {
     error?: TimeoutError | string;
     success?: string;
-    data?: T;
+    payload?: T;
 }
 
 export interface APIResponse {

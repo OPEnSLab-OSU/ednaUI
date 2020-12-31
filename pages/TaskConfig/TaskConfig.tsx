@@ -1,39 +1,30 @@
-import { NavLink, useHistory, useLocation } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { TaskForm } from "./TaskForm";
 
 import { configFields } from "./data";
 import { titleCase } from "lib";
-import { useScrollTracking, useScrollTrackingWithTargets } from "hooks";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useScrollTrackingWithTargets } from "hooks";
+import { useEffect, useCallback, useMemo } from "react";
 
-import { debounce, throttle } from "lodash";
-
-const FloatingList = styled.ul`
-    ${tw`sticky grid gap-4 content-start h-64 mt-48 top-24 `}
-    & > li {
-        ${tw`text-right text-secondary`}
-    }
-    & > li:hover {
-        ${tw`text-primary cursor-pointer`}
-    }
-`;
+import { debounce } from "lodash";
 
 type MenuHashLinkListItemProps = {
     text: string;
     index: number;
     hash?: string;
-    disableScrolling: () => void;
+    pauseScrolling: (match: number) => void;
 };
 
 const MenuHashLinkListItem = ({
     text,
     hash = `#${text.toLowerCase()}`,
-    disableScrolling,
+    index,
+    pauseScrolling,
 }: MenuHashLinkListItemProps) => {
     const clickHandler = () => {
-        disableScrolling();
+        pauseScrolling(index);
         const page = document.querySelector("#page");
         const target = document.querySelector(hash);
         if (page && target) {
@@ -43,8 +34,9 @@ const MenuHashLinkListItem = ({
     };
 
     return (
-        <li>
+        <li tw="flex">
             <NavLink
+                tw="text-right text-secondary py-2 w-full hover:(text-primary cursor-pointer)"
                 to={hash}
                 activeStyle={tw`text-primary`}
                 isActive={(_, loc) => (hash === "#general" && !loc.hash) || loc.hash === hash}
@@ -55,24 +47,41 @@ const MenuHashLinkListItem = ({
     );
 };
 
+const FloatingList = styled.ul`
+    ${tw`sticky grid content-start h-64 mt-48 top-24 `}
+`;
 const configSections = Object.keys(configFields);
 
 export const TaskConfig = () => {
-    const [match, pause, setPause] = useScrollTrackingWithTargets("page", configSections, 100);
+    const [match, pause, setPause, setMatch] = useScrollTrackingWithTargets(
+        "page",
+        configSections,
+        100
+    );
     const history = useHistory();
 
-    const resumeTracking = useRef(
-        debounce(() => {
-            console.log("Resume tracking");
-            setPause(false);
-        }, 300)
+    const resumeTracking = useMemo(
+        () =>
+            debounce(() => {
+                console.log("Resume tracking");
+                setPause(false);
+            }, 300),
+        [setPause]
+    );
+
+    const pauseTracking = useCallback(
+        (match: number) => {
+            setMatch(match);
+            setPause(true);
+        },
+        [setMatch, setPause]
     );
 
     useEffect(() => {
         // Poll the resume scrolling function when the user scrolls
         // We check for pause to prevent updating the url
         if (pause) {
-            resumeTracking.current();
+            resumeTracking();
             return;
         }
 
@@ -99,7 +108,7 @@ export const TaskConfig = () => {
                         key="name"
                         index={i}
                         text={titleCase(name)}
-                        disableScrolling={() => setPause(true)}
+                        pauseScrolling={pauseTracking}
                     />
                 ))}
             </FloatingList>

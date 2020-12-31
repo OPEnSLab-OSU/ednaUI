@@ -1,40 +1,25 @@
+import { base } from "app/http";
 import { useState, useEffect, useCallback } from "react";
 
-export type ReturnStatus = "ready" | "loading" | "fail" | "success";
-export type ReturnType<T> = [result: { payload: T; status: ReturnStatus }, reload: () => void];
-export type Options = {
-    timeout: number;
-};
-export function useAPI(url: string, type: "text", timeout?: number): ReturnType<string>;
-export function useAPI(url: string, type: "json", timeout?: number): ReturnType<JSON>;
+export type ReturnStatus = "ready" | "pending" | "fail" | "success";
+export type Result<T> = { payload?: T; status: ReturnStatus };
+export type Return<T> = [result: Result<T>, reload: () => void];
 
-export function useAPI<T extends JSON | string>(
-    url: string,
-    type: "text" | "json"
-): ReturnType<T | null> {
-    const [result, setResult] = useState<{ payload: T | null; status: ReturnStatus }>({
-        payload: null,
-        status: "ready",
-    });
+export function useAPI<T>(url: string, options?: RequestInit): Return<T> {
+    const [result, setResult] = useState<Result<T>>({ status: "ready" });
 
-    // useCallback to keep referencial equality between each render. Prevents infinite loop in useEffect. The function is defferent only if url or type changes
+    // useCallback to keep referencial equality between each render.
+    // Prevents infinite loop in useEffect. The function is defferent only if url or type changes
     const reload = useCallback(async () => {
-        setResult(result => ({ ...result, status: "loading" }));
-        const payload = await fetch(url);
-
+        setResult(result => ({ ...result, status: "pending" }));
         try {
-            switch (type) {
-                case "text":
-                    setResult({ payload: (await payload.text()) as T, status: "success" });
-                    break;
-                case "json":
-                    setResult({ payload: (await payload.json()) as T, status: "success" });
-                    break;
-            }
-        } catch {
-            setResult({ payload: null, status: "fail" });
+            const response = await fetch(new URL(url, base).toString(), options);
+            const payload = (await response.json()) as T;
+            setResult({ payload, status: "success" });
+        } catch (e) {
+            setResult({ status: "fail" });
         }
-    }, [url, type]);
+    }, [url, options]);
 
     useEffect(() => {
         reload();

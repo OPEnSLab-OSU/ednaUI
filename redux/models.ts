@@ -1,4 +1,4 @@
-import z, { number, string, array, object, boolean, infer } from "zod";
+import z, { number, string, array, object, boolean } from "zod";
 //
 // ──────────────────────────────────────────────── I ──────────
 //   :::::: K E Y S : :  :   :    :     :        :          :
@@ -105,6 +105,7 @@ export type TaskCollectionInStore = Record<TaskServer["id"], TaskServer>;
 // prettier-ignore
 export const StatusServerSchema = object({
     currentState: string(),
+    currentTask: string().nullable(),
     valves: array(number()),
     utc: number()
         .min(0),
@@ -123,7 +124,7 @@ export const StatusServerSchema = object({
 });
 
 export type StatusServer = z.infer<typeof StatusServerSchema>;
-export type StatusInStore = StatusServer | undefined;
+export type StatusInStore = StatusServer | null;
 
 //
 // ────────────────────────────────────────────────── V ──────────

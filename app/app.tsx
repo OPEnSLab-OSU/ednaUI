@@ -9,12 +9,13 @@ import { TaskConfig } from "pages/TaskConfig";
 import { Sidebar } from "components/modules/Sidebar";
 import { Breadcrumb } from "components/modules/Breadcrumb";
 
-import { MinScreenProvider } from "hooks";
+import { ScreenProvider } from "hooks";
 
 import BUILD from "./build.json";
 import { Provider } from "react-redux";
 
 import { store as ReduxStore } from "root@redux/store";
+import { Test } from "pages/Test";
 
 const AppContainer = tw.div`flex h-full bg-white debug-screens`;
 const PageContainer = tw.div`flex flex-col w-full h-screen overflow-y-scroll bg-background`;
@@ -26,30 +27,32 @@ const Version = () => {
     return <div tw="p-4 text-sm justify-self-end text-secondary">{`v${__APPVERSION__}`}</div>;
 };
 
-// export const Application = () => (
-//     <Provider store={ReduxStore}>
-//         <MinScreenProvider screens={theme`screens`}>
-//             <AppContainer>
-//                 <Sidebar />
+export const Application = () => (
+    <Provider store={ReduxStore}>
+        <ScreenProvider screens={theme`screens`}>
+            <AppContainer>
+                <Sidebar />
 
-//                 <PageContainer id="page">
-//                     <Toolbar>
-//                         <Version />
-//                     </Toolbar>
-//                     <Breadcrumb />
+                <PageContainer id="page">
+                    <Toolbar>
+                        <Version />
+                    </Toolbar>
+                    <Breadcrumb />
 
-//                     <Switch>
-//                         <Route exact path="/" render={() => <Redirect to="/monitoring" />} />
-//                         <Route exact path="/404" render={() => <div>404 Error</div>} />
-//                         <Route exact path="/monitoring" render={() => <Monitoring />} />
-//                         <Route exact path="/tasks" render={() => <Tasks />} />
-//                         <Route path="/tasks/:taskname" render={() => <TaskConfig />} />
-//                         <Route path="*" render={() => <Redirect to="/404" />} />
-//                     </Switch>
-//                 </PageContainer>
-//             </AppContainer>
-//         </MinScreenProvider>
-//     </Provider>
-// );
+                    <Switch>
+                        <Route exact path="/" render={() => <Redirect to="/monitoring" />} />
+                        <Route exact path="/404" render={() => <div>404 Error</div>} />
+                        <Route exact path="/monitoring" render={() => <Monitoring />} />
+                        <Route exact path="/tasks" render={() => <Tasks />} />
+                        <Route path="/tasks/:taskname" render={() => <TaskConfig />} />
 
-export const Application = () => <div></div>;
+                        {process.env.NODE_ENV === "development" && (
+                            <Route path="/test" render={() => <Test />} />
+                        )}
+                        <Route path="*" render={() => <Redirect to="/404" />} />
+                    </Switch>
+                </PageContainer>
+            </AppContainer>
+        </ScreenProvider>
+    </Provider>
+);

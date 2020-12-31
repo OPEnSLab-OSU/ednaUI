@@ -63,8 +63,10 @@ const TaskSection = ({ title, tasks }: TaskSectionProps) => {
 const Header = tw.div`grid gap-8 items-center grid-flow-col auto-cols-max`;
 
 export const Tasks = () => {
-    const [showNewTaskScreen, setShowNewTaskScreen] = useState(false);
-    const dispatch = useDispatch();
+    const [inputHiding, setInputHiding] = useState(true);
+
+    const hideInput = () => setInputHiding(true);
+    const showInput = () => setInputHiding(false);
 
     const submitHandler = () => {
         console.log("Submit task");
@@ -78,19 +80,14 @@ export const Tasks = () => {
                     tw="text-overline"
                     icon={<PlusSquare size={20} />}
                     text="New Task"
-                    onClick={() => setShowNewTaskScreen(true)}
+                    onClick={showInput}
                 />
             </Header>
 
             <TaskSection title="Active Task" tasks={activeTasks} />
             <TaskSection title="Inactive Task" tasks={inactiveTasks} />
 
-            {showNewTaskScreen && (
-                <NewTaskInput
-                    onCancel={() => setShowNewTaskScreen(false)}
-                    onSubmit={submitHandler}
-                />
-            )}
+            <NewTaskInput hide={inputHiding} onCancel={hideInput} onSubmit={submitHandler} />
         </div>
     );
 };

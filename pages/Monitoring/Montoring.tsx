@@ -4,8 +4,10 @@ import { ValveStatus } from "./ValveStatus";
 import { SensorTile } from "./SensorTile";
 import { StateTable } from "./StateTable";
 
-import { ReturnStatus, useMinScreen, useStatusUpdate } from "hooks";
+import { useScreen } from "hooks";
 import tw, { TwStyle } from "twin.macro";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoadingScreen } from "root@redux/actions";
 
 const Tiling = ({ columns }: { columns: number }) => (
     <TileCollection columns={columns} title="Sensor Data" tw="p-0">
@@ -18,32 +20,8 @@ const Tiling = ({ columns }: { columns: number }) => (
     </TileCollection>
 );
 
-type ConnectionBadgeProps = {
-    status: ReturnStatus;
-};
-
-const ConnectionBadge = ({ status }: ConnectionBadgeProps) => {
-    const mapStatusToStyles: Record<ReturnStatus & string, { text: string; style: TwStyle }> = {
-        ready: { text: "Ready", style: tw`bg-accent` },
-        loading: { text: "Loading", style: tw`bg-accent` },
-        success: { text: "Success", style: tw`bg-accent` },
-        fail: { text: "Failed to connect", style: tw`bg-red-500` },
-    };
-
-    // console.log(mapStatusToStyles[status].style);
-    return (
-        <div tw="flex">
-            <span tw="rounded-full h-6 w-6" css={mapStatusToStyles[status].style}>
-                asdf
-            </span>
-            <span>{mapStatusToStyles[status].text}</span>
-        </div>
-    );
-};
-
 export const Monitoring = () => {
-    const { min, max } = useMinScreen();
-    const { result, pause, setPause } = useStatusUpdate("https://api.kanye.rest/");
+    const { min, max } = useScreen();
 
     return (
         <div>
@@ -51,10 +29,10 @@ export const Monitoring = () => {
                 Montoring
             </h1>
 
-            <div tw="p-8 mx-auto w-full max-w-screen-xl">
-                <Button text="Pause" onClick={() => setPause(!pause)} />
-                <ConnectionBadge status={result.status} />
-            </div>
+            {/* <div tw="p-8 mx-auto w-full max-w-screen-xl">
+            <Button text="Pause" onClick={() => setPause(!pause)} />
+            <ConnectionBadge status={result.status} />
+            </div> */}
             <main
                 tw="grid w-full max-w-screen-xl gap-8 mx-auto p-8"
                 css={

@@ -39,5 +39,5 @@ export const useScrollTrackingWithTargets = (
         }
     }, [scrollData, pause, detectHeight]);
 
-    return [match, pause, setPause] as const;
+    return [match, pause, setPause, setMatch] as const;
 };

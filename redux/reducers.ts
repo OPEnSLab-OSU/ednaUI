@@ -6,6 +6,7 @@ import {
     createTask,
     scheduleTask,
     unscheduleTask,
+    setLoadingScreen,
 } from "root@redux/actions";
 
 //
@@ -20,8 +21,11 @@ import {
 // ──────────────────────────────────────────────────────────────────
 //
 
-export const status = createReducer<StatusInStore>(undefined, builder =>
-    builder.addCase(getStatusUpdate.fulfilled, (_, action) => action.payload)
+export const status = createReducer<StatusInStore>(null, builder =>
+    builder.addCase(getStatusUpdate.fulfilled, (_, action) => {
+        console.log(action.payload);
+        return action.payload;
+    })
 );
 
 export const taskCollection = createReducer<TaskCollectionInStore>({}, builder =>
@@ -35,4 +39,8 @@ export const taskCollection = createReducer<TaskCollectionInStore>({}, builder =
                 state[task.id] = task;
             }
         )
+);
+
+export const loadingScreen = createReducer<"showing" | "hiding">("hiding", builder =>
+    builder.addCase(setLoadingScreen, (_, action) => action.payload)
 );

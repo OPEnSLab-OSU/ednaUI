@@ -105,6 +105,7 @@ module.exports = (_env, argv) => {
 
                 // Must be below test-utils
                 "react-dom": "preact/compat",
+                app: path.resolve(__dirname, "app"),
                 assets: path.resolve(__dirname, "assets"),
                 components: path.resolve(__dirname, "components"),
                 pages: path.resolve(__dirname, "pages"),
