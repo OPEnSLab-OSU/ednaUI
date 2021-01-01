@@ -53,7 +53,7 @@ export const Test = () => {
                     </p>
                 ))}
 
-            <Button onClick={() => dispatch(getStatusUpdate(1000))} text="Get Status" />
+            <Button onClick={() => dispatch(getStatusUpdate())} text="Get Status" />
             <Button onClick={() => dispatch(getTaskCollection())} text="Get all tasks" />
         </div>
     );

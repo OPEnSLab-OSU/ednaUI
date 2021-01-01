@@ -1,28 +1,44 @@
-import { update } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getStatusUpdate } from "root@redux/actions";
 import { useAppDispatch } from "root@redux/store";
 
-type StatusText = "success" | "pending" | "rejected";
+type StatusText = "fulfilled" | "pending" | "rejected";
 export function useStatusUpdate() {
     const dispatch = useAppDispatch();
     const status = useSelector(state => state.status);
-    const reload = useCallback(() => dispatch(getStatusUpdate(1000)), [dispatch]);
+    const [statusText, setStatusText] = useState<StatusText>("fulfilled");
 
+    // Alows client to reload status whenever
+    const reload = useCallback(() => {
+        setStatusText("pending");
+        return dispatch(getStatusUpdate());
+    }, [dispatch]);
+
+    // Synchronizing status changes
     useEffect(() => {
-        if (status.retries >= 3) {
+        if (statusText === "pending" || status.rejects >= 3) {
             return;
         }
 
-        async function updateStatus() {
-            if (getStatusUpdate.fulfilled.match(await reload())) {
-                updateStatus();
-            }
+        function fetchStatus() {
+            const promise = reload();
+            const timer = setTimeout(() => promise.abort(), 1000);
+            promise
+                .then(() => {
+                    clearTimeout(timer);
+                    setStatusText("fulfilled");
+                })
+                .catch(() => {
+                    setStatusText("rejected");
+                });
+
+            return timer;
         }
 
-        updateStatus();
-    }, [reload, status.retries]);
+        const timer = setInterval(() => fetchStatus(), 1000);
+        return () => clearTimeout(timer);
+    }, [reload, statusText, status.rejects]);
 
     return { status, reload };
 }

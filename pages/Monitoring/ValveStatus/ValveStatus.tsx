@@ -1,7 +1,10 @@
 import { Card } from "components/modules/Card";
+import { times } from "lodash";
+import { useEffect } from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
-import tw, { styled } from "twin.macro";
+import tw, { styled, css } from "twin.macro";
 
 export const partition = <T extends unknown>(ary: T[], predicate: (elem: T) => boolean) => {
     const a: T[] = [];
@@ -12,19 +15,40 @@ export const partition = <T extends unknown>(ary: T[], predicate: (elem: T) => b
 
 interface Valve {
     id: number;
-    status: boolean;
+    status: number;
 }
 
-const Valve = styled.div<{ isActive: boolean }>`
+type ValveStatus = "unavailable" | "sampled" | "free" | "operating" | "next";
+function mapStatusNumberToText(status: number): ValveStatus {
+    const statusText: ValveStatus[] = ["sampled", "free", "operating"];
+    return status > 0 && status < statusText.length ? statusText[status] : "unavailable";
+}
+
+function mapStatusToStyle(status: number) {
+    switch (mapStatusNumberToText(status)) {
+        case "sampled":
+            return tw`text-accent`;
+        case "free":
+            return tw`text-primary`;
+        case "operating":
+            return tw`bg-teal-400 animate-pulse`;
+        case "next":
+            return tw`bg-yellow-400`;
+        case "unavailable":
+            return tw`text-secondary`;
+    }
+}
+
+const Valve = styled.div<{ status: number }>`
     ${tw`flex items-center justify-center px-4 py-2 font-bold text-primary hover:bg-teal-100`}
-    ${props => (props.isActive ? tw`bg-teal-500 animate-pulse` : tw`bg-white text-secondary`)}
+    ${props => mapStatusToStyle(props.status)}
 `;
 
 export const ValveCollection = ({ valves }: { valves: Valve[] }) => {
     return (
-        <div tw="grid h-24 grid-flow-row grid-cols-12 grid-rows-2 rounded-lg overflow-hidden shadow">
+        <div tw="grid h-24 grid-flow-row grid-cols-12 grid-rows-2 rounded-lg overflow-hidden shadow bg-white">
             {valves.map(v => (
-                <Valve key={v.id} isActive={v.status}>
+                <Valve key={v.id} status={v.status}>
                     {v.id}
                 </Valve>
             ))}
@@ -33,9 +57,21 @@ export const ValveCollection = ({ valves }: { valves: Valve[] }) => {
 };
 
 export const ValveStatus = ({ className }: { className?: string }) => {
-    const [valves] = useState(
-        Array.from({ length: 24 }, (_, id) => ({ id: id, status: id === 2 }))
-    );
+    // const [valves] = useState(
+    //     Array.from({ length: 24 }, (_, id) => ({ id: id, status: id === 2 }))
+    // );
+
+    const [valves, setValves] = useState(() => times(24, id => ({ id, status: -1 })));
+    const status = useSelector(state => state.status);
+    useEffect(() => {
+        setValves(valves => {
+            return valves.map((_, id) => {
+                return status.valves && id < status.valves.length
+                    ? { id, status: status.valves[id] }
+                    : { id, status: -1 };
+            });
+        });
+    }, [status]);
     const [top, bottom] = partition(valves, ({ id }) => id < 12);
     return (
         <Card title="Valve Status" tw="p-0" className={className}>
@@ -54,7 +90,7 @@ export const ValveStatus = ({ className }: { className?: string }) => {
 
                 <div tw="flex items-center mt-8">
                     <div tw="w-4 h-4 mr-2 rounded-md bg-trueGray-900"></div>
-                    <div tw="text-sm text-secondary">Scheduled</div>
+                    <div tw="text-sm text-secondary">Free</div>
                 </div>
 
                 <div tw="flex items-center mt-8">

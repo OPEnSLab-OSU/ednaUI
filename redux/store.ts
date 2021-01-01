@@ -5,7 +5,7 @@ import {} from "root@redux/actions";
 import * as reducers from "root@redux/reducers";
 
 const logger: Middleware = _ => next => action => {
-    console.log("%cRedux Action Activated", "font-weight:bold;color:teal;", action.type);
+    console.log("%cRedux Action", "font-weight:bold;color:teal;", action.type);
     next(action);
 };
 

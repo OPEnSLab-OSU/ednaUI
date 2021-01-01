@@ -21,13 +21,13 @@ import {
 // ──────────────────────────────────────────────────────────────────
 //
 
-export const status = createReducer<StatusInStore>({ retries: 0 }, builder =>
+export const status = createReducer<StatusInStore>({ rejects: 0 }, builder =>
     builder
         .addCase(getStatusUpdate.fulfilled, (_, action) => {
-            return { ...action.payload, retries: 0 };
+            return { ...action.payload, rejects: 0 };
         })
         .addCase(getStatusUpdate.rejected, state => {
-            state.retries++;
+            state.rejects++;
         })
 );
 
