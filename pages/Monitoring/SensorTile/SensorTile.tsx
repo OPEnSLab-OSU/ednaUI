@@ -2,7 +2,7 @@ import "twin.macro";
 
 type TileProps = {
     title: string;
-    value?: string;
+    value?: string | number;
     unit?: string;
     className?: string;
 };

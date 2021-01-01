@@ -124,7 +124,7 @@ export const StatusServerSchema = object({
 });
 
 export type StatusServer = z.infer<typeof StatusServerSchema>;
-export type StatusInStore = StatusServer | null;
+export type StatusInStore = Partial<StatusServer> & { retries: number };
 
 //
 // ────────────────────────────────────────────────── V ──────────

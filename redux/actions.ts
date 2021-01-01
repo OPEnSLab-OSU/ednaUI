@@ -15,15 +15,19 @@ function withPayload<K extends unknown[], V>(action: (...args: K) => V) {
 /**
  * To be used with Redux's dispatch function. Retrive status update from server then notify the redux for further handling.
  */
-export const getStatusUpdate = createAsyncThunk("status/get", async function () {
+export const getStatusUpdate = createAsyncThunk("status/get", async function (timeout: number) {
+    const controller = new AbortController();
     const timer = setTimeout(() => {
-        throw new Error("Timeout");
-    }, 2000);
+        controller.abort();
+    }, timeout);
 
-    const response = await fetch(new URL("api/status", base).toString());
-    const payload = (await response.json()) as StatusServer;
+    const url = new URL("api/status", base).toString();
+    const response = await fetch(url, {
+        signal: controller.signal,
+    });
+    const payload = await response.json();
     clearTimeout(timer);
-    return payload;
+    return payload as StatusServer;
 });
 
 //

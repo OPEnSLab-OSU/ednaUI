@@ -21,11 +21,14 @@ import {
 // ──────────────────────────────────────────────────────────────────
 //
 
-export const status = createReducer<StatusInStore>(null, builder =>
-    builder.addCase(getStatusUpdate.fulfilled, (_, action) => {
-        console.log(action.payload);
-        return action.payload;
-    })
+export const status = createReducer<StatusInStore>({ retries: 0 }, builder =>
+    builder
+        .addCase(getStatusUpdate.fulfilled, (_, action) => {
+            return { ...action.payload, retries: 0 };
+        })
+        .addCase(getStatusUpdate.rejected, state => {
+            state.retries++;
+        })
 );
 
 export const taskCollection = createReducer<TaskCollectionInStore>({}, builder =>
