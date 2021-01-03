@@ -10,8 +10,7 @@ import { Edit } from "react-feather";
 import { truncate } from "lodash";
 
 const Tile = styled(Link)`
-    ${tw`relative grid h-56 p-4 rounded-md bg-white text-subtitle text-secondary hover:(cursor-pointer bg-gray-800)`}
-    box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
+    ${tw`relative grid h-56 p-4 rounded-md bg-white text-subtitle text-secondary shadow-2xl hover:(cursor-pointer bg-gray-800)`}
     transition: hover 0.5s;
     grid-template-columns: max-content 1fr;
     grid-template-rows: repeat(3, min-content);

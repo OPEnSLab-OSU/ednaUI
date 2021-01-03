@@ -44,7 +44,7 @@ export const Application = () => (
                         <Route exact path="/404" render={() => <div>404 Error</div>} />
                         <Route exact path="/monitoring" render={() => <Monitoring />} />
                         <Route exact path="/tasks" render={() => <Tasks />} />
-                        <Route path="/tasks/:taskname" render={() => <TaskConfig />} />
+                        <Route path="/tasks/:taskId" render={() => <TaskConfig />} />
 
                         {process.env.NODE_ENV === "development" && (
                             <Route path="/test" render={() => <Test />} />

@@ -1,10 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { throttle } from "lodash";
-
-export function notFound<TValue>(id: TValue | null | undefined): id is TValue {
-    if (id !== null && id !== undefined) return true;
-    throw new Error(`DOM with id ${id} doesn't exist`);
-}
+import { notUndefined } from "lib";
 
 export function useScrollTracking(targetId: string, throttleMs = 100) {
     // Useref here to avoid rerendering;
@@ -17,9 +13,8 @@ export function useScrollTracking(targetId: string, throttleMs = 100) {
     });
     // Get the target after DOM has painted
     useEffect(() => {
-        console.log("Setting target to track", ref.current);
         ref.current = document.getElementById(targetId);
-        notFound(ref.current);
+        notUndefined(ref.current);
     }, [targetId]);
 
     // At this point on we are free to assume target.current exist in useEffect

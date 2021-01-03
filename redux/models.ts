@@ -1,3 +1,4 @@
+import { Dictionary } from "@reduxjs/toolkit";
 import z, { number, string, array, object, boolean } from "zod";
 //
 // ──────────────────────────────────────────────── I ──────────
@@ -71,8 +72,7 @@ export const TaskServerSchema = object({
     schedule: number()
         .int()
         .min(0),
-    valves: array(number().int())
-        .nonempty(),
+    valves: array(number().int()),
     timeBetween: number()
         .min(0),
     scheduleOnReceived: boolean(),
@@ -95,7 +95,7 @@ export const TaskServerSchema = object({
 
 export type TaskServerStatus = "inactive" | "active" | "completed" | "missed";
 export type TaskServer = z.infer<typeof TaskServerSchema>;
-export type TaskCollectionInStore = Record<TaskServer["id"], TaskServer>;
+export type TaskCollectionInStore = Dictionary<TaskServer>;
 export const mapTaskStatusToString: Record<number, TaskServerStatus> = {
     0: "inactive",
     1: "active",

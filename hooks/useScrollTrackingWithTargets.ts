@@ -1,43 +1,44 @@
 import { useEffect, useState, useRef } from "react";
-import { useScrollTracking, notFound } from "hooks";
+import { useScrollTracking } from "hooks";
+import { minBy } from "lodash";
+
+import { notUndefined } from "lib";
 
 export const useScrollTrackingWithTargets = (
     scroller: string,
     targetIds: string[],
-    throttleMs = 200,
-    detectHeight = 300
+    options: {
+        throttleMs: number;
+        offset: number;
+    } = {
+        throttleMs: 200,
+        offset: 50,
+    }
 ) => {
     const [match, setMatch] = useState(0);
     const [pause, setPause] = useState(false);
-    const scrollData = useScrollTracking(scroller, throttleMs);
+    const scrollData = useScrollTracking(scroller, options.throttleMs);
     const refs = useRef<HTMLElement[]>([]);
 
     // Get references to all target doms
     useEffect(() => {
-        refs.current = targetIds.map(id => document.getElementById(id)).filter(notFound);
+        refs.current = targetIds.map(id => document.getElementById(id)).filter(notUndefined);
     }, [targetIds]);
 
     useEffect(() => {
+        // Don't track if we are pausing or at the bottom of the screen
         const bottomEdge = scrollData.top + window.innerHeight === scrollData.height;
         if (pause || bottomEdge) {
             return;
         }
 
-        if (scrollData.top === 0) {
-            setMatch(0);
-            return;
-        }
-
+        // Find index of element that is closest to the top
         const targets = refs.current;
-        for (let target = 0; target < targets.length; target++) {
-            const top = targets[target].getBoundingClientRect().top;
+        const closest = minBy(targets, target =>
+            Math.abs(target.getBoundingClientRect().top - options.offset)
+        );
+        setMatch(closest ? targets.indexOf(closest) : 0);
+    }, [scrollData, pause, options.offset]);
 
-            if (top >= 0 && top <= detectHeight) {
-                setMatch(target);
-                break;
-            }
-        }
-    }, [scrollData, pause, detectHeight]);
-
-    return [match, pause, setPause, setMatch] as const;
+    return { match, pause, setPause, setMatch } as const;
 };

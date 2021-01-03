@@ -1,5 +1,5 @@
 import { createReducer, isAnyOf } from "@reduxjs/toolkit";
-import { StatusInStore, TaskCollectionInStore } from "root@redux/models";
+import { StatusInStore, TaskCollectionInStore, TaskServer } from "root@redux/models";
 import {
     getStatusUpdate,
     getTaskCollection,
@@ -7,7 +7,10 @@ import {
     scheduleTask,
     unscheduleTask,
     setLoadingScreen,
+    getTask,
+    updateTask,
 } from "root@redux/actions";
+import { random, times, transform } from "lodash";
 
 //
 // ────────────────────────────────────────────────────── I ──────────
@@ -30,14 +33,42 @@ export const status = createReducer<StatusInStore>({ rejects: 0 }, builder =>
             state.rejects++;
         })
 );
+const makeMock = (id: string, status: number) => ({
+    id,
+    createdAt: Math.floor(Date.now() / 1000),
+    name: "DEMO",
+    notes: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis",
+    status,
+    valves: [],
+    flushTime: 0,
+    flushVolume: 0,
+    sampleTime: 0,
+    sampleVolume: 0,
+    samplePressure: 0,
+    dryTime: 0,
+    preserveTime: 0,
+    schedule: Math.floor(Date.now() / 1000),
+    scheduleOnReceived: true,
+    timeBetween: 10,
+});
 
-export const taskCollection = createReducer<TaskCollectionInStore>({}, builder =>
+const mock: TaskCollectionInStore = transform(
+    times(5, () => random(2147483647)),
+    (result, id) => (result[id] = makeMock(id.toString(), Number(id) % 2 === 0 ? 1 : 0))
+);
+
+export const taskCollection = createReducer<TaskCollectionInStore>(mock, builder =>
     builder
         .addCase(getTaskCollection.fulfilled, (_, { payload: collection }) => {
             return collection;
         })
         .addMatcher(
-            isAnyOf(createTask.fulfilled, scheduleTask.fulfilled, unscheduleTask.fulfilled),
+            isAnyOf(
+                createTask.fulfilled,
+                getTask.fulfilled,
+                scheduleTask.fulfilled,
+                unscheduleTask.fulfilled
+            ),
             (state, { payload: task }) => {
                 state[task.id] = task;
             }

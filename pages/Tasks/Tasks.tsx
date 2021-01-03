@@ -13,17 +13,6 @@ import { Parallax } from "components/units/Parallax";
 import { NewTaskInput } from "./NewTaskInput";
 import { TaskTile, TaskTileProps } from "./TaskTile";
 
-const mocking = true;
-const mock = [
-    {
-        id: "203942342",
-        createdAt: Date.now(),
-        name: "DEMO",
-        notes: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis",
-        status: 1,
-    },
-] as const;
-
 //
 // ────────────────────────────────────────────────────── I ──────────
 //   :::::: S E C T I O N : :  :   :    :     :        :          :
@@ -69,16 +58,18 @@ const TaskSection = ({ title, tasks }: TaskSectionProps) => {
 //
 const Header = tw.div`grid gap-8 items-center grid-flow-col auto-cols-max`;
 
+function notEmpty<T>(value: T | null | undefined): value is T {
+    return value != undefined && value != null;
+}
+
 export const Tasks = () => {
     const dispatch = useAppDispatch();
-    const tasks = useSelector(state => state.taskCollection);
+    const collection = useSelector(state => state.taskCollection);
+    const tasks = Object.values(collection).filter(notEmpty);
 
     // Partition active tasks and inactive tasks
     const filterActiveTasks = (t: TaskServer) => mapTaskStatusToString[t.status] === "active";
-    const [activeTasks, inactiveTasks] = partition(
-        Object.values(mocking ? mock : tasks),
-        filterActiveTasks
-    );
+    const [activeTasks, inactiveTasks] = partition(tasks, filterActiveTasks);
 
     // Create new task input controls
     const [inputHiding, setInputHiding] = useState(true);
@@ -86,7 +77,6 @@ export const Tasks = () => {
     const showInput = () => setInputHiding(false);
 
     const submitHandler = (name: string) => {
-        console.log(name);
         dispatch(createTask(name));
         hideInput();
     };

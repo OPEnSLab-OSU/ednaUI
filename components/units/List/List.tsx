@@ -2,7 +2,7 @@ import { ReactElement, ReactNode } from "react";
 
 export interface TListPropsWithRenderProp<T extends unknown> {
     items: T[];
-    renderItem: (item: T) => ReactNode;
+    renderItem: (item: T, index: number) => ReactNode;
     renderContainer?: (props: { children: ReactNode; className?: string }) => ReactElement;
     className?: string;
 }

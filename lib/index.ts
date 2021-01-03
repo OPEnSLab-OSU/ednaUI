@@ -78,3 +78,7 @@ export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never
     : never;
 
 export type PickAndFlatten<T, K extends keyof T> = UnionToIntersection<T[K]>;
+
+export function notUndefined<T>(value: T | null | undefined): value is T {
+    return value !== null && value !== undefined;
+}

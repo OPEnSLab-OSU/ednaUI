@@ -46,6 +46,12 @@ export const createTask = createAsyncThunk("task/create", async (name: string) =
     return payload as TaskServer;
 });
 
+export const getTask = createAsyncThunk("task/get", async (id: string) => {
+    const { error, payload } = await post("api/task/get").withJson({ id }).send<TaskServer>();
+    if (error) throw new Error(error);
+    return payload as TaskServer;
+});
+
 /**
  * Redux Thunk. Send updated task information to server. Then refresh the task collection.
  */

@@ -1,118 +1,84 @@
-import { NavLink, useHistory } from "react-router-dom";
+import { useEffect, useCallback, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import tw, { styled } from "twin.macro";
 
-import { TaskForm } from "./TaskForm";
+import { getTask } from "root@redux/actions";
+import { useAppDispatch } from "root@redux/store";
+import { List } from "components/units/List";
 
-import { configFields } from "./data";
-import { titleCase } from "lib";
+import { notUndefined, titleCase } from "lib";
 import { useScrollTrackingWithTargets } from "hooks";
-import { useEffect, useCallback, useMemo } from "react";
 
-import { debounce } from "lodash";
+import { TaskForm } from "./TaskForm";
+import { configFields } from "./data";
+import { ConfigListItem } from "./ConfigListItem";
 
-type MenuHashLinkListItemProps = {
-    text: string;
-    index: number;
-    hash?: string;
-    pauseScrolling: (match: number) => void;
-};
-
-const MenuHashLinkListItem = ({
-    text,
-    hash = `#${text.toLowerCase()}`,
-    index,
-    pauseScrolling,
-}: MenuHashLinkListItemProps) => {
-    const clickHandler = () => {
-        pauseScrolling(index);
-        const page = document.querySelector("#page");
-        const target = document.querySelector(hash);
-        if (page && target) {
-            const top = target.getBoundingClientRect().top - 32;
-            page.scrollBy({ top, behavior: "smooth" });
-        }
-    };
-
-    return (
-        <li tw="flex">
-            <NavLink
-                tw="text-right text-secondary py-2 w-full hover:(text-primary cursor-pointer)"
-                to={hash}
-                activeStyle={tw`text-primary`}
-                isActive={(_, loc) => (hash === "#general" && !loc.hash) || loc.hash === hash}
-                onClick={clickHandler}>
-                {text}
-            </NavLink>
-        </li>
-    );
-};
-
-const FloatingList = styled.ul`
-    ${tw`sticky grid content-start h-64 mt-48 top-24 `}
-`;
-const configSections = Object.keys(configFields);
-
+const sectionHeaders = Object.keys(configFields);
 export const TaskConfig = () => {
-    const [match, pause, setPause, setMatch] = useScrollTrackingWithTargets(
-        "page",
-        configSections,
-        100
-    );
-    const history = useHistory();
+    const { match, setPause, setMatch } = useScrollTrackingWithTargets("page", sectionHeaders, {
+        throttleMs: 100,
+        offset: 50,
+    });
 
-    const resumeTracking = useMemo(
-        () =>
-            debounce(() => {
-                console.log("Resume tracking");
-                setPause(false);
-            }, 300),
-        [setPause]
-    );
-
+    // This function when called pause the tracking of section headers for 2 seconds
     const pauseTracking = useCallback(
-        (match: number) => {
-            setMatch(match);
+        (match?: number) => {
+            notUndefined(match) && setMatch(match);
             setPause(true);
+            setTimeout(() => setPause(false), 2000);
         },
         [setMatch, setPause]
     );
 
+    // Update history based on the match from section
+    const history = useHistory();
     useEffect(() => {
-        // Poll the resume scrolling function when the user scrolls
-        // We check for pause to prevent updating the url
-        if (pause) {
-            resumeTracking();
-            return;
-        }
+        const hash = `#${sectionHeaders[match]}`;
+        hash !== history.location.hash && history.replace(hash);
+    }, [match]); //eslint-disable-line
 
-        (function updateHashHistory() {
-            // Push new hash to url if match is not the same as current hash
-            const hash = `#${configSections[match]}`;
-            if (history.location.hash != hash) {
-                history.push(hash);
-            }
-        })();
+    const { taskId } = useParams<{ taskId: string }>();
+    const task = useSelector(state => state.taskCollection[taskId]);
+    const dispatch = useAppDispatch();
 
-        //eslint-disable-next-line
-    }, [match, pause]);
+    //
+    // ─── PLACEHOLDER CONTENT ────────────────────────────────────────────────────────
+    //
+    // If task doesn't exist in the redux store (maybe we refresh?) then fetch it from the server
+    const [errorMessage, setErrorMessage] = useState("Loading...");
+    if (!notUndefined(task)) {
+        const notConnected = "Cannot connect to server. Please check your network connection";
+        const timer = setTimeout(() => setErrorMessage(notConnected), 3000);
+        dispatch(getTask(taskId)).then(action => {
+            getTask.fulfilled.match(action) && clearTimeout(timer);
+        });
+        return (
+            <div tw="grid place-content-center w-full h-full">
+                <div tw="text-xl animate-bounce">{errorMessage}</div>
+            </div>
+        );
+    }
 
-    console.log(match);
-
+    //
+    // ─── ACTUAL CONTENT ─────────────────────────────────────────────────────────────
+    //
     return (
         <div
             tw="grid grid-flow-col gap-8 p-8 w-full max-w-screen-xl mx-auto"
             css={{ gridTemplateColumns: "min-content 1fr", paddingBottom: "100% + 100vh" }}>
-            <FloatingList>
-                {Object.keys(configFields).map((name, i) => (
-                    <MenuHashLinkListItem
+            <List
+                tw="sticky grid content-start h-64 mt-48 top-24"
+                items={sectionHeaders}
+                renderItem={(name, i) => (
+                    <ConfigListItem
                         key="name"
                         index={i}
                         text={titleCase(name)}
-                        pauseScrolling={pauseTracking}
+                        onClick={pauseTracking}
                     />
-                ))}
-            </FloatingList>
-
+                )}
+            />
             <TaskForm highlightSection={match} />
         </div>
     );
