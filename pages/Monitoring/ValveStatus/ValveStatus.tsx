@@ -1,6 +1,6 @@
 import { Card } from "components/modules/Card";
 import { times } from "lodash";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -57,21 +57,15 @@ export const ValveCollection = ({ valves }: { valves: Valve[] }) => {
 };
 
 export const ValveStatus = ({ className }: { className?: string }) => {
-    // const [valves] = useState(
-    //     Array.from({ length: 24 }, (_, id) => ({ id: id, status: id === 2 }))
-    // );
-
-    const [valves, setValves] = useState(() => times(24, id => ({ id, status: -1 })));
     const status = useSelector(state => state.status);
-    useEffect(() => {
-        setValves(valves => {
-            return valves.map((_, id) => {
-                return status.valves && id < status.valves.length
-                    ? { id, status: status.valves[id] }
-                    : { id, status: -1 };
-            });
+    const valves = useMemo(() => {
+        return times(24, (id: number) => {
+            return status.valves && id < status.valves.length
+                ? { id, status: status.valves[id] }
+                : { id, status: -1 };
         });
-    }, [status]);
+    }, [status.valves]);
+
     const [top, bottom] = partition(valves, ({ id }) => id < 12);
     return (
         <Card title="Valve Status" tw="p-0" className={className}>

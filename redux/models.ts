@@ -93,8 +93,15 @@ export const TaskServerSchema = object({
         .min(0),
 });
 
+export type TaskServerStatus = "inactive" | "active" | "completed" | "missed";
 export type TaskServer = z.infer<typeof TaskServerSchema>;
 export type TaskCollectionInStore = Record<TaskServer["id"], TaskServer>;
+export const mapTaskStatusToString: Record<number, TaskServerStatus> = {
+    0: "inactive",
+    1: "active",
+    2: "completed",
+    3: "missed",
+};
 
 //
 // ──────────────────────────────────────────────────── IV ──────────

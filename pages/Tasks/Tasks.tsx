@@ -1,76 +1,99 @@
-import { Card } from "components/modules/Card";
-import { Link } from "react-router-dom";
-
+import { Ref, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import tw, { styled } from "twin.macro";
-
 import { PlusSquare } from "react-feather";
+import { partition, transform } from "lodash";
+
 import { Button } from "components/units/Button";
-import { useState } from "react";
+import { mapTaskStatusToString, TaskServer } from "root@redux/models";
+import { useAppDispatch } from "root@redux/store";
+import { createTask, getTaskCollection } from "root@redux/actions";
+import { Parallax } from "components/units/Parallax";
+
 import { NewTaskInput } from "./NewTaskInput";
-import { useDispatch } from "react-redux";
+import { TaskTile, TaskTileProps } from "./TaskTile";
 
-const activeTasks: TaskTileProps[] = [
+const mocking = true;
+const mock = [
     {
-        name: "Task 1",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis",
-        active: true,
+        id: "203942342",
+        createdAt: Date.now(),
+        name: "DEMO",
+        notes: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, debitis",
+        status: 1,
     },
-    { name: "Task 2", active: true },
-];
-const inactiveTasks: TaskTileProps[] = [{ name: "Task 3" }, { name: "Task 4" }];
+] as const;
 
-const StyledLink = styled(Link)<{ isActive: boolean }>`
-    ${tw`relative flex flex-col w-64 p-8 mr-4 transition transform bg-white shadow cursor-pointer hover:-translate-y-2 rounded-lg text-primary`}
-    ${props => !props.isActive && tw`text-secondary`}
+//
+// ────────────────────────────────────────────────────── I ──────────
+//   :::::: S E C T I O N : :  :   :    :     :        :          :
+// ────────────────────────────────────────────────────────────────
+//
+
+const Section = styled.div`
+    ${tw`grid gap-8`};
+    grid-template-columns: repeat(auto-fit, 14rem);
 `;
-
-type TaskTileProps = {
-    name?: string;
-    description?: string;
-    active?: boolean;
-};
-
-const TaskTile = ({ name = "Untitled", description, active = false }: TaskTileProps) => {
-    return (
-        <StyledLink to={`/tasks/${name}`} isActive={active}>
-            {active && (
-                <span tw="flex h-3 w-3 -right-1.5 absolute -top-1.5">
-                    <span tw="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-accent opacity-75"></span>
-                    <span tw="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
-                </span>
-            )}
-            <div tw="mr-1 text-sm font-bold leading-none">{name}</div>
-            <div tw="mt-2 text-sm text-secondary">{description}</div>
-        </StyledLink>
-    );
-};
 
 type TaskSectionProps = {
     title?: string;
-    tasks?: TaskTileProps[];
+    tasks: TaskServer[];
 };
 
 const TaskSection = ({ title, tasks }: TaskSectionProps) => {
     return (
-        <Card tw="p-0" title={title}>
-            <div tw="flex flex-wrap">
-                {tasks && tasks.map(t => <TaskTile key={t.name} {...t} />)}
-            </div>
-        </Card>
+        <Section>
+            <h3 tw="col-span-full text-subtitle uppercase text-secondary">{title}</h3>
+            {tasks.map(t => (
+                <Parallax
+                    key={t.name}
+                    perspective={200}
+                    render={(ref: Ref<HTMLDivElement>) => (
+                        <div ref={ref} css="transition: transform 0.5s; will-change: transform">
+                            <TaskTile
+                                {...t}
+                                createdAt={new Date(t.createdAt).toLocaleDateString("en-US")}
+                            />
+                        </div>
+                    )}
+                />
+            ))}
+        </Section>
     );
 };
 
+//
+// ──────────────────────────────────────────────── I ──────────
+//   :::::: P A G E : :  :   :    :     :        :          :
+// ──────────────────────────────────────────────────────────
+//
 const Header = tw.div`grid gap-8 items-center grid-flow-col auto-cols-max`;
 
 export const Tasks = () => {
-    const [inputHiding, setInputHiding] = useState(true);
+    const dispatch = useAppDispatch();
+    const tasks = useSelector(state => state.taskCollection);
 
+    // Partition active tasks and inactive tasks
+    const filterActiveTasks = (t: TaskServer) => mapTaskStatusToString[t.status] === "active";
+    const [activeTasks, inactiveTasks] = partition(
+        Object.values(mocking ? mock : tasks),
+        filterActiveTasks
+    );
+
+    // Create new task input controls
+    const [inputHiding, setInputHiding] = useState(true);
     const hideInput = () => setInputHiding(true);
     const showInput = () => setInputHiding(false);
 
-    const submitHandler = () => {
-        console.log("Submit task");
+    const submitHandler = (name: string) => {
+        console.log(name);
+        dispatch(createTask(name));
+        hideInput();
     };
+
+    useEffect(() => {
+        dispatch(getTaskCollection());
+    }, [dispatch]);
 
     return (
         <div tw="grid gap-8 p-8 w-full max-w-screen-xl mx-auto">
@@ -86,7 +109,6 @@ export const Tasks = () => {
 
             <TaskSection title="Active Task" tasks={activeTasks} />
             <TaskSection title="Inactive Task" tasks={inactiveTasks} />
-
             <NewTaskInput hide={inputHiding} onCancel={hideInput} onSubmit={submitHandler} />
         </div>
     );

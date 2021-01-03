@@ -33,8 +33,8 @@ export const status = createReducer<StatusInStore>({ rejects: 0 }, builder =>
 
 export const taskCollection = createReducer<TaskCollectionInStore>({}, builder =>
     builder
-        .addCase(getTaskCollection.fulfilled, (state, { payload: collection }) => {
-            state = collection;
+        .addCase(getTaskCollection.fulfilled, (_, { payload: collection }) => {
+            return collection;
         })
         .addMatcher(
             isAnyOf(createTask.fulfilled, scheduleTask.fulfilled, unscheduleTask.fulfilled),

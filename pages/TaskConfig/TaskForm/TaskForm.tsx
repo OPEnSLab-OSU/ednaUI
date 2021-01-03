@@ -1,4 +1,4 @@
-import { FormEventHandler } from "react";
+import { FormEventHandler, Ref } from "react";
 import { useParams } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,7 @@ import { FormValues, configFields } from "../data";
 
 import { schema } from "../data";
 import { SubmitCard } from "../SubmitCard";
+import { Parallax } from "components/units/Parallax";
 
 export const TaskForm = ({ highlightSection }: { highlightSection: number }) => {
     const { taskname } = useParams<{ taskname: string }>();
@@ -54,12 +55,17 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
                         mm/dd/yyyy
                     </div>
                     {Object.values(configFields).map(({ title, fields }, index) => (
-                        <ConfigCard
-                            key={title}
-                            title={title}
-                            fields={fields}
-                            highlight={index === highlightSection}
-                        />
+                        <Parallax key={title} perspective={400}>
+                            {(ref: Ref<HTMLDivElement>) => (
+                                <ConfigCard
+                                    title={title}
+                                    fields={fields}
+                                    highlight={index === highlightSection}
+                                    ref={ref}
+                                    css="transition: transform 0.5s; will-change: transform;"
+                                />
+                            )}
+                        </Parallax>
                     ))}
                 </div>
 

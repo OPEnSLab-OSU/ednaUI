@@ -10,6 +10,7 @@ export async function http<T>(request: RequestInfo): Promise<HTTPResponse<T>> {
     const response = await fetch(request);
     const parsedResponse: HTTPResponse<T> = response;
     parsedResponse.data = await response.json();
+    console.log(parsedResponse.data);
     return parsedResponse;
 }
 
@@ -70,19 +71,23 @@ export class APIBuilder {
         const path = new URL(this.path, base);
         try {
             // Normalize http status code errors (anything that's not in 200-299 range)
+            console.log("asdfasdfasdfads");
             const response = await http<APIResponseWtihData<T>>(
                 new Request(path.toString(), this.options)
             );
-            if (!response.status) {
+
+            console.log(response);
+
+            if (!response.ok) {
                 return { error: response.statusText };
             }
 
             // Normalize our server error
-            const payload = response.data;
-            if (payload && payload.error) {
-                return { error: payload.error };
+            const data = response.data;
+            if (data && data.error) {
+                return { error: data.error };
             } else {
-                return { ...response.data };
+                return { ...data };
             }
         } catch (e) {
             // Normallize TimeoutError and NetworkError
