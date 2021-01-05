@@ -1,26 +1,31 @@
-import * as z from "zod";
+import z, { string, number, object } from "zod";
 
-export const schema = z.object({
-    name: z.string().max(24),
-    date: z.string().refine(str => str.match(/\d{4}-\d{2}-\d{2}/), {
+const ValveNumberSchema = number().min(0).max(24);
+export const TaskFormSchema = object({
+    name: string().max(24),
+    date: string().refine(str => str.match(/\d{4}-\d{2}-\d{2}/), {
         message: "Date doesn't match the required form at: yyyy-mm-dd",
     }),
-    time: z.string().refine(str => str.match(/\d{1,2}:\d{1,2}/), {
+    time: string().refine(str => str.match(/\d{1,2}:\d{1,2}/), {
         message: "Time doesn't match the required format: hh:mm (24hr)",
     }),
-    valves: z.string(),
-    timeBetween: z.number().positive(),
-    notes: z.string().optional(),
-    flushTime: z.number().positive(),
-    flushVolume: z.number().positive(),
-    sampleTime: z.number().positive(),
-    sampleVolume: z.number().positive(),
-    samplePressure: z.number().positive(),
-    dryTime: z.number().positive(),
-    preserveTime: z.number().positive(),
+    valves: string()
+        .nonempty()
+        .refine(str => str.split(",").every(n => ValveNumberSchema.safeParse(Number(n)).success), {
+            message: "Input contains non-numeric character or doesn't follow the format",
+        }),
+    timeBetween: number().min(0),
+    notes: string().optional(),
+    flushTime: number().min(0),
+    flushVolume: number().min(0),
+    sampleTime: number().min(0),
+    sampleVolume: number().min(0),
+    samplePressure: number().min(0),
+    dryTime: number().min(0),
+    preserveTime: number().min(0),
 });
 
-export type FormValues = z.infer<typeof schema>;
+export type FormValues = z.infer<typeof TaskFormSchema>;
 
 export type FieldProps = {
     name: keyof FormValues;
@@ -34,10 +39,10 @@ export const generalFields: FieldProps[] = [
     { name: "name", label: "Task Name", sublabel: "Name unique to this task" },
     {
         name: "date",
-        type: "button",
+        type: "date",
         label: "Schedule Date",
         sublabel: "Date when to execute this task",
-        helperText: "Format: yyyy/mm/dd",
+        helperText: "Format: yyyy-mm-dd",
     },
     {
         name: "time",
@@ -64,6 +69,7 @@ export const valveFields: FieldProps[] = [
         name: "timeBetween",
         label: "Time Between",
         sublabel: "Time until next valve",
+        type: "number",
     },
 ];
 

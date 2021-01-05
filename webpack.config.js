@@ -13,13 +13,10 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
 const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
 
-const build = require("./scripts/build");
-build.writeBuildMetaData("./app/build.json");
-
 module.exports = (_env, argv) => {
     process.env.NODE_ENV = argv.mode;
     const isProduction = process.env.NODE_ENV == "production";
-    console.log("Production?", isProduction);
+    console.log("Environment: ", process.env.NODE_ENV);
 
     const brotliConifg = {
         asset: "[path].br[query]",
@@ -95,6 +92,12 @@ module.exports = (_env, argv) => {
             isProduction && new HtmlWebpackHarddiskPlugin(),
             isProduction && new BrotliPlugin(brotliConifg),
             isProduction && new HTMLInlineCSSWebpackPlugin(),
+            {
+                apply: function () {
+                    const build = require("./scripts/build");
+                    build.writeBuildMetaData("./app/build.json");
+                },
+            },
         ].filter(Boolean),
         resolve: {
             extensions: [".tsx", ".ts", ".js"],

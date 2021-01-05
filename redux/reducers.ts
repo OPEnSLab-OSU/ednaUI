@@ -1,4 +1,4 @@
-import { createReducer, isAnyOf } from "@reduxjs/toolkit";
+import { createReducer, current, isAnyOf } from "@reduxjs/toolkit";
 import { StatusInStore, TaskCollectionInStore, TaskServer } from "root@redux/models";
 import {
     getStatusUpdate,
@@ -11,6 +11,8 @@ import {
     updateTask,
 } from "root@redux/actions";
 import { random, times, transform } from "lodash";
+
+import BUILD_META from "app/build.json";
 
 //
 // ────────────────────────────────────────────────────── I ──────────
@@ -52,12 +54,15 @@ const makeMock = (id: string, status: number) => ({
     timeBetween: 10,
 });
 
-const mock: TaskCollectionInStore = transform(
-    times(5, () => random(2147483647)),
-    (result, id) => (result[id] = makeMock(id.toString(), Number(id) % 2 === 0 ? 1 : 0))
-);
+const initialTaskCollection: TaskCollectionInStore =
+    BUILD_META.env === "development"
+        ? transform(
+              times(5, () => random(2147483647)),
+              (result, id) => (result[id] = makeMock(id.toString(), Number(id) % 2))
+          )
+        : {};
 
-export const taskCollection = createReducer<TaskCollectionInStore>(mock, builder =>
+export const taskCollection = createReducer(initialTaskCollection, builder =>
     builder
         .addCase(getTaskCollection.fulfilled, (_, { payload: collection }) => {
             return collection;
@@ -67,10 +72,11 @@ export const taskCollection = createReducer<TaskCollectionInStore>(mock, builder
                 createTask.fulfilled,
                 getTask.fulfilled,
                 scheduleTask.fulfilled,
-                unscheduleTask.fulfilled
+                unscheduleTask.fulfilled,
+                updateTask.fulfilled
             ),
             (state, { payload: task }) => {
-                state[task.id] = task;
+                return { ...state, [task.id]: task };
             }
         )
 );

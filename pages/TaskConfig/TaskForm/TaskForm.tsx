@@ -6,16 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import "twin.macro";
 
-import { TaskServer } from "root@redux/models";
+import { mapTaskStatusToString, TaskServer } from "root@redux/models";
 
 import { ConfigCard } from "../ConfigCard";
 import { FormValues, configFields } from "../data";
 
-import { schema } from "../data";
+import { TaskFormSchema } from "../data";
 import { SubmitCard } from "../SubmitCard";
 import { Parallax } from "components/units/Parallax";
 import { useAppDispatch } from "root@redux/store";
 import { getTask } from "root@redux/actions";
+import { notUndefined } from "lib";
 
 /**
  * Convert task schedule to date YYYY-MM-DD format
@@ -55,31 +56,36 @@ function taskToFormValues(task: TaskServer | undefined, defaultValues: FormValue
     if (!task) {
         return defaultValues;
     }
-
-    return {
+    const result = {
+        ...defaultValues,
         name: task.name,
         date: toDateString(task.schedule),
         time: toTimeString(task.schedule),
         timeBetween: task.timeBetween,
         valves: task.valves.join(","),
-        flushTime: task.flushTime,
-        flushVolume: task.flushVolume,
-        sampleTime: task.sampleTime,
-        samplePressure: task.samplePressure,
-        sampleVolume: task.sampleVolume,
-        dryTime: task.dryTime,
-        preserveTime: task.preserveTime,
+        notes: task.notes,
     };
-}
 
-declare function formValuesToTask(formValues: FormValues): TaskServer;
+    ([
+        "flushTime",
+        "flushVolume",
+        "sampleTime",
+        "sampleVolume",
+        "samplePressure",
+        "dryTime",
+        "preserveTime",
+    ] as const).forEach(f => {
+        result[f] = task[f];
+    });
+
+    return result;
+}
 
 const configSections = Object.values(configFields);
 
 export const TaskForm = ({ highlightSection }: { highlightSection: number }) => {
     const { taskId } = useParams<{ taskId: string }>();
-    const collection = useSelector(state => state.taskCollection);
-    const task = collection[taskId];
+    const task = useSelector(state => state.taskCollection[taskId]);
 
     const [defaultValues] = useState(() =>
         taskToFormValues(task, {
@@ -99,27 +105,25 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
     );
 
     const methods = useForm({
-        defaultValues: {},
-        resolver: zodResolver(schema),
+        defaultValues,
+        resolver: zodResolver(TaskFormSchema),
     });
 
-    const submitHandler: FormEventHandler<HTMLFormElement> = event => {
-        methods.handleSubmit(_ => {
-            console.log("Submitting");
-        })(event);
-    };
+    if (!notUndefined(task)) {
+        return null;
+    }
 
     return (
         <FormProvider {...methods}>
             <form
                 tw="grid gap-8 grid-flow-col w-full"
-                css={{ gridTemplateColumns: "minmax(24rem, 30rem) minmax(14rem, 1fr)" }}
-                onSubmit={submitHandler}>
+                css={{ gridTemplateColumns: "minmax(24rem, 30rem) minmax(14rem, 1fr)" }}>
                 <div tw="grid gap-8">
                     <h1 tw="text-display text-primary">Task Configuration</h1>
                     <div tw="text-overline text-secondary">
-                        <span tw="font-bold">{methods.watch("name")}</span>(ID: #{taskId}), Created
-                        on: {task?.createdAt ?? "MM/DD/YYYY"}
+                        <span tw="font-bold">{methods.watch("name")}</span>
+                        (ID: #{taskId}), Created on: {toDateString(task.createdAt) ?? "MM/DD/YYYY"},
+                        Status: ({mapTaskStatusToString[task.status]})
                     </div>
                     {configSections.map(({ title, fields }, index) => (
                         <Parallax

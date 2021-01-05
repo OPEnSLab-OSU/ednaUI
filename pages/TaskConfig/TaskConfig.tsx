@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import tw, { styled } from "twin.macro";
 
-import { getTask } from "root@redux/actions";
+import { getTask, getTaskCollection } from "root@redux/actions";
 import { useAppDispatch } from "root@redux/store";
 import { List } from "components/units/List";
 
@@ -39,7 +39,8 @@ export const TaskConfig = () => {
     }, [match]); //eslint-disable-line
 
     const { taskId } = useParams<{ taskId: string }>();
-    const task = useSelector(state => state.taskCollection[taskId]);
+    const collection = useSelector(state => state.taskCollection);
+    const task = collection[taskId];
     const dispatch = useAppDispatch();
 
     //
@@ -50,9 +51,8 @@ export const TaskConfig = () => {
     if (!notUndefined(task)) {
         const notConnected = "Cannot connect to server. Please check your network connection";
         const timer = setTimeout(() => setErrorMessage(notConnected), 3000);
-        dispatch(getTask(taskId)).then(action => {
-            getTask.fulfilled.match(action) && clearTimeout(timer);
-        });
+        const fetching = dispatch(getTask(taskId));
+        fetching.then(action => getTask.fulfilled.match(action) && clearTimeout(timer));
         return (
             <div tw="grid place-content-center w-full h-full">
                 <div tw="text-xl animate-bounce">{errorMessage}</div>

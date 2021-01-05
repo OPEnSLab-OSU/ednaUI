@@ -7,40 +7,34 @@ export type InputFieldProps = ComponentPropsWithoutRef<"input"> & {
     sublabel?: string;
     helperText?: string;
     error?: string;
-    mapChildren?: (items: ReactNode[]) => ReactNode[];
+    mapItemList?: (items: ReactNode[]) => ReactNode[];
 };
 
 const LabelSpan = tw.span`flex justify-between items-center`;
-const HelperSpan = tw.span`flex justify-start text-xs text-gray-500`;
+const HelperSpan = tw.span`flex text-xs text-gray-500`;
+const Input = tw.input`form-input text-sm bg-transparent border border-primary rounded`;
+const ErrorMessage = tw.p`text-sm text-red-700 bg-red-200 p-2 rounded`;
 
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>((props, ref) => {
-    const { name, label, sublabel, helperText, mapChildren, error, ...inputProps } = props;
+    const { name, label, sublabel, helperText, mapItemList, error, ...inputProps } = props;
 
     const defaultItemList: ReactNode[] = [
         <LabelSpan key="label">
-            <span tw="text-sm" className="label">
-                {label + (props.required ? " *" : "")}
-            </span>
-            <span tw="text-xs text-secondary" className="sublabel">
-                {sublabel}
-            </span>
+            <span tw="text-sm">{label + (props.required ? " *" : "")}</span>
+            <span tw="text-xs text-secondary">{sublabel}</span>
         </LabelSpan>,
-        <input
-            key="input"
-            tw="form-input text-sm bg-transparent border border-primary rounded"
-            name={name}
-            ref={ref}
-            {...inputProps}
-        />,
-        helperText && (
-            <HelperSpan key="helper" className="helperText">
-                {helperText}
-            </HelperSpan>
-        ),
-        error && <p tw="text-sm text-red-700 bg-red-200 p-2 rounded">{error}</p>,
+        <Input key="input" name={name} ref={ref} {...inputProps} />,
     ].filter(Boolean);
 
-    const itemList = mapChildren ? mapChildren(defaultItemList) : defaultItemList;
+    if (helperText) {
+        defaultItemList.push(<HelperSpan key="helper">{helperText}</HelperSpan>);
+    }
+
+    if (error) {
+        defaultItemList.push(<ErrorMessage key="error">{error}</ErrorMessage>);
+    }
+
+    const itemList = mapItemList ? mapItemList(defaultItemList) : defaultItemList;
     return <label tw="grid gap-2">{itemList}</label>;
 });
 

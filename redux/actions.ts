@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { StatusServer, TaskServer } from "root@redux/models";
-import { APIResponseWtihData, base, get, post } from "app/http";
+import { base, get, post } from "app/http";
 import { arrayToObject } from "lib";
 
 // ────────────────────────────────────────────────────── II ──────────
@@ -48,6 +48,7 @@ export const createTask = createAsyncThunk("task/create", async (name: string) =
 
 export const getTask = createAsyncThunk("task/get", async (id: string) => {
     const { error, payload } = await post("api/task/get").withJson({ id }).send<TaskServer>();
+    console.log("paylod:", payload);
     if (error) throw new Error(error);
     return payload as TaskServer;
 });
@@ -55,27 +56,24 @@ export const getTask = createAsyncThunk("task/get", async (id: string) => {
 /**
  * Redux Thunk. Send updated task information to server. Then refresh the task collection.
  */
-export const updateTask = createAsyncThunk(
-    "task/update",
-    async function (task: TaskServer, { dispatch }) {
-        const { error } = await post("api/task/update").withJson(task).send();
-        if (error) throw new Error(error);
-        dispatch(getTaskCollection());
-    }
-);
+export const updateTask = createAsyncThunk("task/update", async function (task: TaskServer) {
+    const { error, payload } = await post("api/task/save").withJson(task).send<TaskServer>();
+    if (error) throw new Error(error);
+    return payload as TaskServer;
+});
 
 /**
  * Redux thunk. Delete task on server
  * @param id Id of the task to be deleted
  */
-export const deleteTask = createAsyncThunk("task/delete", async (id: string, { dispatch }) => {
+export const deleteTask = createAsyncThunk("task/delete", async (id: string) => {
     const { error } = await post("api/task/delete").withJson({ id }).send();
     if (error) throw new Error(error);
-    dispatch(getTaskCollection());
 });
 
 export const scheduleTask = createAsyncThunk("task/schedule", async (id: string) => {
     const { error, payload } = await post("api/task/schedule").withJson({ id }).send<TaskServer>();
+    console.log(error, payload);
     if (error) throw new Error(error);
     return payload as TaskServer;
 });

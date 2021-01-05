@@ -27,7 +27,9 @@ export const ConfigCard = forwardRef<HTMLDivElement, ConfigCardProps>(
                 {fields.map(props => (
                     <InputField
                         key={props.name}
-                        ref={register}
+                        ref={register({
+                            valueAsNumber: props.type === "number",
+                        })}
                         error={errors[props.name]?.message}
                         {...props}
                     />

@@ -3,6 +3,7 @@ const fs = require("fs");
 const PACKAGE = require("../package.json");
 
 // export type Meta = {
+//     env: "development" | "production"
 //     name: string;
 //     version: string;
 //     date: number;
@@ -17,6 +18,7 @@ function getBuildMetaData() {
     const gitDirty = execa.sync("git", ["status", "-s", "-uall"]).stdout.length > 0;
 
     return {
+        env: process.env.NODE_ENV,
         name: PACKAGE.name,
         version: PACKAGE.version,
         date: Date.now(),
