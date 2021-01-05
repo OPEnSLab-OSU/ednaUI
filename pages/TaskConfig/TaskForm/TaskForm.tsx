@@ -11,12 +11,12 @@ import { mapTaskStatusToString, TaskServer } from "root@redux/models";
 import { ConfigCard } from "../ConfigCard";
 import { FormValues, configFields } from "../data";
 
-import { TaskFormSchema } from "../data";
+import { FormSchema } from "../data";
 import { SubmitCard } from "../SubmitCard";
 import { Parallax } from "components/units/Parallax";
 import { useAppDispatch } from "root@redux/store";
 import { getTask } from "root@redux/actions";
-import { notUndefined } from "lib";
+import { isNullish, notNullish } from "lib";
 
 /**
  * Convert task schedule to date YYYY-MM-DD format
@@ -106,10 +106,10 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
 
     const methods = useForm({
         defaultValues,
-        resolver: zodResolver(TaskFormSchema),
+        resolver: zodResolver(FormSchema),
     });
 
-    if (!notUndefined(task)) {
+    if (isNullish(task)) {
         return null;
     }
 

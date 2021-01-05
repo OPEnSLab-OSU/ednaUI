@@ -1,8 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 import { ChevronRight, Layout } from "react-feather";
-
-import { titleCase } from "lib";
+import { capitalize } from "lodash";
 
 const StyledLink = styled(Link)<{ disabled?: boolean }>`
     ${tw`text-sm text-primary hover:underline`}
@@ -33,7 +32,7 @@ export const Breadcrumb = () => {
             {cookies.map(({ to, text }, index) => (
                 <>
                     <StyledLink to={to} disabled={index === paths.length - 1}>
-                        {titleCase(text)}
+                        {capitalize(text)}
                     </StyledLink>
                     {index < paths.length - 1 && <ChevronRight />}
                 </>

@@ -7,12 +7,13 @@ import { getTask, getTaskCollection } from "root@redux/actions";
 import { useAppDispatch } from "root@redux/store";
 import { List } from "components/units/List";
 
-import { notUndefined, titleCase } from "lib";
+import { notNullish, isNullish } from "lib";
 import { useScrollTrackingWithTargets } from "hooks";
 
 import { TaskForm } from "./TaskForm";
 import { configFields } from "./data";
 import { ConfigListItem } from "./ConfigListItem";
+import { capitalize, isNull } from "lodash";
 
 const sectionHeaders = Object.keys(configFields);
 export const TaskConfig = () => {
@@ -24,7 +25,7 @@ export const TaskConfig = () => {
     // This function when called pause the tracking of section headers for 2 seconds
     const pauseTracking = useCallback(
         (match?: number) => {
-            notUndefined(match) && setMatch(match);
+            notNullish(match) && setMatch(match);
             setPause(true);
             setTimeout(() => setPause(false), 2000);
         },
@@ -48,7 +49,7 @@ export const TaskConfig = () => {
     //
     // If task doesn't exist in the redux store (maybe we refresh?) then fetch it from the server
     const [errorMessage, setErrorMessage] = useState("Loading...");
-    if (!notUndefined(task)) {
+    if (isNullish(task)) {
         const notConnected = "Cannot connect to server. Please check your network connection";
         const timer = setTimeout(() => setErrorMessage(notConnected), 3000);
         const fetching = dispatch(getTask(taskId));
@@ -74,7 +75,7 @@ export const TaskConfig = () => {
                     <ConfigListItem
                         key="name"
                         index={i}
-                        text={titleCase(name)}
+                        text={capitalize(name)}
                         onClick={pauseTracking}
                     />
                 )}

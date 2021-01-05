@@ -7,7 +7,7 @@ import { useFormContext } from "react-hook-form";
 import { mapTaskStatusToString, TaskServer } from "root@redux/models";
 import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { notUndefined } from "lib";
+import { isNullish, notNullish } from "lib";
 
 import { FormValues } from "../data";
 import { useAppDispatch } from "root@redux/store";
@@ -50,8 +50,8 @@ export const SubmitCard = () => {
     const dispatch = useAppDispatch();
 
     // Task is guarantee to exist from parent node but...
-    // ...it's easier to work with this way
-    if (!notUndefined(task)) {
+    // ...it's easier to work this way since there is no need to check for null
+    if (isNullish(task)) {
         return null;
     }
 

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useScrollTracking } from "hooks";
 import { minBy } from "lodash";
 
-import { notUndefined } from "lib";
+import { notNullish } from "lib";
 
 export const useScrollTrackingWithTargets = (
     scroller: string,
@@ -22,7 +22,7 @@ export const useScrollTrackingWithTargets = (
 
     // Get references to all target doms
     useEffect(() => {
-        refs.current = targetIds.map(id => document.getElementById(id)).filter(notUndefined);
+        refs.current = targetIds.map(id => document.getElementById(id)).filter(notNullish);
     }, [targetIds]);
 
     useEffect(() => {

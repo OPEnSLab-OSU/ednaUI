@@ -4,13 +4,12 @@
 // ────────────────────────────────────────────────────────────────
 //
 
-export function titleCase(str: string) {
-    return str
-        .toLowerCase()
-        .split(" ")
-        .filter(word => word)
-        .map(word => word.replace(word[0], word[0].toUpperCase()))
-        .join(" ");
+export function notNullish<T>(value: T | null | undefined): value is T {
+    return value !== null && value !== undefined;
+}
+
+export function isNullish<T>(value: T | null | undefined): value is null | undefined {
+    return !notNullish<T>(value);
 }
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -78,7 +77,3 @@ export type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never
     : never;
 
 export type PickAndFlatten<T, K extends keyof T> = UnionToIntersection<T[K]>;
-
-export function notUndefined<T>(value: T | null | undefined): value is T {
-    return value !== null && value !== undefined;
-}

@@ -1,7 +1,7 @@
 import z, { string, number, object } from "zod";
 
-const ValveNumberSchema = number().min(0).max(24);
-export const TaskFormSchema = object({
+const ValveSchema = number().min(0).max(24);
+export const FormSchema = object({
     name: string().max(24),
     date: string().refine(str => str.match(/\d{4}-\d{2}-\d{2}/), {
         message: "Date doesn't match the required form at: yyyy-mm-dd",
@@ -11,8 +11,11 @@ export const TaskFormSchema = object({
     }),
     valves: string()
         .nonempty()
-        .refine(str => str.split(",").every(n => ValveNumberSchema.safeParse(Number(n)).success), {
+        .refine(s => s.split(",").every(n => !isNaN(Number(n))), {
             message: "Input contains non-numeric character or doesn't follow the format",
+        })
+        .refine(s => s.split(",").every(n => ValveSchema.safeParse(n).success), {
+            message: "Valve number must be >= 0 and <= 23",
         }),
     timeBetween: number().min(0),
     notes: string().optional(),
@@ -25,7 +28,7 @@ export const TaskFormSchema = object({
     preserveTime: number().min(0),
 });
 
-export type FormValues = z.infer<typeof TaskFormSchema>;
+export type FormValues = z.infer<typeof FormSchema>;
 
 export type FieldProps = {
     name: keyof FormValues;

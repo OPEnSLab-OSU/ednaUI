@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { throttle } from "lodash";
-import { notUndefined } from "lib";
 
 export function useScrollTracking(targetId: string, throttleMs = 100) {
     // Useref here to avoid rerendering;
@@ -14,7 +13,6 @@ export function useScrollTracking(targetId: string, throttleMs = 100) {
     // Get the target after DOM has painted
     useEffect(() => {
         ref.current = document.getElementById(targetId);
-        notUndefined(ref.current);
     }, [targetId]);
 
     // At this point on we are free to assume target.current exist in useEffect
