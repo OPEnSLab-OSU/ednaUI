@@ -1,19 +1,18 @@
 import tw from "twin.macro";
+import { useFormContext } from "react-hook-form";
+import { useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Card } from "components/modules/Card";
 import { Button } from "components/units/Button";
-import { useFormContext } from "react-hook-form";
-
 import { mapTaskStatusToString, TaskServer } from "root@redux/models";
-import { useHistory, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { isNullish, notNullish } from "lib";
-
-import { FormValues } from "../data";
+import { isNullish } from "lib";
 import { useAppDispatch } from "root@redux/store";
 import { deleteTask, scheduleTask, unscheduleTask, updateTask } from "root@redux/actions";
 
-const mergeWithFormValues = (base: TaskServer, values: FormValues) => {
+import { FormValues } from "../data";
+
+const mergeWithFormValues = (base: TaskServer, values: FormValues): TaskServer => {
     const merged: TaskServer = { ...base };
     merged.name = values.name;
     merged.notes = values.notes ?? "";
@@ -56,7 +55,6 @@ export const SubmitCard = () => {
     }
 
     const saveHandler = handleSubmit(values => {
-        console.log(values);
         const merged = mergeWithFormValues(task, values);
         dispatch(updateTask(merged))
             .then(action => updateTask.fulfilled.match(action) && window.location.reload())

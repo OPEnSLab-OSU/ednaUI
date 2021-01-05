@@ -1,19 +1,19 @@
 import { useEffect, useCallback, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import tw, { styled } from "twin.macro";
+import tw from "twin.macro";
+import { capitalize } from "lodash";
 
-import { getTask, getTaskCollection } from "root@redux/actions";
+import { getTask } from "root@redux/actions";
 import { useAppDispatch } from "root@redux/store";
 import { List } from "components/units/List";
 
 import { notNullish, isNullish } from "lib";
 import { useScrollTrackingWithTargets } from "hooks";
 
-import { TaskForm } from "./TaskForm";
-import { configFields } from "./data";
 import { ConfigListItem } from "./ConfigListItem";
-import { capitalize, isNull } from "lodash";
+import { configFields } from "./data";
+import { TaskForm } from "./TaskForm";
 
 const sectionHeaders = Object.keys(configFields);
 export const TaskConfig = () => {

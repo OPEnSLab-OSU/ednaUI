@@ -1,5 +1,7 @@
 import tw from "twin.macro";
+
 import { Card } from "components/modules/Card";
+
 import { StateTableBody } from "../StateBody";
 
 const HeaderCell = tw.th`pb-2 text-left text-overline text-primary`;

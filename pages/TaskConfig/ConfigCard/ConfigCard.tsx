@@ -1,10 +1,10 @@
-import tw, { css } from "twin.macro";
+import tw from "twin.macro";
 import { useFormContext } from "react-hook-form";
+import { forwardRef } from "react";
 
-import { InputField, InputFieldProps } from "components/units/InputField";
+import { InputField } from "components/units/InputField";
 
 import { FormValues, FieldProps } from "../data";
-import { forwardRef } from "react";
 
 export type ConfigCardProps = {
     title: string;

@@ -1,5 +1,7 @@
 import tw, { theme } from "twin.macro";
 import { Route, Redirect, Switch } from "react-router-dom";
+import { Provider, useSelector } from "react-redux";
+import { AlertTriangle, BatteryCharging } from "react-feather";
 
 import { Monitoring } from "pages/Monitoring";
 import { Tasks } from "pages/Tasks";
@@ -10,12 +12,8 @@ import { Breadcrumb } from "components/modules/Breadcrumb";
 
 import { ScreenProvider } from "hooks";
 
-import { Provider, useSelector } from "react-redux";
-
 import { store as ReduxStore } from "root@redux/store";
 import { Test } from "pages/Test";
-
-import { AlertTriangle, BatteryCharging } from "react-feather";
 
 import BUILD from "./build.json";
 

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { useScrollTracking } from "hooks";
 import { minBy } from "lodash";
+
+import { useScrollTracking } from "hooks";
 
 import { notNullish } from "lib";
 

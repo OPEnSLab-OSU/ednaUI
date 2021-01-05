@@ -1,10 +1,9 @@
-import { Card } from "components/modules/Card";
-import { times } from "lodash";
-import { useEffect, useMemo } from "react";
-import { useState } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import tw, { styled } from "twin.macro";
+import { times } from "lodash";
 
-import tw, { styled, css } from "twin.macro";
+import { Card } from "components/modules/Card";
 
 export const partition = <T extends unknown>(ary: T[], predicate: (elem: T) => boolean) => {
     const a: T[] = [];

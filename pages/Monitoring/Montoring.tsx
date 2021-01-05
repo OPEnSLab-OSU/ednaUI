@@ -1,20 +1,13 @@
-import tw, { TwStyle } from "twin.macro";
-import { useDispatch, useSelector } from "react-redux";
+import tw from "twin.macro";
+import { useSelector } from "react-redux";
 
 import { TileCollection } from "components/modules/TileCollection";
-import { Button } from "components/units/Button";
 
-import { ValveStatus } from "./ValveStatus";
-import { SensorTile } from "./SensorTile";
+import { useScreen, useStatusUpdate } from "hooks";
+
 import { StateTable } from "./StateTable";
-
-import { useScreen } from "hooks";
-import { pick } from "lodash";
-import { StatusInStore, StatusServer, StatusServerSchema } from "root@redux/models";
-import { getStatusUpdate } from "root@redux/actions";
-import { useEffect } from "react";
-import { useAppDispatch } from "root@redux/store";
-import { useStatusUpdate } from "hooks";
+import { SensorTile } from "./SensorTile";
+import { ValveStatus } from "./ValveStatus";
 
 const Tiling = ({ columns }: { columns: number }) => {
     const status = useSelector(state => state.status);

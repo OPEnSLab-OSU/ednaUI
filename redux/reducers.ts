@@ -1,5 +1,7 @@
-import { createReducer, current, isAnyOf } from "@reduxjs/toolkit";
-import { StatusInStore, TaskCollectionInStore, TaskServer } from "root@redux/models";
+import { createReducer, isAnyOf } from "@reduxjs/toolkit";
+import { random, times, transform } from "lodash";
+
+import { StatusInStore, TaskCollectionInStore } from "root@redux/models";
 import {
     getStatusUpdate,
     getTaskCollection,
@@ -10,7 +12,6 @@ import {
     getTask,
     updateTask,
 } from "root@redux/actions";
-import { random, times, transform } from "lodash";
 
 import BUILD_META from "app/build.json";
 

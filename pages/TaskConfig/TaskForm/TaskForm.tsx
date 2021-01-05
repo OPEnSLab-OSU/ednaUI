@@ -1,4 +1,4 @@
-import { FormEventHandler, Ref, useState } from "react";
+import { Ref, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
@@ -7,16 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import "twin.macro";
 
 import { mapTaskStatusToString, TaskServer } from "root@redux/models";
-
-import { ConfigCard } from "../ConfigCard";
-import { FormValues, configFields } from "../data";
-
-import { FormSchema } from "../data";
-import { SubmitCard } from "../SubmitCard";
 import { Parallax } from "components/units/Parallax";
-import { useAppDispatch } from "root@redux/store";
-import { getTask } from "root@redux/actions";
-import { isNullish, notNullish } from "lib";
+import { isNullish } from "lib";
+
+import { SubmitCard } from "../SubmitCard";
+import { ConfigCard } from "../ConfigCard";
+import { FormValues, configFields, FormSchema } from "../data";
 
 /**
  * Convert task schedule to date YYYY-MM-DD format

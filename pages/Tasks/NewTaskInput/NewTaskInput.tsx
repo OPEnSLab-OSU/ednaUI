@@ -1,8 +1,8 @@
-import { MouseEventHandler, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import tw, { styled } from "twin.macro";
+import { Check, X } from "react-feather";
 
 import { Button } from "components/units/Button";
-import { Check, X } from "react-feather";
 
 export type NewTaskInputProps = {
     onSubmit: (name: string) => void;

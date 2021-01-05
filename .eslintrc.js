@@ -25,6 +25,10 @@ module.exports = {
         // Recommneded rules from eslint-plugin-prettier
         // Modify the final formatting rules based on prettier
         "plugin:prettier/recommended",
+
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
     ],
 
     // Allows eslint to parse Typescript code.
@@ -61,6 +65,15 @@ module.exports = {
             // We use "react 16.0" to avoid pushing folks to UNSAFE_ methods.
             version: "16.0",
         },
+        "import/resolver": {
+            webpack: {
+                config: "./webpack.config.js",
+            },
+            alias: [
+                ["react", "preact/compat"],
+                ["react-dom", "preact/compat"],
+            ],
+        },
     },
     rules: {
         "class-methods-use-this": "off",
@@ -76,7 +89,7 @@ module.exports = {
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": [
             "warn",
-            { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+            { argsIgnorePattern: "^_", varsIgnorePattern: "^_|tw" },
         ],
 
         "react/prop-types": "off",
@@ -90,5 +103,15 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-empty-interface": "off",
         "@typescript-eslint/no-var-requires": "off",
+
+        // Import order
+        "import/order": [
+            "error",
+            {
+                "newlines-between": "always-and-inside-groups",
+                groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+            },
+        ],
+        // "import/external-module-folder": ["./components/"]
     },
 };
