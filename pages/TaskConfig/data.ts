@@ -14,7 +14,7 @@ export const FormSchema = object({
         .refine(s => s.split(",").every(n => !isNaN(Number(n))), {
             message: "Input contains non-numeric character or doesn't follow the format",
         })
-        .refine(s => s.split(",").every(n => ValveSchema.safeParse(n).success), {
+        .refine(s => s.split(",").every(n => ValveSchema.safeParse(Number(n)).success), {
             message: "Valve number must be >= 0 and <= 23",
         }),
     timeBetween: number().min(0),

@@ -1,16 +1,8 @@
 {
     "presets": [
-        ["@babel/preset-env", { "modules": false }],
-        ["@babel/preset-typescript", { "jsxPragma": "h" }]
+        ["@babel/preset-env", { "modules": false, "useBuiltIns": "usage", "corejs": 3 }],
+        ["@babel/preset-react", { "runtime": "automatic" }],
+        "@babel/typescript"
     ],
-    "plugins": [
-        ["babel-plugin-macros"],
-        ["lodash"],
-        [
-            "@babel/plugin-transform-react-jsx",
-            {
-                "runtime": "automatic"
-            }
-        ]
-    ]
+    "plugins": ["babel-plugin-macros", "lodash"]
 }

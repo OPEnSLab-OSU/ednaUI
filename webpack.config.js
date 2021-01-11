@@ -1,15 +1,14 @@
 const path = require("path");
 const webpack = require("webpack"); //to access built-in plugins
-
+const zlib = require("zlib");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackHarddiskPlugin = require("html-webpack-harddisk-plugin");
-const BrotliPlugin = require("brotli-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
-// Needed to inline CSS and JS files to HTML
+// Required in order to inline CSS and JS files into HTML
 const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
 const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
 
@@ -18,18 +17,13 @@ module.exports = (_env, argv) => {
     const isProduction = process.env.NODE_ENV == "production";
     console.log("Environment: ", process.env.NODE_ENV);
 
-    const brotliConifg = {
-        asset: "[path].br[query]",
-        test: /\.(html)$/,
-        minRatio: 1, // always compress
-    };
-
     return {
         mode: isProduction ? "production" : "development",
         context: __dirname,
         entry: "./app/index",
         output: {
             filename: "bundle.js",
+            path: path.resolve(__dirname, "dist"),
             publicPath: "/",
         },
         devServer: {
@@ -40,7 +34,7 @@ module.exports = (_env, argv) => {
         module: {
             rules: [
                 {
-                    test: /\.(ts|tsx)?$/,
+                    test: /\.(ts|tsx|js|jsx)$/,
                     use: [{ loader: "babel-loader" }],
                     // We exclude node_modules here assuming that all libraries already pre-compiled
                     exclude: /node_modules/,
@@ -80,18 +74,34 @@ module.exports = (_env, argv) => {
             new webpack.DefinePlugin({}),
             new webpack.ProgressPlugin(),
             new CleanWebpackPlugin({ cleanStaleWebpackAssets: true }),
-            new ForkTsCheckerWebpackPlugin(),
 
-            new MiniCssExtractPlugin(),
             new HtmlWebpackPlugin({
+                inject: "body",
                 title: `EDNA Dashboard ${isProduction ? "" : "(dev)"}`,
-                template: path.resolve(__dirname, "./app/template.ejs"),
+                template: path.resolve(__dirname, "app/template.ejs"),
                 alwaysWriteToDisk: true,
             }),
             isProduction && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.js$/]),
-            isProduction && new HtmlWebpackHarddiskPlugin(),
-            isProduction && new BrotliPlugin(brotliConifg),
+            isProduction && new MiniCssExtractPlugin(),
             isProduction && new HTMLInlineCSSWebpackPlugin(),
+            isProduction &&
+                new CompressionPlugin({
+                    filename: "[path][name].gz",
+                    include: /\.(html)$/,
+                }),
+            isProduction &&
+                new CompressionPlugin({
+                    filename: "[path][name].br",
+                    include: /\.(html)$/,
+                    algorithm: "brotliCompress",
+                    compressionOptions: {
+                        params: {
+                            [zlib.constants.BROTLI_PARAM_QUALITY]:
+                                zlib.constants.BROTLI_MAX_QUALITY,
+                        },
+                    },
+                }),
+            isProduction && new HtmlWebpackHarddiskPlugin(),
             {
                 apply: function () {
                     const build = require("./scripts/build");
@@ -100,7 +110,7 @@ module.exports = (_env, argv) => {
             },
         ].filter(Boolean),
         resolve: {
-            extensions: [".tsx", ".ts", ".js"],
+            extensions: ["*", ".tsx", ".ts", ".js", ".jsx"],
             alias: {
                 react: "preact/compat",
                 // Remove if not needed to reduce bundle size

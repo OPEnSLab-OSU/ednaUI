@@ -37,7 +37,14 @@ module.exports = {
     parser: "@typescript-eslint/parser",
 
     // Ignore generated files
-    ignorePatterns: ["node_modules/*", ".next/*", ".out/*", "!.lintstagedrc.js", "!.storybook"],
+    ignorePatterns: [
+        "node_modules/*",
+        ".next/*",
+        ".out/*",
+        "!.lintstagedrc.js",
+        "!.storybook",
+        "*.html",
+    ],
 
     // Enable global variables for browser, node, and ES6
     env: {
@@ -54,6 +61,7 @@ module.exports = {
         ecmaVersion: 2020,
         ecmaFeatures: {
             jsx: true, // Parse JSX
+            experimentalObjectRestSpread: true,
         },
     },
     plugins: ["react", "@typescript-eslint", "prettier"],

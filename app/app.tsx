@@ -1,3 +1,4 @@
+import "./app.css";
 import tw, { theme } from "twin.macro";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { Provider, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import { ScreenProvider } from "hooks";
 
 import { store as ReduxStore } from "root@redux/store";
 import { Test } from "pages/Test";
+import { Utilities } from "pages/Utilities";
 
 import BUILD from "./build.json";
 
@@ -57,6 +59,7 @@ export const Application = () => (
                         <Route exact path="/monitoring" render={() => <Monitoring />} />
                         <Route exact path="/tasks" render={() => <Tasks />} />
                         <Route path="/tasks/:taskId" render={() => <TaskConfig />} />
+                        <Route path="/utilities" render={() => <Utilities />} />
                         {process.env.NODE_ENV === "development" && (
                             <Route path="/test" render={() => <Test />} />
                         )}
