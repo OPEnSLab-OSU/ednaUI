@@ -124,7 +124,7 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
                     {configSections.map(({ title, fields }, index) => (
                         <Parallax
                             key={title}
-                            perspective={400}
+                            perspective={1600}
                             render={(ref: Ref<HTMLDivElement>) => (
                                 <ConfigCard
                                     ref={ref}

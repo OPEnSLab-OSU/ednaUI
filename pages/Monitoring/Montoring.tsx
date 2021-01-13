@@ -1,5 +1,9 @@
-import tw from "twin.macro";
+import "twin.macro";
 import { useSelector } from "react-redux";
+
+import { curry, mapValues, transform } from "lodash";
+
+import { pick } from "lib";
 
 import { TileCollection } from "components/modules/TileCollection";
 
@@ -11,14 +15,27 @@ import { ValveStatus } from "./ValveStatus";
 
 const Tiling = ({ columns }: { columns: number }) => {
     const status = useSelector(state => state.status);
+    const { pressure, waterFlow, temperature, barometric, waterVolume, waterDepth } = mapValues(
+        pick(
+            status,
+            "pressure",
+            "waterFlow",
+            "temperature",
+            "barometric",
+            "waterVolume",
+            "waterDepth"
+        ),
+        value => value?.toFixed(2) ?? "?"
+    );
+
     return (
         <TileCollection columns={columns} title="Sensor Data" tw="p-0">
-            <SensorTile title="Presssure" value={status.pressure ?? "?"} unit="psi" />
-            <SensorTile title="Flow" value={status.waterFlow ?? "?"} unit="mm/s" />
-            <SensorTile title="Temperature" value={status.temperature ?? "?"} unit="°C" />
-            <SensorTile title="Barometeric" value={status.barometric ?? "?"} unit="bar" />
-            <SensorTile title="Volume" value={status.waterVolume ?? "?"} unit="liter" />
-            <SensorTile title="Depth" value={status.waterDepth ?? "?"} unit="meter" />
+            <SensorTile title="Presssure" value={pressure} unit="psi" />
+            <SensorTile title="Flow" value={waterFlow} unit="mm/s" />
+            <SensorTile title="Temperature" value={temperature} unit="°C" />
+            <SensorTile title="Barometeric" value={barometric} unit="bar" />
+            <SensorTile title="Volume" value={waterVolume} unit="liter" />
+            <SensorTile title="Depth" value={waterDepth} unit="meter" />
         </TileCollection>
     );
 };

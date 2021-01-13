@@ -22,7 +22,7 @@ export const TaskConfig = () => {
         offset: 50,
     });
 
-    // This function when called pause the tracking of section headers for 2 seconds
+    // This function, when called, pauses the tracking of section headers for 2 seconds
     const pauseTracking = useCallback(
         (match?: number) => {
             notNullish(match) && setMatch(match);

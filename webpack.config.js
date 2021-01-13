@@ -75,20 +75,33 @@ module.exports = (_env, argv) => {
             new webpack.ProgressPlugin(),
             new CleanWebpackPlugin({ cleanStaleWebpackAssets: true }),
 
+            // Automatically generate index HTML file based on template
             new HtmlWebpackPlugin({
                 inject: "body",
                 title: `EDNA Dashboard ${isProduction ? "" : "(dev)"}`,
                 template: path.resolve(__dirname, "app/template.ejs"),
-                alwaysWriteToDisk: true,
+                // alwaysWriteToDisk: true, // enable this option to write to disk regardless of the mode we are in.
             }),
-            isProduction && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.js$/]),
+
+            // This plugin do nothing without the `alwaysWriteToDisk: true` property above
+            new HtmlWebpackHarddiskPlugin(),
+
+            // Extract CSS imports to separate files
+            // Next, inline them to the generated HTML file
             isProduction && new MiniCssExtractPlugin(),
             isProduction && new HTMLInlineCSSWebpackPlugin(),
+
+            // Inline JS file to the generated HTML file
+            isProduction && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.js$/]),
+
+            // gzip compression
             isProduction &&
                 new CompressionPlugin({
                     filename: "[path][name].gz",
                     include: /\.(html)$/,
                 }),
+
+            // Brotli copression
             isProduction &&
                 new CompressionPlugin({
                     filename: "[path][name].br",
@@ -101,8 +114,8 @@ module.exports = (_env, argv) => {
                         },
                     },
                 }),
-            isProduction && new HtmlWebpackHarddiskPlugin(),
             {
+                // This function provides env information for client code
                 apply: function () {
                     const build = require("./scripts/build");
                     build.writeBuildMetaData("./app/build.json");
@@ -110,7 +123,7 @@ module.exports = (_env, argv) => {
             },
         ].filter(Boolean),
         resolve: {
-            extensions: ["*", ".tsx", ".ts", ".js", ".jsx"],
+            extensions: [".tsx", ".ts", ".js", ".jsx"],
             alias: {
                 react: "preact/compat",
                 // Remove if not needed to reduce bundle size

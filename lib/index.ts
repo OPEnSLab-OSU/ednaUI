@@ -12,6 +12,11 @@ export function isNullish<T>(value: T | null | undefined): value is null | undef
     return !notNullish<T>(value);
 }
 
+export function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
+    const entries = keys.map(key => [key, obj[key]]);
+    return Object.fromEntries(entries);
+}
+
 // ────────────────────────────────────────────────────────────────────────────────
 // Combine two arrays into an array of tuple. See Python's zip for details.
 // ────────────────────────────────────────────────────────────────────────────────
