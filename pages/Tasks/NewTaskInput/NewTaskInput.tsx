@@ -40,7 +40,7 @@ export const NewTaskInput = ({ onSubmit, onCancel, hide }: NewTaskInputProps) =>
         <Background hide={hide}>
             <div
                 tw="bg-trueGray-100 grid place-items-center h-full shadow-xl rounded"
-                css={"width: calc(100vw - 100px); grid-template-rows: 1fr min-content;"}>
+                css={{ width: "calc(100vw - 100px)", gridTemplateRows: "1fr min-content" }}>
                 <label tw="grid gap-4 max-w-screen-md w-full">
                     <span tw="text-title font-normal text-primary whitespace-nowrap self-center">
                         Enter new task name

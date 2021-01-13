@@ -20,7 +20,7 @@ export const ConfigCard = forwardRef<HTMLDivElement, ConfigCardProps>(
             <div
                 id={title.toLowerCase()}
                 tw="p-8 grid gap-8 bg-white rounded-xl"
-                css={highlight ? tw`shadow-lg` : ""}
+                css={highlight ? tw`shadow-lg` : {}}
                 className={className}
                 ref={ref}>
                 <h3 tw="text-title text-primary">{title}</h3>

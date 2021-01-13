@@ -1,7 +1,7 @@
-import "twin.macro";
+import { css } from "twin.macro";
 import { useSelector } from "react-redux";
 
-import { curry, mapValues, transform } from "lodash";
+import { mapValues } from "lodash";
 
 import { pick } from "lib";
 
@@ -33,7 +33,7 @@ const Tiling = ({ columns }: { columns: number }) => {
             <SensorTile title="Presssure" value={pressure} unit="psi" />
             <SensorTile title="Flow" value={waterFlow} unit="mm/s" />
             <SensorTile title="Temperature" value={temperature} unit="°C" />
-            <SensorTile title="Barometeric" value={barometric} unit="bar" />
+            <SensorTile title="Barometeric" value={barometric} unit="mbar" />
             <SensorTile title="Volume" value={waterVolume} unit="liter" />
             <SensorTile title="Depth" value={waterDepth} unit="meter" />
         </TileCollection>
@@ -57,8 +57,8 @@ export const Monitoring = () => {
                 tw="grid w-full max-w-screen-xl gap-8 mx-auto p-8"
                 css={
                     min`md`
-                        ? "grid-template-columns: 1fr min-content;"
-                        : "grid-template-columns: 1fr"
+                        ? { gridTemplateColumns: "1fr min-content" }
+                        : { gridTemplateColumns: "1fr" }
                 }>
                 <div tw="grid gap-8 content-start">
                     <ValveStatus />

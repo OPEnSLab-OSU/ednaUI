@@ -13,7 +13,7 @@ const ActiveBadge = styled(Badge)<{ inactive: boolean }>`
 
 const RowContainer = styled.tr`
     ${tw`border-b rounded-lg shadow`}
-    ${TableCell}:first-child {
+    ${TableCell}:first-of-type {
         ${tw`rounded-l-lg`}
     }
     ${TableCell}:last-child {

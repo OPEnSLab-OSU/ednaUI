@@ -28,7 +28,7 @@ export const Sidebar = () => {
     return (
         <div
             tw="grid flex-shrink-0 h-screen overflow-y-scroll z-10 shadow-xl"
-            css={"grid-template-rows: 88px 64px; grid-auto-rows: 100px;"}>
+            css={{ gridTemplateRows: "88px 64px", gridAutoRows: "100px" }}>
             <div
                 tw="hidden grid-flow-col gap-4 text-xl lg:grid items-center justify-center mt-8"
                 css={{ letterSpacing: "1rem" }}>

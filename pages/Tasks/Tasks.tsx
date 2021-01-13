@@ -1,6 +1,6 @@
 import { Ref, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import tw, { styled } from "twin.macro";
+import tw, { styled, css } from "twin.macro";
 import { PlusSquare } from "react-feather";
 import { partition, transform } from "lodash";
 
@@ -38,7 +38,9 @@ const TaskSection = ({ title, tasks }: TaskSectionProps) => {
                     key={t.name}
                     perspective={200}
                     render={(ref: Ref<HTMLDivElement>) => (
-                        <div ref={ref} css="transition: transform 0.5s; will-change: transform">
+                        <div
+                            ref={ref}
+                            css={{ transition: "transform 0.5s", willChange: "transform" }}>
                             <TaskTile
                                 {...t}
                                 createdAt={new Date(t.createdAt).toLocaleDateString("en-US")}
