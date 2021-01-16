@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
-import { ChevronRight, Layout } from "react-feather";
+import { CaretRight, Browser } from "phosphor-react";
 import { capitalize } from "lodash";
 
 const StyledLink = styled(Link)<{ disabled?: boolean }>`
@@ -10,7 +10,7 @@ const StyledLink = styled(Link)<{ disabled?: boolean }>`
 
 const Home = () => (
     <StyledLink to="/" tw="flex items-center">
-        <Layout />
+        <Browser size={24} />
         <div tw="ml-2">EDNA Dashboard</div>
     </StyledLink>
 );
@@ -28,13 +28,13 @@ export const Breadcrumb = () => {
     return (
         <GridContainer>
             <Home />
-            <ChevronRight />
+            <CaretRight size={24} />
             {cookies.map(({ to, text }, index) => (
                 <>
                     <StyledLink to={to} disabled={index === paths.length - 1}>
                         {capitalize(text)}
                     </StyledLink>
-                    {index < paths.length - 1 && <ChevronRight />}
+                    {index < paths.length - 1 && <CaretRight size={24} />}
                 </>
             ))}
         </GridContainer>

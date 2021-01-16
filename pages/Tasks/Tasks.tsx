@@ -1,7 +1,7 @@
 import { Ref, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import tw, { styled, css } from "twin.macro";
-import { PlusSquare } from "react-feather";
+import { Plus } from "phosphor-react";
 import { partition, transform } from "lodash";
 
 import { Button } from "components/units/Button";
@@ -93,7 +93,7 @@ export const Tasks = () => {
                 <h1 tw="text-display text-primary">Tasks</h1>
                 <Button
                     tw="text-overline"
-                    icon={<PlusSquare size={20} />}
+                    icon={<Plus size={20} />}
                     text="New Task"
                     onClick={showInput}
                 />

@@ -1,7 +1,7 @@
 import tw, { styled } from "twin.macro";
 import { Ref } from "react";
 
-import { Tool } from "react-feather";
+import { Wrench } from "phosphor-react";
 
 import { Parallax } from "components/units/Parallax";
 import { get, post } from "app/http";
@@ -16,72 +16,81 @@ const PageContainer = styled.main`
     grid-template-columns: repeat(auto-fit, minmax(240px, 60ch));
 `;
 
-function HyperFlush() {
-    const clickHandler = () => {
-        get("api/preload")
-            .withTimeout(1000)
-            .send()
-            .then(() => {
-                alert("HyperFlush started");
-            });
-    };
+type UtilityProps = {
+    name: string;
+    description: string;
+    onClick: () => void;
+};
+function Utility({ name, description, onClick }: UtilityProps) {
     return (
         <Parallax
             perspective={800}
             render={(ref: Ref<HTMLDivElement>) => (
-                <Tile className="group" ref={ref} onClick={clickHandler}>
+                <Tile className="group" ref={ref} onClick={onClick}>
                     <p tw="col-span-full">Tool</p>
-                    <div tw="text-title text-primary group-hover:(text-accent)">HyperFlush</div>
-                    <p tw="mt-4">
-                        Begin a HyperFlushing sequence. HyperFlush has four stages that runs in this
-                        order: flush, preload, stop, and idle. The flush stage get rid of excess
-                        water left in the main system. Then the preload stage fills water at the
-                        valve connector in order to minimize contemination
-                    </p>
-                    <Tool tw="self-end justify-self-end" />
+                    <div tw="text-title text-primary group-hover:(text-accent)">{name}</div>
+                    <p tw="mt-4">{description}</p>
+                    <Wrench tw="self-end justify-self-end" size={24} />
                 </Tile>
             )}
         />
     );
 }
 
-function UpdateRTC() {
-    const clickHandler = () => {
-        const payload = {
-            utc: Math.floor(Date.now() / 1000),
-            timezoneOffset: new Date().getTimezoneOffset(),
-        };
+const HyperFlush = () => (
+    <Utility
+        name="HyperFlush"
+        description={
+            "Begin a HyperFlushing sequence. HyperFlush has four stages that runs in thisorder: flush, preload, stop, and idle. The flush stage get rid of excesswater left in the main system. Then the preload stage fills water at the valve connector in order to minimize contemination"
+        }
+        onClick={() => {
+            get("api/preload")
+                .withTimeout(1000)
+                .send()
+                .then(() => {
+                    alert("HyperFlush started");
+                });
+        }}
+    />
+);
 
-        // dispatch(setDisplayLoadingScreen(true));
-        post("api/rtc/update").withJson(payload).send();
-        // dispatch(setDisplayLoadingScreen(false));
-    };
+const UpdateRTC = () => (
+    <Utility
+        name={"Update RTC"}
+        description={
+            "This utility update the onboard RTC (Real-time-clock) on the eDNA server.This is highly recommended if you move between timezones or when daylightsaving occurs."
+        }
+        onClick={() => {
+            const payload = {
+                utc: Math.floor(Date.now() / 1000),
+                timezoneOffset: new Date().getTimezoneOffset(),
+            };
 
-    return (
-        <Parallax
-            perspective={800}
-            render={(ref: Ref<HTMLDivElement>) => (
-                <Tile className="group" ref={ref} onClick={clickHandler}>
-                    <p tw="col-span-full">Tool</p>
-                    <div tw="text-title text-primary group-hover:(text-accent)">Update RTC</div>
-                    <p tw="mt-4">
-                        This utility update the onboard RTC (Real-time-clock) on the eDNA server.
-                        This is highly recommended if you move between timezones or when daylight
-                        saving occurs.
-                    </p>
-                    <Tool tw="self-end justify-self-end" />
-                </Tile>
-            )}
-        />
-    );
-}
+            post("api/rtc/update").withJson(payload).send();
+        }}
+    />
+);
+
+const ResetValves = () => (
+    <Utility
+        name={"Reset Valves"}
+        description={
+            "This utility all valves to its default configuration from the config.js file inthe sdcard"
+        }
+        onClick={() => {
+            const message = "Do you want to reset all the valves to their default configurations";
+            window.confirm(message) && get("/api/valves/reset").send();
+        }}
+    />
+);
 
 export function Utilities() {
     return (
         <PageContainer>
-            <h1 tw="text-display text-primary">Utilities</h1>
+            <h1 tw="text-display text-primary col-span-full ">Utilities</h1>
             <HyperFlush />
             <UpdateRTC />
+            <ResetValves />
         </PageContainer>
     );
 }

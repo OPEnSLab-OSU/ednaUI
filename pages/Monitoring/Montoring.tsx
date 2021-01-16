@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 
 import { mapValues } from "lodash";
 
+import { Anchor, ArrowsIn, Cloud, Drop, DropHalf, Thermometer } from "phosphor-react";
+
 import { pick } from "lib";
 
 import { TileCollection } from "components/modules/TileCollection";
@@ -30,12 +32,33 @@ const Tiling = ({ columns }: { columns: number }) => {
 
     return (
         <TileCollection columns={columns} title="Sensor Data" tw="p-0">
-            <SensorTile title="Presssure" value={pressure} unit="psi" />
-            <SensorTile title="Flow" value={waterFlow} unit="mm/s" />
-            <SensorTile title="Temperature" value={temperature} unit="°C" />
-            <SensorTile title="Barometeric" value={barometric} unit="mbar" />
-            <SensorTile title="Volume" value={waterVolume} unit="liter" />
-            <SensorTile title="Depth" value={waterDepth} unit="meter" />
+            <SensorTile
+                title="Presssure"
+                value={pressure}
+                unit="psi"
+                icon={<ArrowsIn size={24} />}
+            />
+            <SensorTile
+                title="Temperature"
+                value={temperature}
+                sensor="pressure"
+                unit="°C"
+                icon={<Thermometer size={24} />}
+            />
+            <SensorTile title="Flow" value={waterFlow} unit="L/min" icon={<Drop size={24} />} />
+            <SensorTile
+                title="Volume"
+                value={waterVolume}
+                unit="liter"
+                icon={<Drop size={24} weight="fill" />}
+            />
+            <SensorTile
+                title="Barometric"
+                value={barometric}
+                unit="mbar"
+                icon={<Cloud size={24} />}
+            />
+            <SensorTile title="Depth" value={waterDepth} unit="meter" icon={<Anchor size={24} />} />
         </TileCollection>
     );
 };
@@ -46,7 +69,7 @@ export const Monitoring = () => {
     return (
         <div>
             <h1 tw="text-display text-primary p-8 pb-0 mx-auto w-full max-w-screen-xl">
-                Montoring
+                Monitoring
             </h1>
 
             {/* <div tw="p-8 mx-auto w-full max-w-screen-xl">

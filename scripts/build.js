@@ -1,5 +1,7 @@
-const execa = require("execa");
 const fs = require("fs");
+
+const execa = require("execa");
+
 const PACKAGE = require("../package.json");
 
 // export type Meta = {

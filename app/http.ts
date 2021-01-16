@@ -71,7 +71,6 @@ export class APIBuilder {
         const path = new URL(this.path, base);
         try {
             // Normalize http status code errors (anything that's not in 200-299 range)
-            console.log("asdfasdfasdfads");
             const response = await http<APIResponseWtihData<T>>(
                 new Request(path.toString(), this.options)
             );

@@ -39,13 +39,13 @@ function mapStatusToStyle(status: number) {
 }
 
 const Valve = styled.div<{ status: number }>`
-    ${tw`flex items-center justify-center px-4 py-2 font-bold text-primary hover:bg-teal-100`}
+    ${tw`flex items-center justify-center px-4 py-2 rounded-lg font-bold text-primary hover:bg-teal-100`}
     ${props => mapStatusToStyle(props.status)}
 `;
 
 export const ValveCollection = ({ valves }: { valves: Valve[] }) => {
     return (
-        <div tw="grid h-24 grid-flow-row grid-cols-12 grid-rows-2 rounded-lg overflow-hidden shadow bg-white">
+        <div tw="grid h-24 grid-flow-row grid-cols-12 grid-rows-2 p-2 rounded-lg overflow-hidden shadow bg-white">
             {valves.map(v => (
                 <Valve key={v.id} status={v.status}>
                     {v.id}

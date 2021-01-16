@@ -3,6 +3,8 @@ import { useFormContext } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import { unwrapResult } from "@reduxjs/toolkit";
+
 import { Card } from "components/modules/Card";
 import { Button } from "components/units/Button";
 import { mapTaskStatusToString, TaskServer } from "root@redux/models";
@@ -26,7 +28,6 @@ const mergeWithFormValues = (base: TaskServer, values: FormValues): TaskServer =
 
     ([
         "flushTime",
-        "flushVolume",
         "sampleTime",
         "samplePressure",
         "sampleVolume",
@@ -44,8 +45,6 @@ export const SubmitCard = () => {
     const { taskId } = useParams<{ taskId: string }>();
     const task = useSelector(state => state.taskCollection[taskId]);
     const { formState, reset, handleSubmit } = useFormContext<FormValues>();
-    const history = useHistory();
-
     const dispatch = useAppDispatch();
 
     // Task is guarantee to exist from parent node but...
@@ -57,28 +56,30 @@ export const SubmitCard = () => {
     const saveHandler = handleSubmit(values => {
         const merged = mergeWithFormValues(task, values);
         dispatch(updateTask(merged))
-            .then(action => updateTask.fulfilled.match(action) && window.location.reload())
-            .catch(e => {
-                console.log(e);
-            });
+            .then(unwrapResult)
+            .then(() => window.location.reload())
+            .catch(alert);
     });
 
     const scheduleHandler = handleSubmit(() => {
-        dispatch(scheduleTask(task.id)).then(
-            action => scheduleTask.fulfilled.match(action) && window.location.reload()
-        );
+        dispatch(scheduleTask(task.id))
+            .then(unwrapResult)
+            .then(() => window.location.reload())
+            .catch(alert);
     });
 
     const unscheduleHandler = () => {
-        dispatch(unscheduleTask(task.id)).then(
-            action => unscheduleTask.fulfilled.match(action) && window.location.reload()
-        );
+        dispatch(unscheduleTask(task.id))
+            .then(unwrapResult)
+            .then(() => window.location.reload())
+            .catch(alert);
     };
 
     const deleteHandler = () => {
-        dispatch(deleteTask(task.id)).then(
-            action => deleteTask.fulfilled.match(action) && history.replace("/tasks")
-        );
+        dispatch(deleteTask(task.id))
+            .then(unwrapResult)
+            .then(() => window.location.reload())
+            .catch(alert);
     };
 
     const taskStatus = mapTaskStatusToString[task.status];

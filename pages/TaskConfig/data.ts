@@ -20,7 +20,6 @@ export const FormSchema = object({
     timeBetween: number().min(0),
     notes: string().optional(),
     flushTime: number().min(0),
-    flushVolume: number().min(0),
     sampleTime: number().min(0),
     sampleVolume: number().min(0),
     samplePressure: number().min(0),
@@ -73,23 +72,26 @@ export const valveFields: FieldProps[] = [
         label: "Time Between",
         sublabel: "Time until next valve",
         type: "number",
+        helperText: "Unit: second",
     },
 ];
 
 export const flushFields: FieldProps[] = [
-    { name: "flushTime", type: "number", label: "Flush Time" },
-    { name: "flushVolume", type: "number", label: "Flush Volume" },
+    { name: "flushTime", type: "number", label: "Flush Time", helperText: "Unit: second" },
+    // { name: "flushVolume", type: "number", label: "Flush Volume" },
 ];
 
 export const sampleFields: FieldProps[] = [
-    { name: "sampleTime", type: "number", label: "Sample Time" },
-    { name: "sampleVolume", type: "number", label: "Sample Volume" },
-    { name: "samplePressure", type: "number", label: "Sample Pressure" },
+    { name: "sampleTime", type: "number", label: "Sample Time", helperText: "Unit: second" },
+    { name: "sampleVolume", type: "number", label: "Sample Volume", helperText: "Unit: ml" },
+    { name: "samplePressure", type: "number", label: "Sample Pressure", helperText: "Unit: psi" },
 ];
 
-export const dryFields: FieldProps[] = [{ name: "dryTime", type: "number", label: "Dry Time" }];
+export const dryFields: FieldProps[] = [
+    { name: "dryTime", type: "number", label: "Dry Time", helperText: "Unit: second" },
+];
 export const preserveFields: FieldProps[] = [
-    { name: "preserveTime", type: "number", label: "Preserve Time" },
+    { name: "preserveTime", type: "number", label: "Preserve Time", helperText: "Unit: second" },
 ];
 
 export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "dry" | "preserve";

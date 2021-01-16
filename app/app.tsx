@@ -2,7 +2,7 @@ import "./app.css";
 import tw, { theme } from "twin.macro";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { Provider, useSelector } from "react-redux";
-import { AlertTriangle, BatteryCharging } from "react-feather";
+import { BatteryWarning, BatteryFull, IconContext } from "phosphor-react";
 
 import { Monitoring } from "pages/Monitoring";
 import { Tasks } from "pages/Tasks";
@@ -29,7 +29,7 @@ const Toolbar = () => {
     return (
         <div tw="grid grid-flow-col gap-2 py-4 px-8 justify-end sticky top-0 z-40 grid items-center">
             <span tw="text-subtitle text-primary">{lowBattery && "Check Battery Power"}</span>
-            {lowBattery ? <AlertTriangle size={20} /> : <BatteryCharging />}
+            {lowBattery ? <BatteryWarning size={24} /> : <BatteryFull size={24} />}
         </div>
     );
 };

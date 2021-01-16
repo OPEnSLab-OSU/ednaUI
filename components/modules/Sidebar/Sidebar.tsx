@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Activity, Book, List, Tool, Zap } from "react-feather";
+import { Activity, Book, List, Wrench, Lightning } from "phosphor-react";
 import { NavLink } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
@@ -39,12 +39,12 @@ export const Sidebar = () => {
                 E
             </div>
             <div />
-            <NavButton text="Documentation" to="/documentation" icon={<Book />} />
-            <NavButton text="Monitoring" to="/monitoring" icon={<Activity />} />
-            <NavButton text="Tasks" to="/tasks" icon={<List />} />
-            <NavButton text="Utilities" to="/utilities" icon={<Tool />} />
+            <NavButton text="Documentation" to="/documentation" icon={<Book size={24} />} />
+            <NavButton text="Monitoring" to="/monitoring" icon={<Activity size={24} />} />
+            <NavButton text="Tasks" to="/tasks" icon={<List size={24} />} />
+            <NavButton text="Utilities" to="/utilities" icon={<Wrench size={24} />} />
             {process.env.NODE_ENV === "development" && (
-                <NavButton text="Test" to="/test" icon={<Zap />} />
+                <NavButton text="Test" to="/test" icon={<Lightning size={24} />} />
             )}
         </div>
     );

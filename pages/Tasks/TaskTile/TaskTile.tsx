@@ -6,7 +6,7 @@
 
 import { Link } from "react-router-dom";
 import tw, { styled } from "twin.macro";
-import { Edit } from "react-feather";
+import { NotePencil } from "phosphor-react";
 import { truncate } from "lodash";
 
 const Tile = styled(Link)`
@@ -48,8 +48,8 @@ export const TaskTile = ({
             <div tw="text-sm text-secondary py-4 col-span-full">
                 {truncate(description, { length: 80 })}
             </div>
-            <Edit
-                width={20}
+            <NotePencil
+                size={24}
                 tw="justify-self-end self-end col-span-full group-hover:(text-accent)"
             />
         </Tile>

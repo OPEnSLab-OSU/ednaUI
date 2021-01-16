@@ -73,8 +73,7 @@ export const taskCollection = createReducer(initialTaskCollection, builder =>
                 createTask.fulfilled,
                 getTask.fulfilled,
                 scheduleTask.fulfilled,
-                unscheduleTask.fulfilled,
-                updateTask.fulfilled
+                unscheduleTask.fulfilled
             ),
             (state, { payload: task }) => {
                 return { ...state, [task.id]: task };

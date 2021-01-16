@@ -49,7 +49,7 @@ export const createTask = createAsyncThunk("task/create", async (name: string) =
 
 export const getTask = createAsyncThunk("task/get", async (id: string) => {
     const { error, payload } = await post("api/task/get").withJson({ id }).send<TaskServer>();
-    console.log("paylod:", payload);
+    console.log("payload:", payload);
     if (error) throw new Error(error);
     return payload as TaskServer;
 });
@@ -72,12 +72,16 @@ export const deleteTask = createAsyncThunk("task/delete", async (id: string) => 
     if (error) throw new Error(error);
 });
 
-export const scheduleTask = createAsyncThunk("task/schedule", async (id: string) => {
-    const { error, payload } = await post("api/task/schedule").withJson({ id }).send<TaskServer>();
-    console.log(error, payload);
-    if (error) throw new Error(error);
-    return payload as TaskServer;
-});
+export const scheduleTask = createAsyncThunk(
+    "task/schedule",
+    async (id: string, { rejectWithValue }) => {
+        const { error, payload } = await post("api/task/schedule")
+            .withJson({ id })
+            .send<TaskServer>();
+        if (error) return rejectWithValue(error);
+        return payload as TaskServer;
+    }
+);
 
 export const unscheduleTask = createAsyncThunk("task/unschedule", async (id: string) => {
     const { error, payload } = await post("api/task/unschedule")

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import tw, { styled } from "twin.macro";
-import { Check, X } from "react-feather";
+import { Check, X } from "phosphor-react";
 
 import { Button } from "components/units/Button";
 

@@ -64,7 +64,6 @@ function taskToFormValues(task: TaskServer | undefined, defaultValues: FormValue
 
     ([
         "flushTime",
-        "flushVolume",
         "sampleTime",
         "sampleVolume",
         "samplePressure",
@@ -91,7 +90,6 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
             timeBetween: 0,
             valves: "0",
             flushTime: 0,
-            flushVolume: 0,
             sampleTime: 0,
             sampleVolume: 0,
             samplePressure: 0,

@@ -79,8 +79,6 @@ export const TaskServerSchema = object({
     notes: string(),
     flushTime: number()
         .min(0),
-    flushVolume: number()
-        .min(0),
     sampleTime: number()
         .min(0),
     samplePressure: number()
