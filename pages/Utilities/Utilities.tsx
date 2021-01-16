@@ -30,7 +30,7 @@ function Utility({ name, description, onClick }: UtilityProps) {
                     <p tw="col-span-full">Tool</p>
                     <div tw="text-title text-primary group-hover:(text-accent)">{name}</div>
                     <p tw="mt-4">{description}</p>
-                    <Wrench tw="self-end justify-self-end" size={24} />
+                    <Wrench tw="self-end justify-self-end group-hover:(text-accent)" size={24} />
                 </Tile>
             )}
         />

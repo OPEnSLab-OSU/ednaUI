@@ -17,14 +17,14 @@ import { store as ReduxStore } from "root@redux/store";
 import { Test } from "pages/Test";
 import { Utilities } from "pages/Utilities";
 
+import { NotFound } from "pages/NotFound";
+
 import BUILD from "./build.json";
 
 const AppContainer = tw.div`flex h-full bg-white debug-screens`;
 const PageContainer = tw.div`flex flex-col w-full h-screen overflow-y-scroll bg-background`;
 const Toolbar = () => {
     const status = useSelector(state => state.status);
-    console.log(status);
-    console.log(status.lowBattery);
     const lowBattery = status.lowBattery ?? true;
     return (
         <div tw="grid grid-flow-col gap-2 py-4 px-8 justify-end sticky top-0 z-40 grid items-center">
@@ -55,7 +55,7 @@ export const Application = () => (
 
                     <Switch>
                         <Route exact path="/" render={() => <Redirect to="/monitoring" />} />
-                        <Route exact path="/404" render={() => <div>404 Error</div>} />
+                        <Route exact path="/404" render={() => <NotFound />} />
                         <Route exact path="/monitoring" render={() => <Monitoring />} />
                         <Route exact path="/tasks" render={() => <Tasks />} />
                         <Route path="/tasks/:taskId" render={() => <TaskConfig />} />
