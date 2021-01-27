@@ -16,10 +16,10 @@ import { FormValues, configFields, FormSchema } from "../data";
 
 /**
  * Convert task schedule to date YYYY-MM-DD format
- * @param schedule UTC in seconds
+ * @param utcInSecs UTC in seconds
  */
-function toDateString(schedule?: number) {
-    const date = new Date((schedule ?? 0) * 1000);
+function toDateString(utcInSecs?: number) {
+    const date = new Date((utcInSecs ?? 0) * 1000);
     const components = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
     return components.map(c => c.toString().padStart(2, "0")).join("-");
 }

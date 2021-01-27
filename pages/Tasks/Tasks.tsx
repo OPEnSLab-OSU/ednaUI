@@ -43,7 +43,7 @@ const TaskSection = ({ title, tasks }: TaskSectionProps) => {
                             css={{ transition: "transform 0.5s", willChange: "transform" }}>
                             <TaskTile
                                 {...t}
-                                createdAt={new Date(t.createdAt).toLocaleDateString("en-US")}
+                                createdAt={new Date(t.createdAt * 1000).toLocaleDateString("en-US")}
                             />
                         </div>
                     )}

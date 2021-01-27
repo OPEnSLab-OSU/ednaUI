@@ -127,6 +127,8 @@ export const StatusServerSchema = object({
     waterDepth: number()
         .min(0),
     lowBattery: boolean(),
+    sampleVolume: number()
+        .min(0)
 });
 
 export type StatusServer = z.infer<typeof StatusServerSchema>;

@@ -55,6 +55,7 @@ export const SubmitCard = () => {
 
     const saveHandler = handleSubmit(values => {
         const merged = mergeWithFormValues(task, values);
+        console.log(merged);
         dispatch(updateTask(merged))
             .then(unwrapResult)
             .then(() => window.location.reload())

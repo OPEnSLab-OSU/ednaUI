@@ -25,7 +25,8 @@ const Tiling = ({ columns }: { columns: number }) => {
             "temperature",
             "barometric",
             "waterVolume",
-            "waterDepth"
+            "waterDepth",
+            "sampleVolume"
         ),
         value => value?.toFixed(2) ?? "?"
     );
@@ -71,11 +72,6 @@ export const Monitoring = () => {
             <h1 tw="text-display text-primary p-8 pb-0 mx-auto w-full max-w-screen-xl">
                 Monitoring
             </h1>
-
-            {/* <div tw="p-8 mx-auto w-full max-w-screen-xl">
-            <Button text="Pause" onClick={() => setPause(!pause)} />
-            <ConnectionBadge status={result.status} />
-            </div> */}
             <main
                 tw="grid w-full max-w-screen-xl gap-8 mx-auto p-8"
                 css={

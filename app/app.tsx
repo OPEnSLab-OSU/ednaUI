@@ -2,7 +2,7 @@ import "./app.css";
 import tw, { theme } from "twin.macro";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { Provider, useSelector } from "react-redux";
-import { BatteryWarning, BatteryFull, IconContext } from "phosphor-react";
+import { BatteryWarning, BatteryFull } from "phosphor-react";
 
 import { Monitoring } from "pages/Monitoring";
 import { Tasks } from "pages/Tasks";
@@ -26,10 +26,18 @@ const PageContainer = tw.div`flex flex-col w-full h-screen overflow-y-scroll bg-
 const Toolbar = () => {
     const status = useSelector(state => state.status);
     const lowBattery = status.lowBattery ?? true;
+
+    const { utc } = status;
+    const localTime = utc ? new Date(Number(utc * 1000)).toLocaleString() : "----";
+
     return (
-        <div tw="grid grid-flow-col gap-2 py-4 px-8 justify-end sticky top-0 z-40 grid items-center">
-            <span tw="text-subtitle text-primary">{lowBattery && "Check Battery Power"}</span>
-            {lowBattery ? <BatteryWarning size={24} /> : <BatteryFull size={24} />}
+        <div tw="grid grid-flow-col items-center gap-4 py-4 px-8 justify-end text-subtitle text-primary">
+            <div tw="grid grid-flow-col gap-2 items-center">
+                {lowBattery && "Check Battery Power"}
+                {lowBattery ? <BatteryWarning size={24} /> : <BatteryFull size={24} />}
+            </div>
+
+            <div>Last Status Update: {localTime}</div>
         </div>
     );
 };

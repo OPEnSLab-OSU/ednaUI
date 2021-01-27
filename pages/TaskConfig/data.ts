@@ -1,6 +1,7 @@
 import z, { string, number, object } from "zod";
 
 const ValveSchema = number().min(0).max(24);
+
 export const FormSchema = object({
     name: string().max(24),
     date: string().refine(str => str.match(/\d{4}-\d{2}-\d{2}/), {
@@ -83,7 +84,7 @@ export const flushFields: FieldProps[] = [
 
 export const sampleFields: FieldProps[] = [
     { name: "sampleTime", type: "number", label: "Sample Time", helperText: "Unit: second" },
-    { name: "sampleVolume", type: "number", label: "Sample Volume", helperText: "Unit: ml" },
+    { name: "sampleVolume", type: "number", label: "Sample Volume", helperText: "Unit: liter" },
     { name: "samplePressure", type: "number", label: "Sample Pressure", helperText: "Unit: psi" },
 ];
 
