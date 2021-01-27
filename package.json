@@ -12,7 +12,7 @@
         "lint-fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix && tsc --pretty --noEmit",
         "start": "webpack serve --mode=development",
         "clean-install": "rm -rf node_modules && npm cache verify && npm ci",
-        "release": "release-it"
+        "release": "dotenv release-it"
     },
     "keywords": [],
     "author": "Kawin Pechetratanapanit",
@@ -74,6 +74,7 @@
         "core-js": "^3.8.2",
         "css-loader": "^5.0.1",
         "css-minimizer-webpack-plugin": "^1.1.5",
+        "dotenv-cli": "^4.0.0",
         "eslint": "^7.15.0",
         "eslint-config-prettier": "^6.15.0",
         "eslint-import-resolver-alias": "^1.1.2",
