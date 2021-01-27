@@ -26,6 +26,9 @@ module.exports = {
         // Modify the final formatting rules based on prettier
         "plugin:prettier/recommended",
 
+        // eslint-plugin-import presets
+        // See https://github.com/benmosher/eslint-plugin-import/tree/master/config
+        // Also see https://github.com/benmosher/eslint-plugin-import/tree/master/docs/rules
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:import/typescript",
@@ -37,14 +40,7 @@ module.exports = {
     parser: "@typescript-eslint/parser",
 
     // Ignore generated files
-    ignorePatterns: [
-        "node_modules/*",
-        ".next/*",
-        ".out/*",
-        "!.lintstagedrc.js",
-        "!.storybook",
-        "*.html",
-    ],
+    ignorePatterns: ["node_modules/*", ".next/*", ".out/*", "!.lintstagedrc.js", "!.storybook"],
 
     // Enable global variables for browser, node, and ES6
     env: {
@@ -61,29 +57,24 @@ module.exports = {
         ecmaVersion: 2020,
         ecmaFeatures: {
             jsx: true, // Parse JSX
-            experimentalObjectRestSpread: true,
         },
     },
     plugins: ["react", "@typescript-eslint", "prettier"],
     settings: {
         react: {
-            // eslint-plugin-preact interprets this as "h.createElement",
-            // however we only care about marking h() as being a used variable.
-            pragma: "h",
-            // We use "react 16.0" to avoid pushing folks to UNSAFE_ methods.
-            version: "16.0",
+            version: "detect",
         },
         "import/resolver": {
-            webpack: {
-                config: "./webpack.config.js",
+            typescript: {
+                project: ".",
             },
-            alias: [
-                ["react", "preact/compat"],
-                ["react-dom", "preact/compat"],
-            ],
         },
     },
     rules: {
+        // Editor
+        "linebreak-style": ["error", "unix"],
+
+        // Code
         "class-methods-use-this": "off",
         "comma-dangle": "off",
         "function-paren-newline": "off",
@@ -97,7 +88,7 @@ module.exports = {
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": [
             "warn",
-            { argsIgnorePattern: "^_", varsIgnorePattern: "^_|tw" },
+            { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
         ],
 
         "react/prop-types": "off",
@@ -109,17 +100,16 @@ module.exports = {
         "@typescript-eslint/ban-types": "error",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-empty-interface": "off", // We need this to augment TS interface
         "@typescript-eslint/no-var-requires": "off",
 
-        // Import order
+        // Import ordering
         "import/order": [
             "error",
             {
-                "newlines-between": "always-and-inside-groups",
+                "newlines-between": "always",
                 groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
             },
         ],
-        // "import/external-module-folder": ["./components/"]
     },
 };

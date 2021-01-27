@@ -8,9 +8,10 @@
         "build": "webpack --mode=production",
         "watch": "webpack --mode=development --watch",
         "dev": "webpack --mode=development",
-        "lint": "eslint . --ext .ts,.tsx && tsc --pretty --noEmit",
-        "lint-fix": "eslint . --ext .ts,.tsx --fix && tsc --pretty --noEmit",
-        "start": "webpack serve --mode=development"
+        "lint": "eslint . --ext .ts,.tsx,.js,.jsx && tsc --pretty --noEmit",
+        "lint-fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix && tsc --pretty --noEmit",
+        "start": "webpack serve --mode=development",
+        "clean-install": "rm -rf node_modules && npm cache verify && npm ci"
     },
     "keywords": [],
     "author": "Kawin Pechetratanapanit",
