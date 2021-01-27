@@ -21,8 +21,9 @@ jobs:
             - name: Installing dependencies
               run: npm ci # "npm clean install" commonly used for CI
 
-            - name: Linting
-              run: npm run lint
-
+            # Building is before linting so we can generate auto-generated files
             - name: Building
               run: npm run build --if-present
+
+            - name: Linting
+              run: npm run lint
