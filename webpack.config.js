@@ -1,13 +1,12 @@
 const path = require("path");
-const webpack = require("webpack"); //to access built-in plugins
 const zlib = require("zlib");
+const webpack = require("webpack"); //to access built-in plugins
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackHarddiskPlugin = require("html-webpack-harddisk-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-
 // Required in order to inline CSS and JS files into HTML
 const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
 const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
@@ -15,8 +14,6 @@ const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").def
 module.exports = (_env, argv) => {
     process.env.NODE_ENV = argv.mode;
     const isProduction = process.env.NODE_ENV == "production";
-    console.log("Environment: ", process.env.NODE_ENV);
-
     return {
         mode: isProduction ? "production" : "development",
         context: __dirname,

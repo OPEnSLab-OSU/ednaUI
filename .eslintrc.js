@@ -40,7 +40,16 @@ module.exports = {
     parser: "@typescript-eslint/parser",
 
     // Ignore generated files
-    ignorePatterns: ["node_modules/*", ".next/*", ".out/*", "!.lintstagedrc.js", "!.storybook"],
+    ignorePatterns: [
+        ".next",
+        "node_modules",
+        "dist",
+        "public",
+        "build",
+        "out",
+        "!.lintstagedrc.js",
+        "!.storybook",
+    ],
 
     // Enable global variables for browser, node, and ES6
     env: {
@@ -62,12 +71,20 @@ module.exports = {
     plugins: ["react", "@typescript-eslint", "prettier"],
     settings: {
         react: {
-            version: "detect",
+            // eslint-plugin-preact interprets this as "h.createElement",
+            // however we only care about marking h() as being a used variable.
+            pragma: "h",
+            // We use "react 16.0" to avoid pushing folks to UNSAFE_ methods.
+            version: "16.0",
         },
         "import/resolver": {
-            typescript: {
-                project: ".",
+            webpack: {
+                config: "./webpack.config.js",
             },
+            alias: [
+                ["react", "preact/compat"],
+                ["react-dom", "preact/compat"],
+            ],
         },
     },
     rules: {
@@ -88,7 +105,7 @@ module.exports = {
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": [
             "warn",
-            { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+            { argsIgnorePattern: "^_", varsIgnorePattern: "^_|tw" },
         ],
 
         "react/prop-types": "off",
@@ -107,7 +124,7 @@ module.exports = {
         "import/order": [
             "error",
             {
-                "newlines-between": "always",
+                "newlines-between": "always-and-inside-groups",
                 groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
             },
         ],
