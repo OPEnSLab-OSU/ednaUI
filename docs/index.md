@@ -5,4 +5,4 @@ permalink: /
 ---
 
 
-![ednaUI](readme_screenshot.png)
+![ednaUI](images/readme_screenshot.png)
