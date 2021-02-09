@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Cleaning the System
-permalink: /cleaning/
+permalink: /cleaning
 ---
 
 

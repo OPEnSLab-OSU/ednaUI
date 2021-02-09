@@ -263,6 +263,7 @@ GEM
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
     wdm (0.1.1)
+    webrick (1.7.0)
     zeitwerk (2.4.2)
 
 PLATFORMS
@@ -271,6 +272,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages (~> 211)
+  jekyll (~> 3.9.0)
   jekyll-feed (~> 0.6)
   just-the-docs
   kramdown-parser-gfm
@@ -278,6 +280,7 @@ DEPENDENCIES
   tzinfo (~> 1.2)
   tzinfo-data
   wdm (~> 0.1.0)
+  webrick (~> 1.7)
 
 BUNDLED WITH
-   2.2.7
+   2.2.9
