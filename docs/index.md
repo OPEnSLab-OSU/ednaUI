@@ -2,6 +2,7 @@
 layout: page
 title: Initial Steps
 permalink: /
+nav_order: 1
 ---
 
 
