@@ -1,0 +1,30 @@
+---
+layout: page
+title: Trouble Shooting
+permalink: /trouble-shooting
+---
+
+# **Trouble Shooting**
+
+----
+
+<details open markdown="block">
+  <summary>
+    Documented Problems
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
+
+
+## SD file corruption
+
+- What causes this?
+It's possible that if power is interrupted to the sampler while it is writing to a SD file, meaning that file won't be written to properly. 
+
+- What does this problem look like?
+If the sampler doesn't work on start up and seems to freeze (lights aren't blinking, UI can't be connected to), then it is possible that this problem is occurring
+
+- How to resolve this issue?
+The easiest way to resolve this issue is to remove all files from the SD card and then put on new files. You may also run the sampler through debug mode following the firmware installation guide, and then check the serial monitor for when the sampler says there is an error.
