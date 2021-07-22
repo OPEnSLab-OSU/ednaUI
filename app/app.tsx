@@ -7,6 +7,7 @@ import { BatteryWarning, BatteryFull } from "phosphor-react";
 import { Monitoring } from "pages/Monitoring";
 import { Tasks } from "pages/Tasks";
 import { TaskConfig } from "pages/TaskConfig";
+import { NowTaskConfig } from "pages/NowTaskConfig";
 
 import { Sidebar } from "components/modules/Sidebar";
 import { Breadcrumb } from "components/modules/Breadcrumb";
@@ -67,7 +68,7 @@ export const Application = () => (
                         <Route exact path="/monitoring" render={() => <Monitoring />} />
                         <Route exact path="/tasks" render={() => <Tasks />} />
                         <Route path="/tasks/:taskId" render={() => <TaskConfig />} />
-                        <Route path="/nowTask" render={() => <TaskConfig />} />
+                        <Route path="/nowTask" render={() => <NowTaskConfig />} />
                         <Route path="/utilities" render={() => <Utilities />} />
                         {process.env.NODE_ENV === "development" && (
                             <Route path="/test" render={() => <Test />} />
