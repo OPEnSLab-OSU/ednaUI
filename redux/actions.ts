@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { StatusServer, TaskServer } from "root@redux/models";
+import { StatusServer, TaskServer, NowTaskServer } from "root@redux/models";
 import { base, get, post } from "app/http";
 import { arrayToObject } from "lib";
 
@@ -39,6 +39,15 @@ export const getTaskCollection = createAsyncThunk("taskCollection/get", async ()
 });
 
 /**
+ * Redux Thunk. Retrieve sample now task from server then notify the redux store for further handling.
+ */
+ export const getNowTask = createAsyncThunk("nowTask/get", async () => {
+    const response = await fetch(new URL("api/nowtask", base).toString());
+    const payload = (await response.json()) as NowTaskServer[];
+    return arrayToObject(payload, "id");
+});
+
+/**
  * Redux Thunk. Request server to create a new task with given name
  */
 export const createTask = createAsyncThunk("task/create", async (name: string) => {
@@ -61,6 +70,15 @@ export const updateTask = createAsyncThunk("task/update", async function (task: 
     const { error, payload } = await post("api/task/save").withJson(task).send<TaskServer>();
     if (error) throw new Error(error);
     return payload as TaskServer;
+});
+
+/**
+ * Redux Thunk. Send updated task information to server. Then refresh the task collection.
+ */
+ export const updateNowTask = createAsyncThunk("nowTask/update", async function (task: NowTaskServer) {
+    const { error, payload } = await post("api/nowTask/save").withJson(task).send<NowTaskServer>();
+    if (error) throw new Error(error);
+    return payload as NowTaskServer;
 });
 
 /**

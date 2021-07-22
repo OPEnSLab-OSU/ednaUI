@@ -102,6 +102,46 @@ export const mapTaskStatusToString: Record<number, TaskServerStatus> = {
 };
 
 //
+// ──────────────────────────────────────────────── VI ─────────
+//   :::::: NowT A S K : :  :   :    :     :        :          :
+// ──────────────────────────────────────────────────────────
+//
+
+// ────────────────────────────────────────────────────────────────────────────────
+// This schema is used to ensure correct NowTask object shape between server and client
+// ────────────────────────────────────────────────────────────────────────────────
+// This is where we define the structure of our JSON payload. In a more robust env,
+// one would send over a schema and use an editor plugin to strongly-type out the
+// object but this should do for now.
+
+// prettier-ignore
+
+export const NowTaskServerSchema = object({
+    id: string(),
+    status: number()
+        .int()
+        .min(0),
+    flushTime: number()
+        .min(0),
+    sampleTime: number()
+        .min(0),
+    samplePressure: number()
+        .min(0),
+    sampleVolume: number()
+        .min(0),
+    dryTime: number()
+        .min(0),
+    preserveTime: number()
+        .min(0),
+    currentValve: number()
+        .int()
+        .min(0),
+});
+
+export type NowTaskServer = z.infer<typeof NowTaskServerSchema>;
+export type NowTaskCollectionInStore = Dictionary<NowTaskServer>;
+
+//
 // ──────────────────────────────────────────────────── IV ──────────
 //   :::::: S T A T U S : :  :   :    :     :        :          :
 // ──────────────────────────────────────────────────────────────
@@ -111,6 +151,7 @@ export const mapTaskStatusToString: Record<number, TaskServerStatus> = {
 export const StatusServerSchema = object({
     currentState: string(),
     currentTask: string().nullable(),
+    currentNowTask: string().nullable(),
     valves: array(number()),
     utc: number()
         .min(0),
@@ -139,3 +180,4 @@ export type StatusInStore = Partial<StatusServer> & { rejects: number };
 //   :::::: V A L V E : :  :   :    :     :        :          :
 // ────────────────────────────────────────────────────────────
 //
+

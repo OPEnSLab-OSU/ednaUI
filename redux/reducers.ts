@@ -1,7 +1,7 @@
 import { createReducer, isAnyOf } from "@reduxjs/toolkit";
 import { random, times, transform } from "lodash";
 
-import { StatusInStore, TaskCollectionInStore } from "root@redux/models";
+import { StatusInStore, TaskCollectionInStore, NowTaskCollectionInStore } from "root@redux/models";
 import {
     getStatusUpdate,
     getTaskCollection,
@@ -11,6 +11,8 @@ import {
     setLoadingScreen,
     getTask,
     updateTask,
+    getNowTask,
+    updateNowTask
 } from "root@redux/actions";
 
 import BUILD_META from "app/build.json";
@@ -77,6 +79,36 @@ export const taskCollection = createReducer(initialTaskCollection, builder =>
             ),
             (state, { payload: task }) => {
                 return { ...state, [task.id]: task };
+            }
+        )
+);
+
+const makeNowTaskMock = (id: string, status: number) => ({
+    id,
+    status,
+    flushTime: 0,
+    flushVolume: 0,
+    sampleTime: 0,
+    sampleVolume: 0,
+    samplePressure: 0,
+    dryTime: 0,
+    preserveTime: 0,
+    currentValve: 1
+});
+
+const initialNowTaskCollection: NowTaskCollectionInStore  = {};
+
+export const nowTaskCollection = createReducer(initialNowTaskCollection, builder =>
+    builder
+        .addCase(getNowTask.fulfilled, (_, { payload: collection }) => {
+            return collection;
+        })
+        .addMatcher(
+            isAnyOf(
+                updateNowTask.fulfilled
+            ),
+            (state, { payload: task }) => {
+                return { ...state, [task.id] : task };
             }
         )
 );

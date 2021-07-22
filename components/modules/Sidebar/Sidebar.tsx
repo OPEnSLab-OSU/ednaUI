@@ -42,6 +42,7 @@ export const Sidebar = () => {
             <NavButton text="Documentation" to="/documentation" icon={<Book size={24} />} />
             <NavButton text="Monitoring" to="/monitoring" icon={<Activity size={24} />} />
             <NavButton text="Tasks" to="/tasks" icon={<List size={24} />} />
+            <NavButton text="Sample Now Task" to="/nowTask" icon={<Wrench size={24} />} />
             <NavButton text="Utilities" to="/utilities" icon={<Wrench size={24} />} />
             {process.env.NODE_ENV === "development" && (
                 <NavButton text="Test" to="/test" icon={<Lightning size={24} />} />

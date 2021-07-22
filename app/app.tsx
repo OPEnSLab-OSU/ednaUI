@@ -67,6 +67,7 @@ export const Application = () => (
                         <Route exact path="/monitoring" render={() => <Monitoring />} />
                         <Route exact path="/tasks" render={() => <Tasks />} />
                         <Route path="/tasks/:taskId" render={() => <TaskConfig />} />
+                        <Route path="/nowTask" render={() => <TaskConfig />} />
                         <Route path="/utilities" render={() => <Utilities />} />
                         {process.env.NODE_ENV === "development" && (
                             <Route path="/test" render={() => <Test />} />
