@@ -24,7 +24,6 @@ export const FormSchema = object({
     samplePressure: number().min(0),
     dryTime: number().min(0),
     preserveTime: number().min(0),
-    currentValve: number().min(0)
 });
 
 export type FormValues = z.infer<typeof FormSchema>;

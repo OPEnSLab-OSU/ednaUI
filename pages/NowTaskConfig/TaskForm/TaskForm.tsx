@@ -56,8 +56,7 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
             sampleVolume: 0,
             samplePressure: 0,
             dryTime: 0,
-            preserveTime: 0,
-            currentValve: 0
+            preserveTime: 0
         })
     );
 

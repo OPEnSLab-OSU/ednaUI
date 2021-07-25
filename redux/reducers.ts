@@ -103,14 +103,6 @@ export const nowTaskCollection = createReducer(initialNowTaskCollection, builder
         .addCase(getNowTask.fulfilled, (_, { payload: collection }) => {
             return collection;
         })
-        .addMatcher(
-            isAnyOf(
-                updateNowTask.fulfilled
-            ),
-            (state, { payload: task }) => {
-                return { ...state, [task.id] : task };
-            }
-        )
 );
 
 export const loadingScreen = createReducer<"showing" | "hiding">("hiding", builder =>

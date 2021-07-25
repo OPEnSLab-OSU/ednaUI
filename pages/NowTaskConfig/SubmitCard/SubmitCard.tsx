@@ -23,8 +23,7 @@ const mergeWithFormValues = (base: NowTaskServer, values: FormValues): NowTaskSe
         "samplePressure",
         "sampleVolume",
         "dryTime",
-        "preserveTime",
-        "currentValve"
+        "preserveTime"
     ] as const).forEach(f => {
         merged[f] = values[f];
     });
@@ -46,6 +45,7 @@ export const SubmitCard = () => {
 
     const saveHandler = handleSubmit(values => {
         const merged = mergeWithFormValues(task, values);
+        window.alert("SAVING");
         console.log(merged);
         dispatch(updateNowTask(merged))
             .then(unwrapResult)

@@ -76,7 +76,7 @@ export const updateTask = createAsyncThunk("task/update", async function (task: 
  * Redux Thunk. Send updated task information to server. Then refresh the task collection.
  */
  export const updateNowTask = createAsyncThunk("nowTask/update", async function (task: NowTaskServer) {
-    const { error, payload } = await post("api/nowTask/save").withJson(task).send<NowTaskServer>();
+    const { error, payload } = await post("api/nowtask/save").withJson(task).send<NowTaskServer>();
     if (error) throw new Error(error);
     return payload as NowTaskServer;
 });
