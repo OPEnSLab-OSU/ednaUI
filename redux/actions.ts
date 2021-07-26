@@ -41,7 +41,7 @@ export const getTaskCollection = createAsyncThunk("taskCollection/get", async ()
 /**
  * Redux Thunk. Retrieve sample now task from server then notify the redux store for further handling.
  */
- export const getNowTask = createAsyncThunk("nowTask/get", async () => {
+export const getNowTask = createAsyncThunk("nowTask/get", async () => {
     const response = await fetch(new URL("api/nowtask", base).toString());
     const payload = (await response.json()) as NowTaskServer[];
     return arrayToObject(payload, "id");
@@ -75,7 +75,7 @@ export const updateTask = createAsyncThunk("task/update", async function (task: 
 /**
  * Redux Thunk. Send updated task information to server. Then refresh the task collection.
  */
- export const updateNowTask = createAsyncThunk("nowTask/update", async function (task: NowTaskServer) {
+export const updateNowTask = createAsyncThunk("nowTask/update", async function (task: NowTaskServer) {
     const { error, payload } = await post("api/nowtask/save").withJson(task).send<NowTaskServer>();
     if (error) throw new Error(error);
     return payload as NowTaskServer;

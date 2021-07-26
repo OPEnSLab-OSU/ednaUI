@@ -23,7 +23,7 @@ const mergeWithFormValues = (base: NowTaskServer, values: FormValues): NowTaskSe
         "samplePressure",
         "sampleVolume",
         "dryTime",
-        "preserveTime"
+        "preserveTime",
     ] as const).forEach(f => {
         merged[f] = values[f];
     });
@@ -45,7 +45,6 @@ export const SubmitCard = () => {
 
     const saveHandler = handleSubmit(values => {
         const merged = mergeWithFormValues(task, values);
-        window.alert("SAVING");
         console.log(merged);
         dispatch(updateNowTask(merged))
             .then(unwrapResult)
@@ -53,39 +52,24 @@ export const SubmitCard = () => {
             .catch(alert);
     });
 
-
-
     const taskStatus = mapTaskStatusToString[task.status];
 
     return (
         <Card
             tw="p-0 h-72 sticky self-start whitespace-nowrap w-full max-w-xs"
-            title={taskStatus === "active" ? "Unschedule Task" : "Schedule Task"}
+            title="Edit Task"
             css={{
                 top: "48px",
                 marginTop: "120px",
             }}>
             <div tw="grid gap-4 content-start">
-                <div tw="text-subtitle text-secondary flex whitespace-normal">
-                    {taskStatus === "active"
-                        ? "Task is currently active. Please unschedule the task to make modifications"
-                        : "Server will begin task verification process. If successful, it will be scheduled immediately."}
-                </div>
-                <Button
-                    css={
-                        taskStatus === "active"
-                            ? tw`text-white bg-red-400 w-full`
-                            : tw`text-white bg-accent w-full`
-                    }
-                    disabled={formState.isDirty}
-                />
-
+ 
                 {taskStatus !== "active" && (
                     <>
                         <div tw="text-subtitle text-secondary whitespace-normal">
                             {formState.isDirty
                                 ? "You can unsaved changes. Please save before schedule your task"
-                                : "Task is ready to be schedule"}
+                                : "Task is ready for button press"}
                         </div>
                         <div
                             tw="grid gap-4"

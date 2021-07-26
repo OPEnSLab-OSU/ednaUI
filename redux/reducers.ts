@@ -12,7 +12,7 @@ import {
     getTask,
     updateTask,
     getNowTask,
-    updateNowTask
+    updateNowTask,
 } from "root@redux/actions";
 
 import BUILD_META from "app/build.json";
@@ -93,16 +93,13 @@ const makeNowTaskMock = (id: string, status: number) => ({
     samplePressure: 0,
     dryTime: 0,
     preserveTime: 0,
-    currentValve: 1
+    currentValve: 1,
 });
 
 const initialNowTaskCollection: NowTaskCollectionInStore  = {};
 
-export const nowTaskCollection = createReducer(initialNowTaskCollection, builder =>
-    builder
-        .addCase(getNowTask.fulfilled, (_, { payload: collection }) => {
-            return collection;
-        })
+export const nowTaskCollection = createReducer(initialNowTaskCollection, builder => builder
+        .addCase(getNowTask.fulfilled, (_, { payload: collection }) => {return collection;})
 );
 
 export const loadingScreen = createReducer<"showing" | "hiding">("hiding", builder =>

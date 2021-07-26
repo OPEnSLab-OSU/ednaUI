@@ -180,4 +180,3 @@ export type StatusInStore = Partial<StatusServer> & { rejects: number };
 //   :::::: V A L V E : :  :   :    :     :        :          :
 // ────────────────────────────────────────────────────────────
 //
-
