@@ -44,11 +44,15 @@ module.exports = {
         ".next",
         "node_modules",
         "dist",
+        "_dist",
         "public",
         "build",
         "out",
         "!.lintstagedrc.js",
         "!.storybook",
+        "webpack.config.js",
+        "tailwind.config.js",
+        "scripts",
     ],
 
     // Enable global variables for browser, node, and ES6
@@ -89,7 +93,7 @@ module.exports = {
     },
     rules: {
         // Editor
-        "linebreak-style": ["error", "unix"],
+        //"linebreak-style": ["error", "unix"],
 
         // Code
         "class-methods-use-this": "off",
