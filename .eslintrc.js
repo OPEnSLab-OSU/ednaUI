@@ -93,7 +93,7 @@ module.exports = {
     },
     rules: {
         // Editor
-        //"linebreak-style": ["error", "unix"],
+        "linebreak-style": ["error", "unix"],
 
         // Code
         "class-methods-use-this": "off",
