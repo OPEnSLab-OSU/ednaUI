@@ -1,6 +1,8 @@
 import { createReducer, isAnyOf } from "@reduxjs/toolkit";
 import { random, times, transform } from "lodash";
 
+import BUILD_META from "app/build.json";
+
 import { StatusInStore, TaskCollectionInStore, NowTaskCollectionInStore } from "root@redux/models";
 import {
     getStatusUpdate,
@@ -14,8 +16,6 @@ import {
     getNowTask,
     updateNowTask,
 } from "root@redux/actions";
-
-import BUILD_META from "app/build.json";
 
 //
 // ────────────────────────────────────────────────────── I ──────────
@@ -96,10 +96,12 @@ const makeNowTaskMock = (id: string, status: number) => ({
     currentValve: 1,
 });
 
-const initialNowTaskCollection: NowTaskCollectionInStore  = {};
+const initialNowTaskCollection: NowTaskCollectionInStore = {};
 
-export const nowTaskCollection = createReducer(initialNowTaskCollection, builder => builder
-        .addCase(getNowTask.fulfilled, (_, { payload: collection }) => {return collection;})
+export const nowTaskCollection = createReducer(initialNowTaskCollection, builder =>
+    builder.addCase(getNowTask.fulfilled, (_, { payload: collection }) => {
+        return collection;
+    })
 );
 
 export const loadingScreen = createReducer<"showing" | "hiding">("hiding", builder =>

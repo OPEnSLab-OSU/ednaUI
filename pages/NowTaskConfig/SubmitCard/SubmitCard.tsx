@@ -63,7 +63,6 @@ export const SubmitCard = () => {
                 marginTop: "120px",
             }}>
             <div tw="grid gap-4 content-start">
- 
                 {taskStatus !== "active" && (
                     <>
                         <div tw="text-subtitle text-secondary whitespace-normal">
@@ -91,7 +90,6 @@ export const SubmitCard = () => {
                                 onClick={saveHandler}
                             />
                         </div>
-
                     </>
                 )}
             </div>
