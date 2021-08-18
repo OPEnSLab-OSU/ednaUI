@@ -8,6 +8,11 @@ permalink: /task-config
 
 ----
 
+## Warning
+
+Currently, a task cannot handle a large number of valves without getting stuck. It's recommended to keep tasks to around 4 valves until this is fixed.
+We apologize for the inconvenience.
+
 <details open markdown="block">
   <summary>
     Table of contents
