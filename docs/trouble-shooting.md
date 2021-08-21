@@ -57,3 +57,20 @@ When a task is set to sample a large number of valves (6+), often the task will 
 - How to resolve this issue?
 
 Currently, we recommend setting tasks to around 4 valves maximum, and making multiple tasks if you want more valves sampled.
+
+## PlatformIO (Visual Studio Code Extension) is not working
+- What causes this?
+
+There could be a variety of issues that is causing this.
+
+- What does this problem look like?
+
+There are a variety of possible error messages, but they all orignate from PlatformIO. For example: when trying to upload code, PlatformIO may complain that it cannot start its home server, or it may give an error message that it failed to install PlatformIO IDE.
+
+- How to resolve this issue?
+
+Often, the best thing to do is to open the Visual Studio Code Console and see what errors it prints. First, go to the `help` tab on the top menu of VSCode. Then, press `Toggle Developer Tools`. This will open a new panel on the right side of your screen, and you'll want to go the top menu on this panel and click on `Console`. Reading through some of error messages will tell you what the error is. For example, it could be that there's a missing python package. Because there's a variety of possible issues, if you feel uncomfortable solving them yourself, feel free to reach out to us and we can help.
+
+<div align="center" style="margin-top: 24px">
+    <img src="images/vscode_developer_console.png" alt="Developer Console in VSCode">
+</div>
