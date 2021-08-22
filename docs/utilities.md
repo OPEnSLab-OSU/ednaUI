@@ -20,7 +20,7 @@ permalink: /utilities
 
 ## HyperFlush
 
-HyperFlush is mainly used for cleaning out the system. The cleaning protocol is in<a href="/cleaning"> cleaning</a>.
+HyperFlush is mainly used for cleaning out the system. The cleaning protocol is in<a href="/ednaUI/cleaning"> cleaning</a>.
 
 
 ## Update RTC
