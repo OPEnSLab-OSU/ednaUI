@@ -5,6 +5,10 @@ permalink: /
 nav_order: 1
 ---
 
+## How to connect to the eDNA UI
+
+The eDNA sampler is likely off, so make sure first that the battery is plugged in and the switch on the side of the electronics box has been flipped. LEDs will light up to indicate that the machine is powered on. Next, check on your laptop or computer for a WiFi network called `ednaServer`, and connect to it. The default password is `password`, which can be changed by following the guide in <a href="/ednaUI/firmware-installation"> firmware-installation</a>. From there, navigate to a web browser and go to `192.168.1.1`.
+
 
 ## Initial steps
 
