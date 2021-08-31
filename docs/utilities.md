@@ -31,3 +31,7 @@ Updating the RTC is needed to make sure that the time on the sampler matches you
 ## Reset Valves
 
 Resetting valves is needed when valves have been sampled that you want to be sampled again. The code doesn't let you sample a valve mulitple times without being reset to prevent messing up a sample.
+
+## Alcohol Bubble Purge (for samplers with alcohol bags over alcohol containers)
+
+This utility turns the pump on and sets the alcohol valve to high for 10 seconds, which runs some alcohol through the system and removes air bubbles from the alcohol bag. Often it helps to use multiple times.
