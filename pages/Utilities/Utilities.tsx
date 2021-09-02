@@ -84,11 +84,29 @@ const ResetValves = () => (
     />
 );
 
+const BubblePurge = () => (
+    <Utility
+        name={"Purge Air Bubbles"}
+        description={
+            "This utility runs alcohol through the system so that there is no more bubbles in the alcohol bag. It turns the pump on and sets the alcohol valve to high."
+        }
+        onClick={() => {
+            get("api/alcohol-debubbler")
+                .withTimeout(1000)
+                .send()
+                .then(() => {
+                    alert("Bubble Purge started");
+                });
+        }}
+    />
+);
+
 export function Utilities() {
     return (
         <PageContainer>
             <h1 tw="text-display text-primary col-span-full ">Utilities</h1>
             <HyperFlush />
+            <BubblePurge />
             <UpdateRTC />
             <ResetValves />
         </PageContainer>
