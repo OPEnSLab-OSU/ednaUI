@@ -1,6 +1,6 @@
 import z, { string, number, object } from "zod";
 
-const ValveSchema = number().min(0).max(24);
+const ValveSchema = number().min(0).max(23);
 
 export const FormSchema = object({
     name: string().max(24),
@@ -12,12 +12,41 @@ export const FormSchema = object({
     }),
     valves: string()
         .nonempty()
-        .refine(s => s.split(",").every(n => !isNaN(Number(n))), {
-            message: "Input contains non-numeric character or doesn't follow the format",
-        })
-        .refine(s => s.split(",").every(n => ValveSchema.safeParse(Number(n)).success), {
-            message: "Valve number must be >= 0 and <= 23",
-        }),
+        .refine(
+            s => s.split(",").every(n => n.split("-").every(n => !isNaN(Number(n)) || n == "-")),
+            {
+                message: "Input contains non-numeric character or doesn't follow the format",
+            }
+        )
+        .refine(
+            s =>
+                s
+                    .split(",")
+                    .every(n => n.split("-").every(n => ValveSchema.safeParse(Number(n)).success)),
+            {
+                message: "Valve number must be >= 0 and <= 23",
+            }
+        )
+        .refine(
+            s =>
+                Array.from(s.matchAll(/(\d*-\d*)/g)).every(m =>
+                    RegExp(/(\d+-\d+)/g).test(m.toString())
+                ),
+            {
+                message: "Range missing bound",
+            }
+        )
+        .refine(
+            s =>
+                Array.from(s.matchAll(/(\d+-\d+)/g)).every(
+                    m =>
+                        Number([...m.toString().matchAll(/(\d+(?=-))-(\d+)/g)][0][1]) <
+                        Number([...m.toString().matchAll(/(\d+(?=-))-(\d+)/g)][0][2])
+                ),
+            {
+                message: "Larger bound is first",
+            }
+        ),
     timeBetween: number().min(0),
     notes: string().optional(),
     flushTime: number().min(0),
@@ -66,7 +95,7 @@ export const valveFields: FieldProps[] = [
         name: "valves",
         label: "Valves",
         sublabel: "Valves asigned to this task",
-        helperText: "Comma-separated valve numbers: eg. 1,2,3,4",
+        helperText: "Comma-separated valve numbers & ranges: eg. 1,3-8,21",
     },
     {
         name: "timeBetween",
