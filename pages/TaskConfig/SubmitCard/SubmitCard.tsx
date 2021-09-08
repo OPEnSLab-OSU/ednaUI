@@ -24,7 +24,7 @@ const mergeWithFormValues = (base: TaskServer, values: FormValues): TaskServer =
     merged.schedule = Math.floor(schedule.getTime() / 1000);
 
     merged.timeBetween = values.timeBetween;
-    merged.valves = values.valves.split(",").map(v => Number(v));
+    merged.valves = getValves(values.valves);
 
     ([
         "flushTime",
@@ -39,6 +39,35 @@ const mergeWithFormValues = (base: TaskServer, values: FormValues): TaskServer =
 
     return merged;
 };
+
+function getValves(valves: string) {
+    const regexp = /(\d+-\d+)|\d+/g;
+    const matches = [...valves.matchAll(regexp)];
+    console.log(matches);
+    let values: number[] = [];
+    const distinctValues = new Set();
+    matches.forEach(function (match) {
+        const matchString = match.toString();
+        if (matchString.indexOf("-")) {
+            const firstBound = parseInt(matchString.slice(0, matchString.indexOf("-")), 10);
+            const secondBound = parseInt(matchString.slice(matchString.indexOf("-") + 1), 10);
+            for (let i = firstBound; i < secondBound + 1; i++) {
+                values.push(i);
+            }
+        } else {
+            values.push(parseInt(matchString, 10));
+        }
+    });
+
+    values.forEach(function (value) {
+        distinctValues.add(value);
+    });
+    values = [];
+    for (const distinctValue of distinctValues) {
+        values.push(Number(distinctValue));
+    }
+    return values;
+}
 
 export const SubmitCard = () => {
     // Get Task from store then merge with data in the form
