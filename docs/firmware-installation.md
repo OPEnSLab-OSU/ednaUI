@@ -26,7 +26,7 @@ permalink: /firmware-installation
 
 ### Download ZIP Files from GitHub
 
-1. Get the GitHub repository branch link that is relavent to your version in the<a href="https://docs.google.com/document/d/1sNdii0bUCyOve2XvNgGPh8UOBXxFWxznv6qSIyuU9vA"> Sampler History Document</a> under `Firmware`.
+1. Get the GitHub repository branch link that is relavent to your version in the<a href="https://docs.google.com/document/d/1sNdii0bUCyOve2XvNgGPh8UOBXxFWxznv6qSIyuU9vA" target="_blank"> Sampler History Document</a> under `Firmware`.
 
 2. Download a ZIP file for that branch of code that you plan on using, and then unzip. 
   
@@ -34,7 +34,7 @@ permalink: /firmware-installation
         <img src="images/GitHubDownload.png" width="600px" style="border-radius: 4px">
     </div>
 
-3. Download the ZIP file for the<a href="https://github.com/OPEnSLab-OSU/OPEnSamplerFramework/tree/develop"> Git Submodule</a> of the code. After unzipping this file, copy and paste the contents of the main folder inside of the `lib/Framework` folder from the download of step 2.
+3. Download the ZIP file for the<a href="https://github.com/OPEnSLab-OSU/OPEnSamplerFramework/tree/develop" target="_blank"> Git Submodule</a> of the code. After unzipping this file, copy and paste the contents of the main folder inside of the `lib/Framework` folder from the download of step 2.
 
 4. Open the code from step 2 inside of VSCode by going to `File => Open Folder...`
 
@@ -83,11 +83,12 @@ permalink: /firmware-installation
 
 ### Clone Git Repository
 
-1. The following code clone development git repo to your local computer
+1. The following code clone development git repo to your local computer. Switch to the relavent branch based on the<a href="https://docs.google.com/document/d/1sNdii0bUCyOve2XvNgGPh8UOBXxFWxznv6qSIyuU9vA" target="_blank"> Sampler History Document</a>. The Master branch, which the repo is on by default, is the latest version.
 
     ```bash
     git clone https://github.com/OPEnSLab-OSU/ednaServer 
     cd ednaServer
+    git checkout <branch>
     ```
 
 2. Initialize git submodule. This will pull in another git repo that the server relies on.
