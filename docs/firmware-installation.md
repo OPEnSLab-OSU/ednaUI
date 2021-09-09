@@ -28,8 +28,9 @@ permalink: /firmware-installation
 
 1. Get the GitHub repository branch link that is relavent to your version in the<a href="https://docs.google.com/document/d/1sNdii0bUCyOve2XvNgGPh8UOBXxFWxznv6qSIyuU9vA"> Sampler History Document</a> under `Firmware`.
 
-2. Download a ZIP file for that branch of code that you plan on using, and then unzip.   
-<div align="center">
+2. Download a ZIP file for that branch of code that you plan on using, and then unzip. 
+  
+    <div align="center">
         <img src="images/GitHubDownload.png" width="600px" style="border-radius: 4px">
     </div>
 
