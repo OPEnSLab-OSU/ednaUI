@@ -9,6 +9,12 @@ nav_order: 1
 
 The eDNA sampler is likely off, so make sure first that the battery is plugged in and the switch on the side of the electronics box has been flipped. LEDs will light up to indicate that the machine is powered on. Next, check on your laptop or computer for a WiFi network called `ednaServer`, and connect to it. The default password is `password`, which can be changed by following the guide in <a href="/ednaUI/firmware-installation"> firmware-installation</a>. From there, navigate to a web browser and go to `192.168.1.1`.
 
+## Valve Layout (Top View)
+
+<div align="center">
+    <img src="images/valve_layout.png" width="600px" style="border-radius: 4px">
+</div>
+
 
 ## Initial steps
 
