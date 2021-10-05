@@ -61,7 +61,7 @@ permalink: /firmware-installation
     build_flags = -D LIVE=1 -Wall -Wno-unknown-pragmas -std=c++14
     ```
 
-7. `optional` Optionally you can change the server name and password by going to `src/configuration.hpp`. Otherwise, the server will default to the following values:
+7. `optional` Optionally you can change the server name and password by going to `src/configuration.hpp`. It is recommended if you have multiple samplers to change the `SERVER_NAME` to `"ednaServer-###"`, where `###` is the serial number on the electronics box of the sampler. Otherwise, the server will default to the following values:
 
     ```c++
     #define SERVER_NAME     "ednaServer"
@@ -123,7 +123,7 @@ permalink: /firmware-installation
     build_flags = -D LIVE=1 -Wall -Wno-unknown-pragmas -std=c++14
     ```
 
-5. `optional` Optionally you can change the server name and password by going to `src/configuration.hpp`. Otherwise, the server will default to the following values:
+5. `optional` Optionally you can change the server name and password by going to `src/configuration.hpp`. It is recommended if you have multiple samplers to change the `SERVER_NAME` to `"ednaServer-###"`, where `###` is the serial number on the electronics box of the sampler. Otherwise, the server will default to the following values:
 
     ```c++
     #define SERVER_NAME     "ednaServer"
