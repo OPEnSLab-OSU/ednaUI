@@ -3,6 +3,10 @@ import { Ref } from "react";
 
 import { Wrench } from "phosphor-react";
 
+import { options } from "preact/src/index.js";
+
+import { number } from "zod";
+
 import { Parallax } from "components/units/Parallax";
 import { get, post } from "app/http";
 
@@ -44,12 +48,11 @@ const HyperFlush = () => (
             "Begin a HyperFlushing sequence. HyperFlush has four stages that runs in thisorder: flush, preload, stop, and idle. The flush stage get rid of excesswater left in the main system. Then the preload stage fills water at the valve connector in order to minimize contemination"
         }
         onClick={() => {
-            get("api/preload")
-                .withTimeout(1000)
-                .send()
-                .then(() => {
-                    alert("HyperFlush started");
-                });
+            const valve = Number(prompt("Enter valve to hyperflush or -1 for all", "-1"));
+            if (!isNaN(valve) && -1 <= valve && valve <= 23) {
+                const payload = { VALVE: valve };
+                post("api/preload").withJson(payload).send();
+            }
         }}
     />
 );
