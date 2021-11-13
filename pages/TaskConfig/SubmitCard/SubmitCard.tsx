@@ -112,6 +112,38 @@ export const SubmitCard = () => {
             .catch(alert);
     };
 
+    const testPrefillHandler = () => {
+        const inputs = document.querySelectorAll("input");
+        inputs.forEach(function (input) {
+            switch (input.getAttribute("name")) {
+                case "timeBetween":
+                    input.value = "3600";
+                    break;
+                case "valves":
+                    input.value = "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
+                    break;
+                case "flushTime":
+                    input.value = "30";
+                    break;
+                case "sampleTime":
+                    input.value = "120";
+                    break;
+                case "sampleVolume":
+                    input.value = "1";
+                    break;
+                case "samplePressure":
+                    input.value = "35";
+                    break;
+                case "dryTime":
+                    input.value = "30";
+                    break;
+                case "preserveTime":
+                    input.value = "30";
+                    break;
+            }
+        });
+    };
+
     const taskStatus = mapTaskStatusToString[task.status];
 
     return (
@@ -164,6 +196,13 @@ export const SubmitCard = () => {
                                 text="SAVE"
                                 disabled={!formState.isDirty}
                                 onClick={saveHandler}
+                            />
+
+                            <Button
+                                tw="bg-transparent border-accent border text-accent shadow-none
+                                hover:(shadow-none font-bold)"
+                                text="Pressure Test Prefill"
+                                onClick={testPrefillHandler}
                             />
                         </div>
 
