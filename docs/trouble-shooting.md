@@ -45,19 +45,6 @@ When trying to connect to `192.168.1.1`, you are automatically redirected to `ht
 
 Go to `about:config` (same as entering any web address), then search for `network.stricttransportsecurity.preloadlist` and make it set to false. Then, search for `browser.fixup.fallback-to-https` and set to false as well.
 
-## Task only completes some valves
-- What causes this?
-
-We are currently analyzing our task protocol to determine the reason for this
-
-- What does this problem look like?
-
-When a task is set to sample a large number of valves (6+), often the task will only complete a few valves and then get stuck
-
-- How to resolve this issue?
-
-Currently, we recommend setting tasks to around 4 valves maximum, and making multiple tasks if you want more valves sampled.
-
 ## PlatformIO (Visual Studio Code Extension) is not working
 - What causes this?
 
