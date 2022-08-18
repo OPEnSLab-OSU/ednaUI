@@ -113,7 +113,7 @@ export const flushFields: FieldProps[] = [
 
 export const sampleFields: FieldProps[] = [
     { name: "sampleTime", type: "number", label: "Sample Time", helperText: "Unit: second" },
-    { name: "sampleVolume", type: "number", label: "Sample Volume", helperText: "Unit: liter" },
+    { name: "sampleVolume", type: "number", label: "Sample Volume", helperText: "Unit: milliliter" },
     { name: "samplePressure", type: "number", label: "Sample Pressure", helperText: "Unit: psi" },
 ];
 
