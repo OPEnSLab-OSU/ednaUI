@@ -31,7 +31,6 @@ const mergeWithFormValues = (base: TaskServer, values: FormValues): TaskServer =
         "sampleTime",
         "samplePressure",
         "sampleVolume",
-        "dryTime",
         "preserveTime",
     ] as const).forEach(f => {
         merged[f] = values[f];

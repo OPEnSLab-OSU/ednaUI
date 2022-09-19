@@ -19,7 +19,6 @@ export const KEYS = {
     STATE_NAME: "stateName",
     TIME_UTC: "timeUTC",
     VALVE_CURRENT: "valveCurrent",
-    VALVE_DRY_TIME: "valveDryTime",
     VALVE_FLUSH_TIME: "valveFlushTime",
     VALVE_FLUSH_VOLUME: "valveFlushVolume",
     VALVE_GROUP: "valveGroup",

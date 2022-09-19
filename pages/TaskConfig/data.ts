@@ -53,7 +53,6 @@ export const FormSchema = object({
     sampleTime: number().min(0),
     sampleVolume: number().min(0),
     samplePressure: number().min(0),
-    dryTime: number().min(0),
     preserveTime: number().min(0),
 });
 
@@ -117,19 +116,15 @@ export const sampleFields: FieldProps[] = [
     { name: "samplePressure", type: "number", label: "Sample Pressure", helperText: "Unit: psi" },
 ];
 
-export const dryFields: FieldProps[] = [
-    { name: "dryTime", type: "number", label: "Dry Time", helperText: "Unit: second" },
-];
 export const preserveFields: FieldProps[] = [
     { name: "preserveTime", type: "number", label: "Preserve Time", helperText: "Unit: second" },
 ];
 
-export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "dry" | "preserve";
+export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "preserve";
 export const configFields: Record<ConfigSectionName, { title: string; fields: FieldProps[] }> = {
     general: { title: "General", fields: generalFields },
     valves: { title: "Valves", fields: valveFields },
     flush: { title: "Flush", fields: flushFields },
     sample: { title: "Sample", fields: sampleFields },
-    dry: { title: "Dry", fields: dryFields },
     preserve: { title: "Preserve", fields: preserveFields },
 };
