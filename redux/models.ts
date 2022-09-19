@@ -85,8 +85,6 @@ export const TaskServerSchema = object({
         .min(0),
     sampleVolume: number()
         .min(0),
-    dryTime: number()
-        .min(0),
     preserveTime: number()
         .min(0),
 });
