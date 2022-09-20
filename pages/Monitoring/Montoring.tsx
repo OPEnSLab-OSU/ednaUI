@@ -46,11 +46,11 @@ const Tiling = ({ columns }: { columns: number }) => {
                 unit="°C"
                 icon={<Thermometer size={24} />}
             />
-            <SensorTile title="Flow" value={waterFlow} unit="L/min" icon={<Drop size={24} />} />
+            <SensorTile title="Flow" value={waterFlow} unit="mL/min" icon={<Drop size={24} />} />
             <SensorTile
                 title="Volume"
                 value={waterVolume}
-                unit="liter"
+                unit="milliliter"
                 icon={<Drop size={24} weight="fill" />}
             />
             <SensorTile
