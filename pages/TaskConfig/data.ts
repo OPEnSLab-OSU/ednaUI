@@ -52,7 +52,6 @@ export const FormSchema = object({
     flushTime: number().min(0),
     sampleTime: number().min(0),
     sampleVolume: number().min(0),
-    samplePressure: number().min(0),
     preserveTime: number().min(0),
 });
 
@@ -118,7 +117,6 @@ export const sampleFields: FieldProps[] = [
         label: "Sample Volume",
         helperText: "Unit: milliliter",
     },
-    { name: "samplePressure", type: "number", label: "Sample Pressure", helperText: "Unit: psi" },
 ];
 
 export const preserveFields: FieldProps[] = [

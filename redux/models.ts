@@ -80,8 +80,6 @@ export const TaskServerSchema = object({
         .min(0),
     sampleTime: number()
         .min(0),
-    samplePressure: number()
-        .min(0),
     sampleVolume: number()
         .min(0),
     preserveTime: number()
@@ -125,6 +123,8 @@ export const StatusServerSchema = object({
         .min(0),
     lowBattery: boolean(),
     sampleVolume: number()
+        .min(0),
+    cutOffPressure: number()
         .min(0)
 });
 
