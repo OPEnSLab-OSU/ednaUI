@@ -95,3 +95,12 @@ export const setLoadingScreen = createAction(
     "loadingScreen/set",
     withPayload((value: "showing" | "hiding") => value)
 );
+
+export const updatePressure = createAsyncThunk(
+    "pressure/update",
+    async function (pressure: number) {
+        const { error } = await post("api/pressure/update").withJson(pressure).send();
+        if (error) throw new Error(error);
+        return true;
+    }
+);

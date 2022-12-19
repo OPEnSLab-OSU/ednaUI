@@ -5,11 +5,12 @@ import { useParams } from "react-router-dom";
 
 import { Wrench } from "phosphor-react";
 
-import { Parallax } from "components/units/Parallax";
-import { get, post } from "app/http";
 import { any, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
+
+import { get, post } from "app/http";
+import { Parallax } from "components/units/Parallax";
 import { ConfigCard, ConfigCardProps } from "pages/TaskConfig/ConfigCard";
 import { SubmitCard } from "pages/TaskConfig/SubmitCard";
 import { InputField } from "components/units/InputField";
@@ -57,35 +58,24 @@ function InputUtility({ name, type, description, onClick, value }: InputUtilityP
         <Parallax
             perspective={800}
             render={(ref: Ref<HTMLDivElement>) => (
-                <Tile className="group" ref={ref} >
-                    <p tw="col-span-full">Tool</p>
-                    <div tw="text-title text-primary group-hover:(text-accent)">{name}</div>
-                    <p tw="mt-4">{description}</p>
-                    <Wrench tw="self-end justify-self-end group-hover:(text-accent)" size={24} />
-            <form
-                tw="grid gap-8 grid-flow-col w-full"
-                css={{ gridTemplateColumns: "minmax(24rem, 30rem) minmax(14rem, 1fr)" }}>
+                <form
+                    tw="grid gap-8 grid-flow-col w-full"
+                    css={{ gridTemplateColumns: "minmax(24rem, 30rem) minmax(14rem, 1fr)" }}>
+                    <div
+                        id={name.toLowerCase()}
+                        tw="p-8 grid gap-8 bg-white rounded-xl"
+                        className="NumberInput"
+                        ref={ref}>
+                        <h3 tw="text-title text-primary">{name}</h3>
+                        <input name={name} type={type} value={value} />
+                    </div>
 
-<div
-                id={name.toLowerCase()}
-                tw="p-8 grid gap-8 bg-white rounded-xl"
-                className="NumberInput"
-                ref={ref}>
-                <h3 tw="text-title text-primary">{name}</h3>
-                <input
-                    name="numberOfGuests"            type={type}
-                    value={value}
-                    />
-            </div>
-
-                <input type="submit" value="Submit" onClick={onClick}/>
-            </form>
-                </Tile>
+                    <input type="submit" value="Submit" onClick={onClick} />
+                </form>
             )}
         />
     );
 }
-
 
 const HyperFlush = () => (
     <Utility
@@ -151,21 +141,24 @@ const BubblePurge = () => (
     />
 );
 
-const status = useSelector(state => state.status);
+const PressureCutOff = () => {
+    const status = useSelector(state => state.status);
 
-const PressureCutOff = () => (
-    <InputUtility
-        name={"Set Global Pressure Cut Off"}
-        description={"Sets pressure to transition from sample state"}
-        onClick={() => {
-            get("api/alcohol-debubbler")
-                .withTimeout(1000)
-                .send()
-                .then(() => {
-                    alert("Bubble Purge started");
-                });
-        } } type={"number"} value={status.cutOffPressure?.toString()}    />
-);
+    return (
+        <InputUtility
+            name={"Set Global Pressure Cut Off"}
+            description={"Sets pressure to transition from sample state"}
+            onClick={() => {
+                get("api/pressure/update")
+                    .withTimeout(1000)
+                    .send()
+                    .then(() => window.location.reload());
+            }}
+            type={"number"}
+            value={status.cutOffPressure?.toString()}
+        />
+    );
+};
 
 export function Utilities() {
     return (
