@@ -1,5 +1,5 @@
 import tw, { styled } from "twin.macro";
-import { Ref, useState } from "react";
+import { MouseEventHandler, Ref, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -14,6 +14,8 @@ import { Parallax } from "components/units/Parallax";
 import { ConfigCard, ConfigCardProps } from "pages/TaskConfig/ConfigCard";
 import { SubmitCard } from "pages/TaskConfig/SubmitCard";
 import { InputField } from "components/units/InputField";
+import { useAppDispatch } from "root@redux/store";
+import { updatePressure } from "root@redux/actions";
 
 const Tile = styled.div`
     ${tw`relative grid h-56 p-4 rounded-md bg-white text-subtitle text-secondary shadow-2xl hover:(cursor-pointer bg-gray-800)`}
@@ -50,10 +52,11 @@ type InputUtilityProps = {
     name: string;
     type: "string" | "number" | "date" | "time" | "button";
     description: string;
-    onClick: () => void;
+    onSubmit: (value?: string) => void;
     value?: string;
 };
-function InputUtility({ name, type, description, onClick, value }: InputUtilityProps) {
+function InputUtility({ name, type, description, onSubmit, value }: InputUtilityProps) {
+    const inputRef = useRef<HTMLInputElement>(null);
     return (
         <Parallax
             perspective={800}
@@ -67,10 +70,11 @@ function InputUtility({ name, type, description, onClick, value }: InputUtilityP
                         className="NumberInput"
                         ref={ref}>
                         <h3 tw="text-title text-primary">{name}</h3>
-                        <input name={name} type={type} value={value} />
+                        <input tw="form-input text-sm bg-transparent border border-primary rounded" name={name} type={type} value={value} ref={inputRef} />
+                        <input type="submit" value="Submit" onClick={() => {
+                                    inputRef.current && onSubmit(inputRef.current.value);
+                                }} />
                     </div>
-
-                    <input type="submit" value="Submit" onClick={onClick} />
                 </form>
             )}
         />
@@ -143,16 +147,14 @@ const BubblePurge = () => (
 
 const PressureCutOff = () => {
     const status = useSelector(state => state.status);
+    const dispatch = useAppDispatch();
 
     return (
         <InputUtility
             name={"Set Global Pressure Cut Off"}
             description={"Sets pressure to transition from sample state"}
-            onClick={() => {
-                get("api/pressure/update")
-                    .withTimeout(1000)
-                    .send()
-                    .then(() => window.location.reload());
+            onSubmit={(pressure) => {
+                dispatch(updatePressure(Number(pressure)));
             }}
             type={"number"}
             value={status.cutOffPressure?.toString()}

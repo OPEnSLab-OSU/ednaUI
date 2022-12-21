@@ -98,9 +98,9 @@ export const setLoadingScreen = createAction(
 
 export const updatePressure = createAsyncThunk(
     "pressure/update",
-    async function (pressure: number) {
-        const { error } = await post("api/pressure/update").withJson(pressure).send();
+    async (pressure: number) => {
+        const { error, payload } = await post("api/pressure/update").withJson({pressure}).send<Number>();
         if (error) throw new Error(error);
-        return true;
+        return payload as StatusServer["cutOffPressure"];
     }
 );
