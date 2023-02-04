@@ -76,6 +76,7 @@ export const TaskServerSchema = object({
         .min(0),
     scheduleOnReceived: boolean(),
     notes: string(),
+    prefilterClearTime: number().min(0),
     flushTime: number()
         .min(0),
     sampleTime: number()
@@ -86,6 +87,7 @@ export const TaskServerSchema = object({
         .min(0),
     preserveTime: number()
         .min(0),
+    intakeDryTime: number().min(0),
 });
 
 export type TaskServerStatus = "inactive" | "active" | "completed" | "missed";

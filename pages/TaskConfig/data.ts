@@ -49,11 +49,13 @@ export const FormSchema = object({
         ),
     timeBetween: number().min(0),
     notes: string().optional(),
+    prefilterClearTime: number().min(0),
     flushTime: number().min(0),
     sampleTime: number().min(0),
     sampleVolume: number().min(0),
     samplePressure: number().min(0),
     preserveTime: number().min(0),
+    intakeDryTime: number().min(0),
 });
 
 export type FormValues = z.infer<typeof FormSchema>;
@@ -105,6 +107,10 @@ export const valveFields: FieldProps[] = [
     },
 ];
 
+export const prefilterClearFields: FieldProps[] = [
+    { name: "prefilterClearTime", type: "number", label: "Prefilter Clear Time", helperText: "Unit: second" },
+];
+
 export const flushFields: FieldProps[] = [
     { name: "flushTime", type: "number", label: "Flush Time", helperText: "Unit: second" },
     // { name: "flushVolume", type: "number", label: "Flush Volume" },
@@ -125,11 +131,17 @@ export const preserveFields: FieldProps[] = [
     { name: "preserveTime", type: "number", label: "Preserve Time", helperText: "Unit: second" },
 ];
 
-export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "preserve";
+export const intakeDryFields: FieldProps[] = [
+    { name: "intakeDryTime", type: "number", label: "Intake Dry Time", helperText: "Unit: second" },
+];
+
+export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "preserve" | "prefilterClear" | "intakeDry";
 export const configFields: Record<ConfigSectionName, { title: string; fields: FieldProps[] }> = {
     general: { title: "General", fields: generalFields },
     valves: { title: "Valves", fields: valveFields },
+    prefilterClear: { title: "Prefilter Clear", fields: prefilterClearFields},
     flush: { title: "Flush", fields: flushFields },
     sample: { title: "Sample", fields: sampleFields },
     preserve: { title: "Preserve", fields: preserveFields },
+    intakeDry: {title: "Intake Dry", fields: intakeDryFields},
 };

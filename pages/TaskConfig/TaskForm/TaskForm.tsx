@@ -93,6 +93,8 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
             sampleVolume: 0,
             samplePressure: 0,
             preserveTime: 0,
+            prefilterClearTime: 0,
+            intakeDryTime: 0
         })
     );
 
