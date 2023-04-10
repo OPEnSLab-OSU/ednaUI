@@ -49,6 +49,7 @@ const makeMock = (id: string, status: number) => ({
     sampleVolume: 0,
     samplePressure: 0,
     preserveTime: 0,
+    preserveVolume: 0,
     schedule: Math.floor(Date.now() / 1000),
     scheduleOnReceived: true,
     timeBetween: 10,

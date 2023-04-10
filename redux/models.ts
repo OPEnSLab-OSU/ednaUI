@@ -24,6 +24,7 @@ export const KEYS = {
     VALVE_GROUP: "valveGroup",
     VALVE_ID: "valveId",
     VALVE_PRESERVE_TIME: "valvePreserveTime",
+    VALVE_PRESERVE_VOLUME: "valvePreserveVolume",
     VALVE_SAMPLE_PRESSURE: "valveSamplePressure",
     VALVE_SAMPLE_TIME: "valveSampleTime",
     VALVE_SAMPLE_VOLUME: "valveSampleVolume",
@@ -85,6 +86,8 @@ export const TaskServerSchema = object({
     sampleVolume: number()
         .min(0),
     preserveTime: number()
+        .min(0),
+    preserveVolume: number()
         .min(0),
 });
 

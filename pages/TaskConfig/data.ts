@@ -54,6 +54,7 @@ export const FormSchema = object({
     sampleVolume: number().min(0),
     samplePressure: number().min(0),
     preserveTime: number().min(0),
+    preserveVolume: number().min(0)
 });
 
 export type FormValues = z.infer<typeof FormSchema>;
@@ -123,6 +124,7 @@ export const sampleFields: FieldProps[] = [
 
 export const preserveFields: FieldProps[] = [
     { name: "preserveTime", type: "number", label: "Preserve Time", helperText: "Unit: second" },
+    { name: "preserveVolume", type: "number", label: "Preserve Volume", helperText: "Unit: milliliter"}
 ];
 
 export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "preserve";
