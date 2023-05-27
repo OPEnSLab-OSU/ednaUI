@@ -23,7 +23,7 @@ const mergeWithFormValues = (base: TaskServer, values: FormValues): TaskServer =
     const schedule = new Date(`${date}T${time}:00`);
     merged.schedule = Math.floor(schedule.getTime() / 1000);
 
-    merged.timeBetween = values.timeBetween;
+    merged.timeBetween = values.timeBetween; //Add in time unit here for conversion
     merged.valves = getValves(values.valves);
 
     ([
