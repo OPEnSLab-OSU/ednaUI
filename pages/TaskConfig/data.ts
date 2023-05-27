@@ -1,3 +1,4 @@
+import { StringNullableChain } from "lodash";
 import z, { string, number, object } from "zod";
 
 const ValveSchema = number().min(0).max(23);
@@ -48,6 +49,7 @@ export const FormSchema = object({
             }
         ),
     timeBetween: number().min(0),
+    timeBetweenUnits: string().refine( s => s == "Seconds" || s == "Minutes", {message: "unexpected radio error"}), //This might make it easier to just have the units as another field?
     notes: string().optional(),
     flushTime: number().min(0),
     sampleTime: number().min(0),
@@ -62,6 +64,7 @@ export type FieldProps = {
     name: keyof FormValues;
     label: string;
     type?: "string" | "number" | "date" | "time" | "button";
+    unitOptions?: string[];
     sublabel?: string;
     helperText?: string;
 };
@@ -102,6 +105,7 @@ export const valveFields: FieldProps[] = [
         sublabel: "Time until next valve",
         type: "number",
         helperText: "Unit: second",
+        unitOptions: ["seconds, minutes, hours"], //This might work, but we'll have to change the input field to accomodate and make sure this value is capture when converting to a task
     },
 ];
 

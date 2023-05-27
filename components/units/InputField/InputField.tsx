@@ -7,6 +7,7 @@ export type InputFieldProps = ComponentPropsWithoutRef<"input"> & {
     sublabel?: string;
     helperText?: string;
     error?: string;
+    unitOptions?: string[];
     mapItemList?: (items: ReactNode[]) => ReactNode[];
 };
 
@@ -32,6 +33,14 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>((props, 
 
     if (error) {
         defaultItemList.push(<ErrorMessage key="error">{error}</ErrorMessage>);
+    }
+
+    if(props.unitOptions){
+      <fieldset>
+        <input type="radio" />
+          <label></label>
+
+      </fieldset>
     }
 
     const itemList = mapItemList ? mapItemList(defaultItemList) : defaultItemList;
