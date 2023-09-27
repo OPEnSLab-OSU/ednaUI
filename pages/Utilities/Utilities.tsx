@@ -154,7 +154,14 @@ const PressureCutOff = () => {
             name={"Set Global Pressure Cut Off"}
             description={"Sets pressure to transition from sample state"}
             onSubmit={(pressure) => {
-                dispatch(updatePressure(Number(pressure)));
+                if(Number(pressure)<0){
+                    alert("Only enter positive values");
+                }
+                else{
+                    dispatch(updatePressure(Number(pressure)));
+                    alert("Global pressure cut off has been set");
+                }
+               
             }}
             type={"number"}
             value={status.cutOffPressure?.toString()}

@@ -14,6 +14,7 @@ const states = [
     "sample",
     "preserve flush",
     "preserve",
+    "flush 3",
     "offshoot clean 2",
     "air flush",
     "stop",
