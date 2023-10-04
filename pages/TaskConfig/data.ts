@@ -53,6 +53,7 @@ export const FormSchema = object({
     sampleTime: number().min(0),
     sampleVolume: number().min(0),
     preserveTime: number().min(0),
+    waterTemp: number().min(0),
 });
 
 export type FormValues = z.infer<typeof FormSchema>;
@@ -123,11 +124,16 @@ export const preserveFields: FieldProps[] = [
     { name: "preserveTime", type: "number", label: "Preserve Time", helperText: "Unit: second" },
 ];
 
-export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "preserve";
+export const TemperatureFields: FieldProps[] = [
+    { name: "waterTemp", type: "number", label: "Water Temperature", helperText: "Unit: celsius" },
+];
+export type ConfigSectionName = "general" | "valves" | "flush" | "sample" | "preserve"|"temperature";
 export const configFields: Record<ConfigSectionName, { title: string; fields: FieldProps[] }> = {
     general: { title: "General", fields: generalFields },
     valves: { title: "Valves", fields: valveFields },
     flush: { title: "Flush", fields: flushFields },
     sample: { title: "Sample", fields: sampleFields },
     preserve: { title: "Preserve", fields: preserveFields },
+    temperature: {title: "Temperature", fields: TemperatureFields},
 };
+

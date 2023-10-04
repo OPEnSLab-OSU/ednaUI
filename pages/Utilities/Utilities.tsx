@@ -16,6 +16,7 @@ import { SubmitCard } from "pages/TaskConfig/SubmitCard";
 import { InputField } from "components/units/InputField";
 import { useAppDispatch } from "root@redux/store";
 import { updatePressure } from "root@redux/actions";
+ 
 
 const Tile = styled.div`
     ${tw`relative grid h-56 p-4 rounded-md bg-white text-subtitle text-secondary shadow-2xl hover:(cursor-pointer bg-gray-800)`}
@@ -168,7 +169,25 @@ const PressureCutOff = () => {
         />
     );
 };
+/*
+const WaterTemperature = () => {
+    const status = useSelector(state => state.status);
+    const dispatch = useAppDispatch();
 
+    return (
+        <InputUtility
+            name={"Set Water temperature"}
+            description={"Sends water temperature to server"}
+            onSubmit={(waterTemp) => {
+                dispatch(updateWaterTemp(Number(waterTemp)));
+                alert("Water temperature has been set");
+            }}
+            type={"number"}
+            value={status.waterTemperature?.toString()}
+        />
+    );
+};
+*/
 export function Utilities() {
     return (
         <PageContainer>
@@ -177,7 +196,6 @@ export function Utilities() {
             <BubblePurge />
             <UpdateRTC />
             <ResetValves />
-            <PressureCutOff />
         </PageContainer>
     );
 }

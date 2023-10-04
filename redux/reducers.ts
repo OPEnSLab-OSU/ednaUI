@@ -52,6 +52,7 @@ const makeMock = (id: string, status: number) => ({
     schedule: Math.floor(Date.now() / 1000),
     scheduleOnReceived: true,
     timeBetween: 10,
+    waterTemp: 4,
 });
 
 const initialTaskCollection: TaskCollectionInStore =

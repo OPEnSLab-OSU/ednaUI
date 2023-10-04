@@ -104,3 +104,13 @@ export const updatePressure = createAsyncThunk(
         return payload as StatusServer["cutOffPressure"];
     }
 );
+/*
+export const updateWaterTemp = createAsyncThunk(
+    "temperature/update",
+    async (waterTemp: number) => {
+        const { error, payload } = await post("api/temperature/update").withJson({waterTemp}).send<Number>();
+        if (error) throw new Error(error);
+        return payload as StatusServer["waterTemperature"];
+    }
+);
+*/

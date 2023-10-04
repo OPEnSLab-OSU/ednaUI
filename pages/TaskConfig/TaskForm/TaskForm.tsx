@@ -62,7 +62,7 @@ function taskToFormValues(task: TaskServer | undefined, defaultValues: FormValue
         notes: task.notes,
     };
 
-    (["flushTime", "sampleTime", "sampleVolume", "preserveTime"] as const).forEach(f => {
+    (["flushTime", "sampleTime", "sampleVolume", "preserveTime","waterTemp"] as const).forEach(f => {
         result[f] = task[f];
     });
 
@@ -86,6 +86,7 @@ export const TaskForm = ({ highlightSection }: { highlightSection: number }) => 
             sampleTime: 0,
             sampleVolume: 0,
             preserveTime: 0,
+            waterTemp: 4,
         })
     );
 

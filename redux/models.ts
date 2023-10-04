@@ -84,6 +84,8 @@ export const TaskServerSchema = object({
         .min(0),
     preserveTime: number()
         .min(0),
+    waterTemp: number()
+        .min(0),
 });
 
 export type TaskServerStatus = "inactive" | "active" | "completed" | "missed";
